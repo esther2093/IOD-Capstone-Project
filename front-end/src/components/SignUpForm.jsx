@@ -74,7 +74,6 @@ export default function SignUpForm() {
     } else {
       setError("");
   
-  
       // convert form data to object and post to backend
       axios
         .post("http://localhost:8000/api/users/register", Object.fromEntries(data.entries()))
@@ -134,6 +133,7 @@ export default function SignUpForm() {
             <Typography component="h4" className="login-subtitle">
               Please fill out your details below to join the party!
             </Typography>
+
             <Box
               component="form"
               noValidate
@@ -181,13 +181,13 @@ export default function SignUpForm() {
                 </Grid>
                 <Grid item xs={12}>
                   <FormControl variant="filled" fullWidth>
-                    <InputLabel htmlFor="filled-adornment-password" required>
+                    <InputLabel htmlFor="password" required>
                       Password
                     </InputLabel>
                     <FilledInput
-                      id="filled-adornment-password"
+                      id="password"
                       name="password"
-                      autoComplete="new-password"
+                      autoComplete="password"
                       type={showPassword ? "text" : "password"}
                       endAdornment={
                         <InputAdornment position="end">
@@ -210,6 +210,7 @@ export default function SignUpForm() {
                     required
                     fullWidth
                     label="Date of Birth"
+                    id="dateofBirth"
                     value={value}
                     onChange={(newValue) => setValue(newValue)}
                     format="YYYY-MM-DD"

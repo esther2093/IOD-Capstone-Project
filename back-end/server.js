@@ -13,7 +13,10 @@ app.use(express.json());
 app.use(cors());
 
 let userRoutes = require('./routes/userRoutes')
+let tripRoutes = require('./routes/tripRoutes')
+
 app.use('/api/users', userRoutes)
+app.use('/api/trips', tripRoutes)
 
 app.use("/", express.static("public"));
 

@@ -10,7 +10,6 @@ router.post('/create', (req, res) => {
     Controllers.tripController.createTrip(req.body, res)
 })
 
-
 router.put('/:id', (req, res) => {
     Controllers.tripController.updateTrip(req, res)
 })

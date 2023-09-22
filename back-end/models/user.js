@@ -15,7 +15,7 @@ User.init({
         lastName: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
-        dob: {
+        dateofBirth: {
             type: DataTypes.DATE, allowNull: false, required: true
         },  
         email: {
@@ -32,7 +32,7 @@ User.init({
         }, 
     },
     {
-        sequelize: sequelizeInstance, modelName: 'users', // use lowercase plural format
+        sequelize: sequelizeInstance, modelName: 'users',
         timestamps: true, freezeTableName: true
     }
 )

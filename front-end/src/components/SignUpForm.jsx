@@ -65,10 +65,10 @@ export default function SignUpForm() {
       setError("Invalid first name");
     } else if (!/^[A-Za-z]+$/i.test(userLastName)) {
       setError("Invalid last name");
-    } else if (age < 18) {
-      setError("You must be over 18 years old to sign up");
-    } else if (userPhoneNumber.length < 10) {
-      setError("You must input a valid phone number");
+    // } else if (age < 18) {
+    //   setError("You must be over 18 years old");
+    // } else if (userPhoneNumber.length < 10) {
+    //   setError("You must input a valid phone number");
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userEmail)) {
       setError("Invalid email address");
     } else {

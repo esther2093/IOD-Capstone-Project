@@ -52,8 +52,8 @@ const registerUser = async (req, res) => {
     let dateOfBirth = req.body.dateOfBirth;     
     let reverseDate = dateOfBirth.split("-").reverse().join("-");
     console.log(reverseDate);
-    let convertedDOB = new Date(reverseDate);
-    console.log(convertedDOB);
+    let datedDOB = new Date(reverseDate);
+    console.log(datedDOB);
 
     try {
         // Get user input by destructuring request body
@@ -82,7 +82,7 @@ const registerUser = async (req, res) => {
             lastName,
             email: email.toLowerCase(), // sanitize: convert email to lowercase
             password: encryptedPassword,
-            dateOfBirth,
+            dateOfBirth: datedDOB,
             phoneNumber
         });
         const user = userMetadata.get({plain: true}) // get just the user fields, no extra sequelize metadata

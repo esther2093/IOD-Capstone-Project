@@ -49,13 +49,16 @@ const loginUser = async (req, res) => {
 
 // registers a new user by validating their details, encrypting their password, and generating a token
 const registerUser = async (req, res) => {
+    let dateOfBirth = req.body.dateofBirth
+    let convertedDOB = new Date(dateOfBirth)
+    console.log(convertedDOB)
 
     try {
         // Get user input by destructuring request body
-        const { firstName, lastName, email, password, dateOfBirth } = req.body;
+        const { firstName, lastName, email, password, phoneNumber } = req.body;
 
         // Validate user input
-        if (!(email && password && firstName && lastName && dateOfBirth)) {
+        if (!(email && password && firstName && lastName && convertedDOB && phoneNumber)) {
             res.status(400).json({ result: "All input is required"});
             return; // when sending responses and finishing early, manually return or end the function to stop further processing
         }
@@ -77,7 +80,8 @@ const registerUser = async (req, res) => {
             lastName,
             email: email.toLowerCase(), // sanitize: convert email to lowercase
             password: encryptedPassword,
-            dateOfBirth
+            dateOfBirth,
+            phoneNumber
         });
         const user = userMetadata.get({plain: true}) // get just the user fields, no extra sequelize metadata
 

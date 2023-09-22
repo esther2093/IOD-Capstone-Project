@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 
 export default function SignUpForm() {
+
   const [value, setValue] = useState(dayjs("2023-01-01"));
   const [error, setError] = useState("");
   const [submitResult, setSubmitResult] = useState("");
@@ -50,10 +51,17 @@ export default function SignUpForm() {
     const userPassword = data.get("password");
     const userEmail = data.get("email");
     const userPhoneNumber = data.get("phoneNumber");
-  
-    const selectedDate = value.toDate();
-    const currentDate = new Date();
-    const age = currentDate.getFullYear() - selectedDate.getFullYear();
+    const userDateofBirth = data.get("dateOfBirth")
+    console.log(userDateofBirth)
+    console.log(data.get("phoneNumber"))
+    
+    // const selectedDate = value.toDate();
+    // console.log(selectedDate)
+
+    // const currentDate = new Date();
+
+    // console.log(currentDate)
+    // const age = currentDate.getFullYear() - selectedDate.getFullYear();
   
     if (userPassword.length < 6) {
       setError("Password must be at least 6 characters long");
@@ -65,8 +73,8 @@ export default function SignUpForm() {
       setError("Invalid first name");
     } else if (!/^[A-Za-z]+$/i.test(userLastName)) {
       setError("Invalid last name");
-    } else if (age < 18) {
-      setError("You must be over 18 years old to sign up");
+    // } else if (age < 18) {
+    //   setError("You must be over 18 years old to sign up");
     } else if (userPhoneNumber.length < 10) {
       setError("You must input a valid phone number");
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userEmail)) {
@@ -150,7 +158,7 @@ export default function SignUpForm() {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    autoComplete="given-name"
+                    autoComplete="first-name"
                     name="firstName"
                     required
                     fullWidth
@@ -206,14 +214,23 @@ export default function SignUpForm() {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <DateField
+                  {/* <DateField
                     required
                     fullWidth
                     label="Date of Birth"
-                    id="dateofBirth"
+                    id="dateOfBirth"
                     value={value}
                     onChange={(newValue) => setValue(newValue)}
                     format="YYYY-MM-DD"
+                  /> */}
+
+                  <TextField
+                    required
+                    fullWidth
+                    id="dateOfBirth"
+                    format="YYYY-MM-DD"
+                    name="dateOfBirth"
+                    autoComplete="date-of-birth"
                   />
                 </Grid>
 

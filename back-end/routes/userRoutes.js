@@ -16,8 +16,8 @@ router.post('/create', (req, res) => {
     Controllers.userController.createUser(req.body, res)
 })
 
-router.post('/register', (req, res) => { console.log("test")
-    // Controllers.userController.registerUser(req, res)
+router.post('/register', (req, res) => {
+    Controllers.userController.registerUser(req, res)
 })
 
 router.put('/:id', (req, res) => {

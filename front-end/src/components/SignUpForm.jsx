@@ -32,6 +32,10 @@ export default function SignUpForm() {
   const [submitResult, setSubmitResult] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const [result, setResult] = React.useState('');
+  const { currentUser, handleUpdateUser } = useUserContext();
+  const navigate = useNavigate();
+
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -70,8 +74,6 @@ export default function SignUpForm() {
     } else {
       setError("");
   
-      const { currentUser, handleUpdateUser } = useUserContext();
-      const navigate = useNavigate();
   
       // convert form data to object and post to backend
       axios

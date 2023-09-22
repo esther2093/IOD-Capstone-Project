@@ -87,7 +87,7 @@ export default function SignUpForm() {
         })
         .catch((err) => {
           console.log(err);
-          setResult(err.message + ": " + err.response.data.result);
+          setResult("There has been an error");
         });
     }
   };

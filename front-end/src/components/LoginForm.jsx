@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import { useUserContext } from "../context/UserContext";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
+import { Container } from "@mui/material";
 import axios from 'axios';
 
 export default function LoginForm() {
@@ -52,25 +53,24 @@ export default function LoginForm() {
     }
 
     if (!loggedInUser) {
-      let newAttempts = loginAttempts + 1
+      let newAttempts = loginAttempts + 1;
 
       if (newAttempts === 5) {
-          setErrMsg('Maximum login attempts exceeded. Please try again later.');
+        setErrMsg("Maximum login attempts exceeded. You are blocked.");
+      } else {
+        setErrMsg("Unsuccessful login attempt #" + newAttempts + " of 5");
       }
-      else {
-          setErrMsg('Unsuccessful login ' + (5 - newAttempts) + ' attempts remaining');
-      }
-      setLoginAttempts(newAttempts)
-      setLoggedIn(false)
-  } else {
-      setErrMsg('')
-      handleUpdateUser(loggedInUser)
-      setLoggedIn(true)
-  }
+      setLoginAttempts(newAttempts);
+      setLoggedIn(false);
+    } else {
+      setErrMsg("");
+      handleUpdateUser(loggedInUser);
+      setLoggedIn(true);
+    }
   };
 
   return (
-    <div className="login-container">
+    <Container component="main" className="login-container">
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -113,9 +113,7 @@ export default function LoginForm() {
             <Typography component="h1" variant="h5">
               {loggedIn ? "Hello " + currentUser.firstName : ""}
             </Typography>
-            <Typography variant="body2" color="error">
-                 {errMsg}
-              </Typography>           
+            <p>{errMsg}</p>
 
             {!loggedIn && loginAttempts < 5 ? (
 
@@ -196,6 +194,6 @@ export default function LoginForm() {
           </Box>
         </Grid>
       </Grid>
-    </div>
+    </Container>
   );
 }

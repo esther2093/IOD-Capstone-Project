@@ -84,8 +84,8 @@ export default function SignUpForm() {
             navigate("/");
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          console.log(error);
           setResult("There has been an error");
         });
     }

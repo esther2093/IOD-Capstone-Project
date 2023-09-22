@@ -82,7 +82,11 @@ const registerUser = async (req, res) => {
             lastName,
             email: email.toLowerCase(), // sanitize: convert email to lowercase
             password: encryptedPassword,
+<<<<<<< HEAD
             dateOfBirth: datedDOB,
+=======
+ 
+>>>>>>> back-end
             phoneNumber
         });
         const user = userMetadata.get({plain: true}) // get just the user fields, no extra sequelize metadata

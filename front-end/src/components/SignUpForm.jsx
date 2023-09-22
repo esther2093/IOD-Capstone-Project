@@ -49,10 +49,7 @@ export default function SignUpForm() {
     const userPassword = data.get("password");
     const userEmail = data.get("email");
     const userPhoneNumber = data.get("phoneNumber");
-  
-    const selectedDate = value.toDate();
-    const currentDate = new Date();
-    const age = currentDate.getFullYear() - selectedDate.getFullYear();
+    const userDateofBirth = data.get("dateOfBirth")
   
     if (userPassword.length < 6) {
       setError("Password must be at least 6 characters long");

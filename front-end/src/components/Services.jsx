@@ -15,15 +15,16 @@ export default function Services () {
         <div className="col-2">
           <div className="section-heading">
             <h3 className="section-subhead">SERVICES</h3>
-            <h2 className="section-title">How to get started?</h2>
+            <h2 className="section-title">How does it work?</h2>
             <p className="breakline">—</p>
-            <p className="section-subtitle">Follow the steps below</p>
+            <p className="section-subtitle">Follow these instructions:</p>
           </div>
-          <div className="services-instructions">
-            <p>1. Login or Sign-up.</p>
-            <p>2. Look through available trips.</p>
-            <p>3. Contact the driver to organise logistics.</p>
-          </div>
+          <ol className="services-instructions">
+            <li>Login or Sign-up.</li>
+            <li>Look through available trips in the SEND section.</li>
+            <li>Contact the driver to organise logistics.</li>
+            <li>If you are going somewhere and would like to take an item, <br />post your trip in the DRIVE section.</li>
+          </ol>
         </div>
 
       </div>

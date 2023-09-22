@@ -17,33 +17,32 @@ import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
 
 export default function DriveForm () {
-  const [value, setValue] = React.useState(dayjs("null"));
-  const [error, setError] = React.useState("");
-  const [submitResult, setSubmitResult] = React.useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const [result, setResult] = React.useState('');
+  const { currentUser, handleUpdateUser } = useUserContext();
+  const navigate = useNavigate();
 
-    const selectedDate = value.toDate();
-    const currentDate = new Date();
-    const age = currentDate.getFullYear() - selectedDate.getFullYear();
+const handleSubmit = (event) => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
 
-    if (userPassword.length < 6) {
-      setError("Password must be at least 6 characters long.");
-    } else if (userPassword === userEmail) {
-      setError("Password must not match the email address");
-    } else if (age < 18) {
-      setError("You must be at least 18 years old to sign up.");
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userEmail)) {
-      setError("Invalid email address.");
-    } else {
-      setError(""); // Reset error message
-      setSubmitResult("Your all wrapped up! Welcome to the family!");
+  // convert form data to object and post to backend
+  axios.post('http://localhost:8000/api/trip/create', Object.fromEntries(data.entries()))
+      .then(response => {
+          let result = response.data.result;
+          let user = response.data.data;
+          console.log(user)
 
-      window.location.href = "/login"; 
-    }
-  };
+          setResult(result);
+          if (user) {
+              handleUpdateUser(user);
+              navigate('/');
+          }
+      }).catch(err => {
+          console.log(err)
+          setResult(err.message + ': ' + err.response.data.result);
+      });
+};
 
   return (
     <div>

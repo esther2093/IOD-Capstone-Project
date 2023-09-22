@@ -87,16 +87,13 @@ font-size: 1em;
 
 /* Hompage About */
 
-.about-container {
-  margin: 1em;
-  padding: 9em 0 0 0;
-  position: relative;
-  display: flex;
+.about-section {
+  background-color: white;
 }
 
-.services-container {
-  margin: 1em;
-  padding: 4em 0 10em 0;
+.about-container {
+  margin: 0em 1em;
+  padding: 9em 0 0 0;
   position: relative;
   display: flex;
 }
@@ -176,6 +173,19 @@ display: flex;
 
 /* Homepage Services */
 
+.services-section {
+  background-color: white;
+}
+
+
+.services-container {
+  margin: 0em 1em;
+  padding: 4em 0 10em 0;
+  position: relative;
+  display: flex;
+}
+
+
 .col-2 img {
   width: 80%;
 }
@@ -250,7 +260,7 @@ background-color: #D2B356;
 vertical-align: middle;
 }
 
-ul {
+.footer-list {
   list-style-type: none;
   margin: 0;
   padding: 0;

@@ -10,7 +10,7 @@ export default function Footer() {
 
       <div className="col-33">
         <ul className="footer-list">
-          <ul>
+          <ul className="footer-list">
             <li>Contact us</li>
             <li>Report a problem</li>
           </ul>

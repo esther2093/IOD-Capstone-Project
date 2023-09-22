@@ -27,7 +27,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 
 export default function SignUpForm() {
-  const [value, setValue] = useState(dayjs("null"));
+  const [value, setValue] = useState(dayjs("2023-01-01"));
   const [error, setError] = useState("");
   const [submitResult, setSubmitResult] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -210,7 +210,7 @@ export default function SignUpForm() {
                     label="Date of Birth"
                     value={value}
                     onChange={(newValue) => setValue(newValue)}
-                    format="DD-MM-YYYY"
+                    format="YYYY-MM-DD"
                   />
                 </Grid>
 

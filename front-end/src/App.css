@@ -1,0 +1,267 @@
+/* Root settings */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+}
+
+#root {
+  margin: auto;
+  text-align: center;
+  width: 100%;
+}
+
+/* HOMEPAGE */
+
+/* Homepage NavBar */
+
+.navbar.transparent {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.navbar-slide-down {
+  animation: slideDown 0.5s ease-in-out; 
+}
+
+/* Homepage Banner  */
+
+#banner-top {
+  margin-top: -64px;
+}
+
+.banner-content {
+  width: 100%;
+  background-image: url("src/assets/bannerImage.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.col-45 {
+  width: 45%;
+  padding: 7em 3em 4em 3em;
+}
+
+.breakline {
+  text-align: left;
+  font-size: 2em;
+  font-weight: 800;
+  color: #D2B356;
+}
+
+.banner-section-heading {
+  width: 100%;
+}
+
+#homepage-main-header {
+  text-align: left;
+  font-size: 3.5em;
+  font-weight: 800;
+  padding-bottom: 0.5em;
+}
+
+#homepage-main-subtitle {
+  font-weight: 300;
+  text-align: left;
+  font-size: 1.2em;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-around;
+  padding: 2em 1em; 
+}
+
+.homepageButton {
+font-size: 1em;
+}
+
+/* Hompage About */
+
+.about-section {
+  background-color: white;
+}
+
+.about-container {
+  margin: 0em 1em;
+  padding: 9em 0 0 0;
+  position: relative;
+  display: flex;
+}
+
+.about-col-33 {
+  padding: 1.2em;
+  margin-left: 1em;
+}
+
+.section-heading {
+  padding: 0 0 15px 0;
+  text-align: left
+}
+
+.section-subhead {
+  font-size: 0.9em;
+  font-weight: bold;
+  color: #ccc;
+  letter-spacing: 2px;
+  padding-bottom: 0;
+}
+
+.section-title {
+  font-size: 2.1em;
+}
+
+.section-subtitle {
+  font-size: 1em;
+  padding-top: 0;
+  text-align: left;
+  font-weight: 300;
+  color: #9c9c9c;
+}
+
+.col-2 {
+  width: 50%;
+}
+
+.col-66 {
+  width: 66.66%;
+}
+
+.col-33 {
+  width: 33.33%;
+}
+
+.icon-block-66 {
+  display:block;
+  text-align: left;
+  padding: 1em;
+}
+
+.icon-block {
+  padding: 1.5em;
+}
+
+.icon-block-icon {
+  font-size: 2em;
+}
+
+.icon-container1 {
+display: flex;
+}
+
+.icon-container2 {
+  display: flex;
+}
+
+.icon-block-description p {
+  font-size: 0.9em;
+  margin-top: 0;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+/* Homepage Services */
+
+.services-section {
+  background-color: white;
+}
+
+
+.services-container {
+  margin: 0em 1em;
+  padding: 4em 0 10em 0;
+  position: relative;
+  display: flex;
+}
+
+
+.col-2 img {
+  width: 80%;
+}
+
+.services-instructions {
+  text-align: left;
+}
+
+
+
+/* LOGIN PAGE */
+
+
+.login-logo-container {
+  padding-top: 7em;
+}
+
+
+/* SIGNUP PAGE */
+
+.signup-logo-container {
+  padding-bottom: 0.5em;
+}
+
+#signup-main-header {
+  text-align: left;
+}
+
+#signup-main-subtitle {
+  font-weight: 300;
+  text-align: left;
+  font-size: 1.2em;
+}
+
+
+/* RIDES PAGE */
+
+#ridesPage-main-header {
+  text-align: left;
+}
+
+
+#ridesPage-main-subtitle {
+  font-weight: 300;
+  text-align: left;
+  font-size: 1.2em;
+}
+
+
+
+/* DRIVE PAGE */
+
+
+#drivePage-main-header {
+  text-align: left;
+}
+
+
+#drivePage-main-subtitle {
+  font-weight: 300;
+  text-align: left;
+  font-size: 1.2em;
+}
+
+
+/* FOOTER */
+
+.footer-section {
+display: flex;
+padding: 1em;
+background-color: #D2B356;
+vertical-align: middle;
+}
+
+.footer-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}

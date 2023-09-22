@@ -13,16 +13,16 @@ import { useUserContext } from "../context/UserContext";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
 import { Container } from "@mui/material";
-
+import axios from 'axios';
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
 
-  const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName)
-  const [errMsg, setErrMsg] = React.useState('')
-  const [loginAttempts, setLoginAttempts] = React.useState(0)
+  const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
+  const [errMsg, setErrMsg] = React.useState("");
+  const [loginAttempts, setLoginAttempts] = React.useState(0);
 
-  console.log(currentUser)
+  console.log(currentUser);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -47,7 +47,6 @@ export default function LoginForm() {
       });
       loggedInUser = response.data.data;
       console.log(loggedInUser);
-
     } catch (err) {
       console.log(err.message);
       setErrMsg("Please try again");
@@ -110,13 +109,14 @@ export default function LoginForm() {
               Please login to your account and start your shipping!
             </Typography>
             <br />
-           
 
             <Typography component="h1" variant="h5">
-                    {loggedIn ? 'Hello '+currentUser.firstName : ''}
-                </Typography>
-                <p>{errMsg}</p>
-              { (!loggedIn && loginAttempts < 5) ?
+              {loggedIn ? "Hello " + currentUser.firstName : ""}
+            </Typography>
+            <p>{errMsg}</p>
+
+            {!loggedIn && loginAttempts < 5 ? (
+
               <Box
                 component="form"
                 noValidate
@@ -181,7 +181,16 @@ export default function LoginForm() {
                   </Grid>
                 </Grid>
               </Box>
-          : <Button onClick={() => { handleUpdateUser({}); setLoggedIn(false); }}>Log Out</Button> }
+            ) : (
+              <Button
+                onClick={() => {
+                  handleUpdateUser({});
+                  setLoggedIn(false);
+                }}
+              >
+                Log Out
+              </Button>
+            )}
           </Box>
         </Grid>
       </Grid>

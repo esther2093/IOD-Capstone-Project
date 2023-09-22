@@ -12,7 +12,6 @@ import Container from "@mui/material/Container";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateField } from "@mui/x-date-pickers/DateField";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
 import IconButton from "@mui/material/IconButton";
@@ -27,7 +26,7 @@ import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 
 export default function SignUpForm() {
-  const [value, setValue] = useState(dayjs("2023-01-01"));
+
   const [error, setError] = useState("");
   const [submitResult, setSubmitResult] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -66,7 +65,7 @@ export default function SignUpForm() {
     } else if (!/^[A-Za-z]+$/i.test(userLastName)) {
       setError("Invalid last name");
     // } else if (age < 18) {
-    //   setError("You must be over 18 years old");
+    //   setError("You must be over 18 years old to sign up");
     // } else if (userPhoneNumber.length < 10) {
     //   setError("You must input a valid phone number");
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userEmail)) {
@@ -90,7 +89,7 @@ export default function SignUpForm() {
         })
         .catch((err) => {
           console.log(err);
-          setResult(err.message + ": " + err.response.data.result);
+          setResult("There has been an error");
         });
     }
   };
@@ -206,14 +205,13 @@ export default function SignUpForm() {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                  <DateField
+                  <TextField
                     required
                     fullWidth
-                    label="Date of Birth"
-                    id="dateofBirth"
-                    value={value}
-                    onChange={(newValue) => setValue(newValue)}
-                    format="YYYY-MM-DD"
+                    name="dateOfBirth"
+                    label="DD-MM-YYYY"
+                    id="dateOfBirth"
+                    format="DD-MM-YYYY"
                   />
                 </Grid>
 

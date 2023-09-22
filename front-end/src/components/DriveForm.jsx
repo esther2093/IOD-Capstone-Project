@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -15,34 +15,43 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateField } from "@mui/x-date-pickers/DateField";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
 
-export default function DriveForm () {
+export default function DriveForm() {
+  const [error, setError] = useState("");
+  const [submitResult, setSubmitResult] = useState("");
 
-  const [result, setResult] = React.useState('');
+  const [result, setResult] = React.useState("");
   const { currentUser, handleUpdateUser } = useUserContext();
   const navigate = useNavigate();
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  const data = new FormData(event.currentTarget);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
 
-  // convert form data to object and post to backend
-  axios.post('http://localhost:8000/api/trip/create', Object.fromEntries(data.entries()))
-      .then(response => {
-          let result = response.data.result;
-          let user = response.data.data;
-          console.log(user)
+    // convert form data to object and post to backend
+    axios
+      .post(
+        "http://localhost:8000/api/users/register",
+        Object.fromEntries(data.entries())
+      )
+      .then((response) => {
+        let result = response.data.result;
+        let user = response.data.data;
+        console.log(user);
 
-          setResult(result);
-          if (user) {
-              handleUpdateUser(user);
-              navigate('/');
-          }
-      }).catch(err => {
-          console.log(err)
-          setResult(err.message + ': ' + err.response.data.result);
+        setResult(result);
+        if (user) {
+          handleUpdateUser(user);
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        setResult("There has been an error");
       });
-};
+  };
 
   return (
     <div>
@@ -81,7 +90,7 @@ const handleSubmit = (event) => {
             <Typography component="h4" className="login-subtitle">
               Please fill out your details below of your trip!
             </Typography>
-            
+
             <Box
               component="form"
               noValidate
@@ -96,7 +105,7 @@ const handleSubmit = (event) => {
               </Typography>
               <br />
               <Grid container spacing={2}>
-                <Grid item xs={12} >
+                <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
@@ -118,23 +127,25 @@ const handleSubmit = (event) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <DateField
+                <TextField
                     required
                     fullWidth
-                    label="Depature date"
-                    value={value}
-                    onChange={(newValue) => setValue(newValue)}
+                    name="depatureDate"
+                    label="DD-MM-YYYY"
+                    id="depatureDate"
                     format="DD-MM-YYYY"
+                    helperText="Depature Date"
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                <DateField
+                <TextField
                     required
                     fullWidth
-                    label="Arrival date"
-                    value={value}
-                    onChange={(newValue) => setValue(newValue)}
+                    name="arrivalDate"
+                    label="DD-MM-YYYY"
+                    id="arrivalDate"
                     format="DD-MM-YYYY"
+                    helperText="Arrival Date"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -145,6 +156,7 @@ const handleSubmit = (event) => {
                     label="Available space"
                     id="availableSpace"
                     autoComplete="availableSpace"
+                    helperText="Please write a brief description of how much space you have in your car"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -157,7 +169,6 @@ const handleSubmit = (event) => {
                   />
                 </Grid>
               </Grid>
-              
               <Button
                 fullWidth
                 type="submit"

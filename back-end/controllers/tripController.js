@@ -29,14 +29,15 @@ const registerTrip = async (req, res) => {
 
     try {
 
-        const { cityFrom, cityTo, depatureDate, arrivalDate, availableSpace, otherComments } = req.body;
+        const { userId, cityFrom, cityTo, depatureDate, arrivalDate, availableSpace, otherComments } = req.body;
 
-        if (!(cityFrom && cityTo && convertedDepD && convertedArrD && availableSpace && otherComments)) {
+        if (!(userId, cityFrom && cityTo && convertedDepD && convertedArrD && availableSpace && otherComments)) {
             res.status(400).json({ result: "All input is required"});
             return; 
         }
 
         const tripMetadata = await Models.Trip.create({
+            userId,
             cityFrom,
             cityTo,
             depatureDate: convertedDepD, 

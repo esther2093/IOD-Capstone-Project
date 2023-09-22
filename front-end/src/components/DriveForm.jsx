@@ -17,6 +17,8 @@ import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
+import axios from "axios";
+
 
 export default function DriveForm() {
   const [error, setError] = useState("");
@@ -28,9 +30,15 @@ export default function DriveForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("Form submitted");
+
     const data = new FormData(event.currentTarget);
 
-    // convert form data to object and post to backend
+    const userId = currentUser.id; // Adjust this based on your actual user data structure
+
+    // Add the userId to the form data
+    data.append("userId", userId);
+
     axios
       .post(
         "http://localhost:8000/api/users/register",
@@ -134,6 +142,7 @@ export default function DriveForm() {
                     label="DD-MM-YYYY"
                     id="depatureDate"
                     format="DD-MM-YYYY"
+                    helperText="Depature Date"
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -144,6 +153,7 @@ export default function DriveForm() {
                     label="DD-MM-YYYY"
                     id="arrivalDate"
                     format="DD-MM-YYYY"
+                    helperText="Arrival Date"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -154,6 +164,7 @@ export default function DriveForm() {
                     label="Available space"
                     id="availableSpace"
                     autoComplete="availableSpace"
+                    helperText="Please write a brief description of how much space you have in your car"
                   />
                 </Grid>
                 <Grid item xs={12}>

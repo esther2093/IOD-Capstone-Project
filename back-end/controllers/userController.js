@@ -55,7 +55,7 @@ const registerUser = async (req, res) => {
 
     try {
         // Get user input by destructuring request body
-        const { firstName, lastName, email, password, phoneNumber } = req.body;
+        const { firstName, lastName, email, password, phoneNumber, dateOfBirth } = req.body;
 
         // Validate user input
         if (!(email && password && firstName && lastName && convertedDOB && phoneNumber)) {

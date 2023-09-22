@@ -15,7 +15,7 @@ User.init({
         lastName: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
-        dateofBirth: {
+        dateOfBirth: {
             type: DataTypes.DATE, allowNull: false, required: true
         },  
         email: {

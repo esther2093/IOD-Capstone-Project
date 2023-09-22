@@ -17,6 +17,8 @@ import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
+import axios from "axios";
+
 
 export default function DriveForm() {
   const [error, setError] = useState("");
@@ -28,9 +30,15 @@ export default function DriveForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log("Form submitted");
+
     const data = new FormData(event.currentTarget);
 
-    // convert form data to object and post to backend
+    const userId = currentUser.id; // Adjust this based on your actual user data structure
+
+    // Add the userId to the form data
+    data.append("userId", userId);
+
     axios
       .post(
         "http://localhost:8000/api/users/register",

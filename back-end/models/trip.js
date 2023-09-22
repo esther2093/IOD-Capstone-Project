@@ -13,22 +13,22 @@ Trip.init({
         userId: {
             type: DataTypes.INTEGER, references: { model: User, key: "id" }, allowNull: false, required: true
         },
-        from: {
+        cityFrom: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
-        to: {
+        cityTo: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
-        depature: {
+        depatureDate: {
             type: DataTypes.DATE, allowNull: false, required: true
         },  
-        arrival: {
+        arrivalDate: {
             type: DataTypes.DATE, allowNull: false, required: true
         },  
         availableSpace: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
-        comments: {
+        otherComments: {
             type: DataTypes.STRING, allowNull: false, required: true
         }
     },

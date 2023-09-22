@@ -50,15 +50,15 @@ const loginUser = async (req, res) => {
 // registers a new user by validating their details, encrypting their password, and generating a token
 const registerUser = async (req, res) => {
     let dateOfBirth = req.body.dateofBirth
-    let convertedDOB = new Date(dateOfBirth)
-    console.log(convertedDOB)
+    let datedDOB = new Date(dateOfBirth)
+    console.log(datedDOB)
 
     try {
         // Get user input by destructuring request body
         const { firstName, lastName, email, password, phoneNumber, dateOfBirth } = req.body;
 
         // Validate user input
-        if (!(email && password && firstName && lastName && convertedDOB && phoneNumber)) {
+        if (!(email && password && firstName && lastName && datedDOB && phoneNumber)) {
             res.status(400).json({ result: "All input is required"});
             return; // when sending responses and finishing early, manually return or end the function to stop further processing
         }

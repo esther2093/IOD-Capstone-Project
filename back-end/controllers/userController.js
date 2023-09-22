@@ -49,9 +49,11 @@ const loginUser = async (req, res) => {
 
 // registers a new user by validating their details, encrypting their password, and generating a token
 const registerUser = async (req, res) => {
-    let dateOfBirth = req.body.dateofBirth
-    let datedDOB = new Date(dateOfBirth)
-    console.log(datedDOB)
+    let dateOfBirth = req.body.dateOfBirth;     
+    let reverseDate = dateOfBirth.split("-").reverse().join("-");
+    console.log(reverseDate);
+    let convertedDOB = new Date(reverseDate);
+    console.log(convertedDOB);
 
     try {
         // Get user input by destructuring request body

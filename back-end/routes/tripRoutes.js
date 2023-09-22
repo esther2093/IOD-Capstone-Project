@@ -10,6 +10,10 @@ router.post('/create', (req, res) => {
     Controllers.tripController.createTrip(req.body, res)
 })
 
+router.post('/register', (req, res) => {
+    Controllers.tripController.registerTrip(req, res)
+})
+
 router.put('/:id', (req, res) => {
     Controllers.tripController.updateTrip(req, res)
 })

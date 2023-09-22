@@ -17,6 +17,42 @@ const createTrip = (data, res) => {
     })
 }
 
+const registerTrip = async (req, res) => {
+    let depatureDate = req.body.depatureDate;
+    let arrivalDate = req.body.arrivalDate;          
+    let reverseDepDate = depatureDate.split("-").reverse().join("-");
+    let reverseArrDate = arrivalDate.split("-").reverse().join("-");
+    let convertedDepD = new Date(reverseDepDate);
+    console.log(convertedDepD);
+    let convertedArrD = new Date(reverseArrDate);
+    console.log(convertedArrD);
+
+    try {
+
+        const { cityFrom, cityTo, depatureDate, arrivalDate, availableSpace, otherComments } = req.body;
+
+        if (!(cityFrom && cityTo && convertedDepD && convertedArrD && availableSpace && otherComments)) {
+            res.status(400).json({ result: "All input is required"});
+            return; 
+        }
+
+        const tripMetadata = await Models.Trip.create({
+            cityFrom,
+            cityTo,
+            depatureDate: convertedDepD, 
+            arrivalDate: convertedArrD,
+            availableSpace,
+            otherComments
+        });
+        const trip = tripMetadata.get({plain: true}) 
+
+        res.status(201).json({ result: "Trip successfully registered", data: trip });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ result: err.message })
+    }
+}
+
 const updateTrip = (req, res) => {
     Models.Trip.update(req.body, { where: { id: req.params.id }
     }).then(function (data) {
@@ -38,6 +74,7 @@ const deleteTrip = (req, res) => {
 module.exports = { 
     getTrips,
     createTrip,
+    registerTrip,
     updateTrip,
     deleteTrip
 }

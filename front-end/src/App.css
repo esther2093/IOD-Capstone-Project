@@ -178,7 +178,6 @@ display: flex;
   display: flex;
 }
 
-
 .col-2 img {
   width: 80%;
 }
@@ -192,7 +191,8 @@ display: flex;
 
 .login-welcome-icon {
   font-size: 3em;
-  margin-bottom: -0.77em;
+  margin-top: 1em;
+  margin-bottom: -0.76em;
   z-index: 2;
   color: #D2B356;
 }
@@ -221,14 +221,45 @@ display: flex;
 
 /* DRIVE PAGE */
 
-
-
-
 #drivePage-main-subtitle {
   font-weight: 300;
   font-size: 1.2em;
 }
 
+
+/* ACCOUNT PAGE */
+
+.my-account-container {
+  margin: 0em 1em;
+  display: flex;
+  background-color: white;
+}
+
+.account-col-33 {
+  width: 33.33%;
+}
+
+.account-col-66 {
+  width: 66.66%;
+}
+
+.profile-pic-box{ 
+  border: 2px solid black;
+}
+
+.profile-details-box {
+  border: 2px solid black;
+}
+
+.posted-trips {
+  border: 2px solid black;
+  height: 50%
+}
+
+.active-trips {
+  border: 2px solid black;
+  height: 50%
+}
 
 /* FOOTER */
 

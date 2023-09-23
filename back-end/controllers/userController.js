@@ -136,7 +136,7 @@ const deleteUser = (req, res) => {
 const addProfileImage = (req, res) => {
 
     console.log(req.file) // saved filename is in req.file.filename
-    const userUpdates = { profilePhoto: '/images/' + req.file.filename, profilePhotoTitle: req.body.imageTitle };
+    const userUpdates = { profilePicture: '/images/' + req.file.filename };
     console.log(userUpdates);
 
     // save path to uploaded file in DB for this user

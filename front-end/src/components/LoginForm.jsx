@@ -68,7 +68,9 @@ export default function LoginForm() {
       if (newAttempts === 5) {
         setErrMsg("Maximum login attempts exceeded. Please try again later.");
       } else {
-        setErrMsg("Unsuccessful login " + (5 - newAttempts) + " attempts remaining");
+        setErrMsg(
+          "Unsuccessful login " + (5 - newAttempts) + " attempts remaining"
+        );
       }
       setLoginAttempts(newAttempts);
       setLoggedIn(false);
@@ -186,27 +188,10 @@ export default function LoginForm() {
                 >
                   Sign In
                 </Button>
-
-                <Grid
-                  container
-                  spacing={{ xs: 2, md: 4 }}
-                  columns={{ xs: 1, sm: 8, md: 12 }}
-                >
-                  <Grid item xs={2} sm={4} md={5}>
-                    <Link href="/forgot" variant="body2">
-                      Forgot Password?
-                    </Link>
-                  </Grid>
-
-                  <Grid item xs={2} sm={4} md={7}>
-                    <Link href="/signup" variant="body2">
-                      Don't have an account? Sign Up HERE!
-                    </Link>
-                  </Grid>
-                </Grid>
               </Box>
             ) : (
-              loggedIn && loginAttempts < 5 && (
+              loggedIn &&
+              loginAttempts < 5 && (
                 <Button
                   onClick={() => {
                     handleUpdateUser({});
@@ -217,6 +202,19 @@ export default function LoginForm() {
                 </Button>
               )
             )}
+
+            <Grid container spacing={{ xs: 2, md: 2 }} >
+            <Grid item xs={2} sm={4} md={5} >
+                <Link href="/forgot" variant="body2">
+                  Forgot Password?
+                </Link>
+              </Grid>
+              <Grid item xs={2} sm={4} md={7}>
+                <Link href="/signup" variant="body2">
+                  Don't have an account? Sign Up HERE!
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Grid>
       </Grid>

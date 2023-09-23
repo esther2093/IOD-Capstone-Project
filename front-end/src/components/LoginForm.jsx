@@ -122,9 +122,10 @@ export default function LoginForm() {
             </Typography>
             <br />
 
-            <Typography component="h1" variant="h5">
-              {loggedIn ? "Hello " + currentUser.firstName : ""}
-            </Typography>
+            {loggedIn ? <Typography component="h1" variant="h6" className="welcome-message-login">
+            Welcome back {currentUser.firstName}!
+              </Typography> : ""}
+              
             <Typography variant="body2" color="error">
               {errMsg}
             </Typography>

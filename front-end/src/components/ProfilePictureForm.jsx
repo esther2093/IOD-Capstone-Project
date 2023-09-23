@@ -1,7 +1,9 @@
 import axios from 'axios'
-import { useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Container, CssBaseline, Box, TextField, Button } from '@mui/material'
 import { useUserContext } from '../context/UserContext'
+import Typography from "@mui/material/Typography";
+import Avatar from '@mui/material/Avatar';
 
 export default function ProfilePictureForm () {
 
@@ -9,6 +11,7 @@ export default function ProfilePictureForm () {
     const [imageTitle, setImageTitle] = useState('')
     const [status, setStatus] = useState('')
     const {currentUser, handleUpdateUser} = useUserContext();
+    const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName)
 
     console.log(currentUser);
     
@@ -17,7 +20,6 @@ export default function ProfilePictureForm () {
         // build up all form data to be sent to back end in a FormData object (comes built-in to browser-based JS)
         let formData = new FormData()
         formData.append('file', image.data)
-        formData.append('imageTitle', imageTitle)
 
         try {
             // post everything from form (including image data) to backend, where we will save the image file to disk using multer middleware
@@ -43,10 +45,12 @@ export default function ProfilePictureForm () {
     }
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="md" >
             <CssBaseline />
-            <h3>Upload Image</h3>
-            {currentUser.id ?
+            {/* {currentUser.id ? */}
+            <Avatar variant="square" sx={{ m: 1, width: "75%", height: "100%", margin: 0, marginTop: "1em", marginBottom: "1em", backgroundColor: "white" }}>
+                   <img className="uploaded-profile-pic" src={"http://localhost:8000/"+currentUser.profilePicture} width="285" /> 
+                </Avatar>
             <Box component="form" onSubmit={handleSubmit} noValidate
                 sx={{
                     marginTop: 8,
@@ -55,18 +59,22 @@ export default function ProfilePictureForm () {
                     alignItems: 'center',
                 }}
             >
-                <TextField margin="normal" required fullWidth id="imageTitle" autoFocus
-                    label="Photo Title"
-                    name="imageTitle"
-                    value={imageTitle} onChange={(e) => setImageTitle(e.target.value)}
-                />
                 {image.preview && <img src={image.preview} width='100' height='100' />}
                 <input name="photo" type="file" onChange={handleFileChange} />
 
-                <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>Submit</Button>
+                <Button type="submit"  variant="filled" sx={{ mt: 3, mb: 2 }}>Submit</Button>
             </Box>
-            : <p>Please log in first</p> }
-            <p>{status}</p>
+            {/* : <p>Please log in first</p> } */}
+            <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 300,
+                    margin: "1em",
+                    textAlign: "center",
+                  }}
+                >
+                 {status}
+                </Typography>
         </Container>
     )
 

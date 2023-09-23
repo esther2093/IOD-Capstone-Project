@@ -19,45 +19,43 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import axios from "axios";
 
-
 export default function DriveForm() {
   const [error, setError] = useState("");
   const [submitResult, setSubmitResult] = useState("");
 
-  const [result, setResult] = React.useState("");
   const { currentUser, handleUpdateUser } = useUserContext();
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form submitted");
+    setError("");
+    setSubmitResult("");
 
     const data = new FormData(event.currentTarget);
-
-    const userId = currentUser.id; // Adjust this based on your actual user data structure
-
-    // Add the userId to the form data
+    const userId = currentUser.id;
+    console.log(userId);
     data.append("userId", userId);
 
     axios
       .post(
-        "http://localhost:8000/api/users/register",
+        "http://localhost:8000/api/trips/register",
         Object.fromEntries(data.entries())
       )
       .then((response) => {
-        let result = response.data.result;
-        let user = response.data.data;
-        console.log(user);
+        const result = response.data.result;
+        const trip = response.data.data;
 
-        setResult(result);
-        if (user) {
+        setSubmitResult(result);
+        if (trip) {
           handleUpdateUser(user);
           navigate("/");
+        } else {
+          setError("Trip submission failed.");
         }
       })
       .catch((error) => {
+        setError("There has been an error.");
         console.log(error);
-        setResult("There has been an error");
       });
   };
 
@@ -118,10 +116,11 @@ export default function DriveForm() {
                     required
                     fullWidth
                     id="cityFrom"
-                    label="Where from?"
+                    label="Subrub, City, State"
                     name="cityFrom"
                     autoComplete="cityFrom"
                     autoFocus
+                    helperText="Where from?"
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -129,13 +128,14 @@ export default function DriveForm() {
                     required
                     fullWidth
                     id="cityTo"
-                    label="Where to?"
+                    label="Subrub, City, State"
                     name="cityTo"
                     autoComplete="cityTo"
+                    helperText="Where to?"
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                <TextField
+                  <TextField
                     required
                     fullWidth
                     name="depatureDate"
@@ -146,7 +146,7 @@ export default function DriveForm() {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                <TextField
+                  <TextField
                     required
                     fullWidth
                     name="arrivalDate"
@@ -161,10 +161,10 @@ export default function DriveForm() {
                     required
                     fullWidth
                     name="availableSpace"
-                    label="Available space"
+                    label="Brief description of how much space you have in your car"
                     id="availableSpace"
                     autoComplete="availableSpace"
-                    helperText="Please write a brief description of how much space you have in your car"
+                    helperText="Available Space"
                   />
                 </Grid>
                 <Grid item xs={12}>

@@ -24,6 +24,25 @@ export const mainTheme = createTheme({
         },
       },
     },
+    MuiGrid: {
+      styleOverrides: {
+        root: {
+          margin: "0",
+          width: "100%",
+          padding: "0",
+          item: {
+            padding: 0
+          }
+        },
+      }
+    },
+    MuiContainer: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },  
+    }
+  },
     MuiTextField: { defaultProps: { variant: "filled" } },
   },
 });

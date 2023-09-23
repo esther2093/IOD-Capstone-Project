@@ -58,7 +58,7 @@ const Search = styled('div')(({ theme }) => ({
 
 export default function AvailableRides () {
   return (
-    <>
+    <div className="available-ride-page">
     <div className="banner-content" id="banner-top">
         <div className="col-45">
           <div className="banner-section-heading">
@@ -122,6 +122,6 @@ export default function AvailableRides () {
           </Grid>
         </Container>
       </main>
-    </>
+    </div>
   );
 }

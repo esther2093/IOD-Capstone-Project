@@ -28,7 +28,7 @@ const pages = [
 
 const settings = [
   { link: "/login/", label: "LOGIN" },
-  { link: "/a/", label: "ACCOUNT" },
+  { link: "/myaccount/", label: "ACCOUNT" },
 ];
 
 export default function NavBar() {

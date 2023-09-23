@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -21,14 +21,17 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
+import { useHistory } from "react-router-dom";
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
+  const history = useHistory();
 
   const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
   const [errMsg, setErrMsg] = React.useState("");
   const [loginAttempts, setLoginAttempts] = React.useState(0);
   const [showPassword, setShowPassword] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
 
   console.log(currentUser);
 
@@ -78,8 +81,23 @@ export default function LoginForm() {
       setErrMsg("");
       handleUpdateUser(loggedInUser);
       setLoggedIn(true);
+
+      // Set a timeout to redirect to the homepage after 5 seconds
+      setRedirecting(true);
+      setTimeout(() => {
+        history.push("/"); // Redirect to the homepage
+      }, 5000);
     }
   };
+
+  useEffect(() => {
+    if (loggedIn && !redirecting) {
+      // If already logged in, start the redirect timer
+      setTimeout(() => {
+        history.push("/"); // Redirect to the homepage
+      }, 5000);
+    }
+  }, [loggedIn, redirecting, history]);
 
   return (
     <div className="login-container">
@@ -122,10 +140,40 @@ export default function LoginForm() {
             </Typography>
             <br />
 
-            {loggedIn ? <Typography component="h1" variant="h6" className="welcome-message-login" sx={{ borderTop: 2, borderBottom: 2, padding: "0.8em", margin: "1em 1em 1em 1em"}}>
-            Welcome back {currentUser.firstName}!
-              </Typography> : ""}
-              
+            {loggedIn ? (
+              <>
+                <Icon
+                  icon="emojione-monotone:ribbon"
+                  className="login-welcome-icon"
+                />
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  className="welcome-message-login"
+                  sx={{
+                    fontWeight: 300,
+                    borderTop: 2,
+                    borderBottom: 2,
+                    padding: "1.4em 2em 1em 2em",
+                    margin: "0em 1em 1em 1em",
+                  }}
+                >
+                  Welcome back {currentUser.firstName}!
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 300,
+                    margin: "0em 1em 4em 1em",
+                  }}
+                >
+                  You will be redirected back to the homepage in a moment...
+                </Typography>
+              </>
+            ) : (
+              ""
+            )}
+
             <Typography variant="body2" color="error">
               {errMsg}
             </Typography>
@@ -175,7 +223,9 @@ export default function LoginForm() {
                   <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
                     label={
-                      <Typography sx={{ fontSize: "0.7em", textAlign: "left" }}>
+                      <Typography
+                        sx={{ fontSize: "0.7em", textAlign: "left" }}
+                      >
                         Remember me
                       </Typography>
                     }
@@ -190,30 +240,32 @@ export default function LoginForm() {
                   Sign In
                 </Button>
               </Box>
-            ) : (loggedIn && loginAttempts < 5 && (
+            ) : (
+              loggedIn &&
+              loginAttempts < 5 && (
                 <Button
-                onClick={() => {
-                  handleUpdateUser({});
-                  setLoggedIn(false);
-                }}
-                variant="outlined"
-                sx={{
-                  width: "40%",
-                  fontWeight: "bold",
-                  border: 2,
-                  padding: 2,
-                  fontSize: 16,
-                }}
-                className="homepage-button"
-                href="/rides"
-              >
-                LOG OUT
-              </Button>
+                  onClick={() => {
+                    handleUpdateUser({});
+                    setLoggedIn(false);
+                  }}
+                  variant="outlined"
+                  sx={{
+                    fontWeight: "bold",
+                    border: 2,
+                    padding: "0.2em 1em",
+                    fontSize: "1em",
+                    marginTop: "2em",
+                    marginBottom: "5em",
+                  }}
+                  className="logout-button"
+                >
+                  LOG OUT
+                </Button>
               )
             )}
 
-            <Grid container spacing={{ xs: 2, md: 2 }} >
-            <Grid item xs={2} sm={4} md={5} >
+            <Grid container spacing={{ xs: 2, md: 2 }} sx={{ width: "75%" }}>
+              <Grid item xs={2} sm={4} md={5}>
                 <Link href="/forgot" variant="body2">
                   Forgot Password?
                 </Link>

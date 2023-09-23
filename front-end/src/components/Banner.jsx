@@ -40,6 +40,7 @@ export default function Banner () {
                 fontSize: 16,
               }}
               className="homepage-button"
+              href="/drive"
             >
               OFFER A DRIVE
             </Button>

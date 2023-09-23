@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import AppBar from "@mui/material/AppBar";
 import Container from "@mui/material/Container";
 import Toolbar from "@mui/material/Toolbar";
@@ -13,6 +13,7 @@ import { NavLink } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Box from "@mui/material/Box";
 import { HashLink } from "react-router-hash-link";
+import { useUserContext } from "../context/UserContext";
 
 const sections = [
   { link: "/#banner-top", label: "HOME" },
@@ -34,9 +35,6 @@ export default function NavBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const [isSticky, setIsSticky] = React.useState(false);
-  const [isTransparent, setIsTransparent] = React.useState(true);
-
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -49,6 +47,17 @@ export default function NavBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const { currentUser, handleUpdateUser } = useUserContext();
+  const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
+
+  const handleLogout = () => {
+    handleUpdateUser({});
+    setLoggedIn(false);
+  };
+  
+  const [isSticky, setIsSticky] = React.useState(false);
+  const [isTransparent, setIsTransparent] = React.useState(true);
 
   const handleScroll = () => {
     const scrollY = window.scrollY;
@@ -247,6 +256,13 @@ export default function NavBar() {
                   {setting.label}
                 </MenuItem>
               ))}
+              <MenuItem
+                  onClick={handleLogout}
+                  sx={{ fontSize: "0.875em" }}
+                  className="logout-menu-button"
+                >
+                  LOG OUT
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

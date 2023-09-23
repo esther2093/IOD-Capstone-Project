@@ -21,17 +21,14 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { useHistory } from "react-router-dom";
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
-  const history = useHistory();
 
   const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
   const [errMsg, setErrMsg] = React.useState("");
   const [loginAttempts, setLoginAttempts] = React.useState(0);
   const [showPassword, setShowPassword] = useState(false);
-  const [redirecting, setRedirecting] = useState(false);
 
   console.log(currentUser);
 
@@ -82,22 +79,11 @@ export default function LoginForm() {
       handleUpdateUser(loggedInUser);
       setLoggedIn(true);
 
-      // Set a timeout to redirect to the homepage after 5 seconds
-      setRedirecting(true);
       setTimeout(() => {
-        history.push("/"); // Redirect to the homepage
-      }, 5000);
+        window.location.href = "/";
+      }, 200000);
     }
   };
-
-  useEffect(() => {
-    if (loggedIn && !redirecting) {
-      // If already logged in, start the redirect timer
-      setTimeout(() => {
-        history.push("/"); // Redirect to the homepage
-      }, 5000);
-    }
-  }, [loggedIn, redirecting, history]);
 
   return (
     <div className="login-container">
@@ -135,11 +121,6 @@ export default function LoginForm() {
               <Icon icon="solar:box-bold-duotone" height="41" />
               <img src={Logo} alt="Logo" className="login-logo" />
             </div>
-            <Typography component="h4" className="login-subtitle">
-              Please login to your account and start your shipping!
-            </Typography>
-            <br />
-
             {loggedIn ? (
               <>
                 <Icon
@@ -151,10 +132,12 @@ export default function LoginForm() {
                   variant="h6"
                   className="welcome-message-login"
                   sx={{
-                    fontWeight: 300,
+                    fontFamily: "Qwitcher Grypen",
+                    fontWeight: 400,
+                    fontSize: "3.5em",
                     borderTop: 2,
                     borderBottom: 2,
-                    padding: "1.4em 2em 1em 2em",
+                    padding: "0.1em 1em 0em 1em",
                     margin: "0em 1em 1em 1em",
                   }}
                 >
@@ -164,16 +147,14 @@ export default function LoginForm() {
                   variant="body2"
                   sx={{
                     fontWeight: 300,
-                    margin: "0em 1em 4em 1em",
+                    margin: "0em 1em 10em 1em",
+                    textAlign: "center",
                   }}
                 >
                   You will be redirected back to the homepage in a moment...
                 </Typography>
               </>
-            ) : (
-              ""
-            )}
-
+            ) : null}
             <Typography variant="body2" color="error">
               {errMsg}
             </Typography>
@@ -255,7 +236,7 @@ export default function LoginForm() {
                     padding: "0.2em 1em",
                     fontSize: "1em",
                     marginTop: "2em",
-                    marginBottom: "5em",
+                    marginBottom: "4em",
                   }}
                   className="logout-button"
                 >
@@ -263,19 +244,20 @@ export default function LoginForm() {
                 </Button>
               )
             )}
-
-            <Grid container spacing={{ xs: 2, md: 2 }} sx={{ width: "75%" }}>
-              <Grid item xs={2} sm={4} md={5}>
-                <Link href="/forgot" variant="body2">
-                  Forgot Password?
-                </Link>
+            {!loggedIn ? (
+              <Grid container spacing={{ xs: 2, md: 2 }} sx={{ width: "75%" }}>
+                <Grid item xs={2} sm={4} md={5}>
+                  <Link href="/forgot" variant="body2">
+                    Forgot Password?
+                  </Link>
+                </Grid>
+                <Grid item xs={2} sm={4} md={7}>
+                  <Link href="/signup" variant="body2">
+                    Don't have an account? Sign Up HERE!
+                  </Link>
+                </Grid>
               </Grid>
-              <Grid item xs={2} sm={4} md={7}>
-                <Link href="/signup" variant="body2">
-                  Don't have an account? Sign Up HERE!
-                </Link>
-              </Grid>
-            </Grid>
+            ) : null}
           </Box>
         </Grid>
       </Grid>

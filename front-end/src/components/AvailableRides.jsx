@@ -1,127 +1,99 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import CssBaseline from "@mui/material/CssBaseline";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
 
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+function TripList() {
+  const [allTrips, setAllTrips] = useState([]);
+  const [filteredTrips, setFilteredTrips] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(1),
-      width: 'auto',
-    },
-  }));
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = [];
   
-  const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
+      try {
+        const response = await fetch("http://localhost:8000/api/trips");
+        const result = await response.json();
   
-  const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-      padding: theme.spacing(1, 1, 1, 0),
-      paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-          width: '20ch',
-        },
-      },
-    },
-  }));
+        if (result.trips) {
+          data.push(...result.trips);
+        }
+      } catch (error) {
+        console.error("Error fetching trips:", error);
+      }
+  
+      setAllTrips(data);
+      setFilteredTrips(data); 
+    };
+  
+    fetchData();
+  }, []);
+  
 
-export default function AvailableRides () {
+  const handleSearch = () => {
+    const filtered = allTrips.filter((trip) => {
+      return (
+        trip.cityFrom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trip.cityTo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trip.depatureDate.includes(searchTerm) || // Assuming searchTerm matches the date format
+        trip.arrivalDate.includes(searchTerm) ||   // Assuming searchTerm matches the date format
+        trip.availableSpace.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trip.otherComments.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+  
+    setFilteredTrips(filtered);
+  };
+ 
+
   return (
-    <div className="available-ride-page">
-    <div className="banner-content" id="banner-top">
-        <div className="col-45">
-          <div className="banner-section-heading">
-            <p className="breakline">—</p>
-            <h2 id="ridesPage-main-header">AVAILABLE RIDES</h2>
-            <h3 id="ridesPage-main-subtitle">
-              Looking for a ride?
-            </h3>
-            <p className="breakline">—</p>
-          </div>
+    <Container component="main" style={{ minWidth: "100vw", minHeight: "100vh" }}>
+      <div className="fullTripListbody">
+        <div className="searchForm">
+          <input
+            className="searchFormInput"
+            type="text"
+            placeholder="Search by name, location, or other criteria"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button className="searchButton" onClick={handleSearch}>
+            SEARCH
+          </button>
         </div>
-      </div>
-
-      <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-
-      <CssBaseline />
-      <main>
-        <Container sx={{ py: 8 }} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <CardMedia
-                    component="div"
-                    sx={{
-                      // 16:9
-                      pt: "56.25%",
-                    }}
-                    image="https://source.unsplash.com/random?wallpapers"
-                  />
-                  <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+        <Grid container spacing={2} sx={{ margin: "0", marginBottom: "1em" }}>
+          {filteredTrips.map((trip) => (
+            <Grid item key={trip.id} xs={12} sm={6} md={3}>
+              <Link to={`/trip/${trip.id}`}>
+                <Card sx={{ width: "90%", height: "100%", padding: "0" }}>
+                  <CardContent>
+                    <img
+                      className="tripThumbnail"
+                      src={trip.image} // Replace with your trip image field
+                      alt={trip.name}
+                    />
+                    <Typography variant="h5" component="div">
+                      {trip.name}
                     </Typography>
-                    <Typography>
-                      This is a media card. You can use this section to describe
-                      the content.
+                    <Typography variant="body2">
+                      Location: {trip.location}
                     </Typography>
+                    {/* Add more trip information fields here */}
                   </CardContent>
-                  <CardActions>
-                    <Button size="small">View more details</Button>
-                  </CardActions>
                 </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </main>
-    </div>
+              </Link>
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+    </Container>
   );
 }
+
+export default TripList;

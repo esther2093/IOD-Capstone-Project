@@ -14,6 +14,16 @@ export const mainTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: `a { color: #ffffff; }`
     },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            color: "#d2b356",
+            border: "none",
+            }
+        },
+      },
+    },
     MuiTextField: { defaultProps: { variant: "filled" } },
   },
 });

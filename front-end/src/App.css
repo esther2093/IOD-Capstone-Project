@@ -190,6 +190,12 @@ display: flex;
   padding-top: 7em;
 }
 
+.login-welcome-icon {
+  font-size: 3em;
+  margin-bottom: -0.77em;
+  z-index: 2;
+  color: #D2B356;
+}
 
 /* SIGNUP PAGE */
 

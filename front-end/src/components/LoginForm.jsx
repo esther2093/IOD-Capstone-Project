@@ -122,7 +122,7 @@ export default function LoginForm() {
             </Typography>
             <br />
 
-            {loggedIn ? <Typography component="h1" variant="h6" className="welcome-message-login">
+            {loggedIn ? <Typography component="h1" variant="h6" className="welcome-message-login" sx={{ borderTop: 2, borderBottom: 2, padding: "0.8em", margin: "1em 1em 1em 1em"}}>
             Welcome back {currentUser.firstName}!
               </Typography> : ""}
               
@@ -190,17 +190,25 @@ export default function LoginForm() {
                   Sign In
                 </Button>
               </Box>
-            ) : (
-              loggedIn &&
-              loginAttempts < 5 && (
+            ) : (loggedIn && loginAttempts < 5 && (
                 <Button
-                  onClick={() => {
-                    handleUpdateUser({});
-                    setLoggedIn(false);
-                  }}
-                >
-                  Log Out
-                </Button>
+                onClick={() => {
+                  handleUpdateUser({});
+                  setLoggedIn(false);
+                }}
+                variant="outlined"
+                sx={{
+                  width: "40%",
+                  fontWeight: "bold",
+                  border: 2,
+                  padding: 2,
+                  fontSize: 16,
+                }}
+                className="homepage-button"
+                href="/rides"
+              >
+                LOG OUT
+              </Button>
               )
             )}
 

@@ -253,12 +253,11 @@ display: flex;
 
 .posted-trips {
   border: 2px solid black;
-  height: 50%
+padding : 0;
 }
 
 .active-trips {
   border: 2px solid black;
-  height: 50%
 }
 
 /* FOOTER */

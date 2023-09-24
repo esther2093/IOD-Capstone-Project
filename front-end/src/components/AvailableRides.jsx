@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -8,9 +8,25 @@ import useTripData from "../hooks/useTripData";
 import Box from '@mui/system/Box';
 
 function TripList() {
-  const { allTrips, filteredTrips } = useTripData();
-
+  const { allTrips } = useTripData(); 
+  const [filteredTrips, setFilteredTrips] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+  
+    const filtered = allTrips.filter((trip) => {
+      return (
+        trip.cityFrom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trip.cityTo.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trip.depatureDate.includes(searchTerm) ||
+        trip.arrivalDate.includes(searchTerm) ||
+        trip.availableSpace.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        trip.otherComments.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    });
+
+    setFilteredTrips(filtered);
+  }, [allTrips, searchTerm]);
 
   const handleSearch = () => {
     const filtered = allTrips.filter((trip) => {

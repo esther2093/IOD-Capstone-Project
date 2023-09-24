@@ -7,20 +7,19 @@ export default function Services() {
     <Paper square elevation={0} className="services-section" id="services-top">
       <Box className="services-container">
         <Grid container spacing={2}>
-          <Grid item xs={12} sm={6} className="parcel-pic">
-            <img src={Parcels} alt="Parcel" />
+          <Grid box xs={12} md={6} className="parcel-pic" sx={{ textAlign: "center"}}>
+            <img src={Parcels} alt="Parcel" className="services-parcel-pic"/>
           </Grid>
 
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={6} sx={{paddingRight: "1em"}}>
             <Box className="section-heading">
-              <Typography variant="h6" className="section-subhead">
-                SERVICES
+            <Typography variant="h6" className="section-subhead" sx={{fontSize: "1em"}}>
+              SERVICES
               </Typography>
-              <Typography variant="h4" className="section-title">
+              <Typography variant="h4" className="section-title" sx={{fontSize: "1.7em", fontWeight: 800}}>
                 How does it work?
               </Typography>
-              <Divider className="breakline" />
-              <Typography variant="subtitle1" className="section-subtitle">
+              <Typography variant="subtitle1" className="section-subtitle" >
                 Follow these instructions:
               </Typography>
             </Box>

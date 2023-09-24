@@ -12,7 +12,7 @@ import Typography from "@mui/material/Typography";
 import { useUserContext } from "../context/UserContext";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
-import { Container } from "@mui/material";
+import { Container, OutlinedInput } from "@mui/material";
 import axios from "axios";
 import FilledInput from "@mui/material/FilledInput";
 import InputLabel from "@mui/material/InputLabel";
@@ -86,13 +86,13 @@ export default function LoginForm() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Grid container component="main" sx={{ height: "100vh" }}>
+    <Box sx={{ flexGrow: 1, marginTop: "-4em" }}>
+      <Grid container component="main" >
         <CssBaseline />
         <Grid
           item
-          xs={false}
-          sm={4}
+          xs={12}
+          sm={5}
           md={7}
           sx={{
             backgroundImage:
@@ -104,10 +104,11 @@ export default function LoginForm() {
                 : t.palette.grey[900],
             backgroundSize: "cover",
             backgroundPosition: "center",
+            display: { xs: "block", md: "flex" },
           }}
         />
 
-        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Grid item xs={12} sm={7} md={5} square>
           <Box
             sx={{
               my: 8,
@@ -117,10 +118,20 @@ export default function LoginForm() {
               alignItems: "center",
             }}
           >
-            <div className="login-logo-container">
-              <Icon icon="solar:box-bold-duotone" height="41" className="login-icon-parcel"/>
+            <Box className="logo-container">
+              <Icon
+                icon="solar:box-bold-duotone"
+                height="41"
+                className="icon-parcel"
+              />
               <img src={Logo} alt="Logo" className="login-logo" />
-            </div>
+              <Typography
+                variant="body2"
+                sx={{ fontWeight: 300, textAlign: "center" }}
+              >
+                Login with your details below
+              </Typography>
+            </Box>
             {loggedIn ? (
               <>
                 <Icon
@@ -133,12 +144,11 @@ export default function LoginForm() {
                   className="welcome-message-login"
                   sx={{
                     fontFamily: "Qwitcher Grypen",
-                    fontWeight: 400,
-                    fontSize: "3.5em",
+                    fontSize: "4vw",
                     borderTop: 2,
                     borderBottom: 2,
-                    padding: "0.1em 1em 0em 1em",
-                    margin: "0em 1em 1em 1em",
+                    padding: "0.1em 0.5em 0em 0.5em",
+                    margin: "0em 0.5em 0.5em 0.5em",
                   }}
                 >
                   Welcome back {currentUser.firstName}!
@@ -147,7 +157,7 @@ export default function LoginForm() {
                   variant="body2"
                   sx={{
                     fontWeight: 300,
-                    margin: "0em 1em 10em 1em",
+                    margin: "0em 1em 3em 1em",
                     textAlign: "center",
                   }}
                 >
@@ -164,7 +174,7 @@ export default function LoginForm() {
                 component="form"
                 noValidate
                 onSubmit={handleSubmit}
-                sx={{ mt: 1 }}
+                sx={{ mt: 1, marginBottom: "1em" }}
               >
                 <TextField
                   margin="normal"
@@ -175,14 +185,30 @@ export default function LoginForm() {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  sx={{
+                    fieldset: {
+                      borderColor: "#D2B356",
+                      "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
+                    },
+                  }}
                 />
-                <FormControl variant="filled" fullWidth>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  sx={{
+                    fieldset: {
+                      borderColor: "#D2B356",
+                      "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
+                    },
+                  }}
+                >
                   <InputLabel htmlFor="password" required>
                     Password
                   </InputLabel>
-                  <FilledInput
+                  <OutlinedInput
                     id="password"
                     name="password"
+                    label="Password*"
                     autoComplete="password"
                     type={showPassword ? "text" : "password"}
                     endAdornment={
@@ -204,21 +230,29 @@ export default function LoginForm() {
                   <FormControlLabel
                     control={<Checkbox value="remember" color="primary" />}
                     label={
-                      <Typography
-                        sx={{ fontSize: "0.7em", textAlign: "left" }}
-                      >
+                      <Typography sx={{ fontSize: "0.7em", textAlign: "left" }}>
                         Remember me
                       </Typography>
                     }
                   />
                 </Grid>
+
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{ mt: 3, mb: 2, 
+                    backgroundColor: "#D2B356",
+                    margin: "1em",
+                    marginLeft: 0,
+                    "   &:hover": {
+                      backgroundColor: "#fff",
+                      color: "#D2B356",
+                      border: "none"
+                    },
+                  }}
                 >
-                  Sign In
+                  LOG IN
                 </Button>
               </Box>
             ) : (
@@ -237,6 +271,10 @@ export default function LoginForm() {
                     fontSize: "1em",
                     marginTop: "2em",
                     marginBottom: "4em",
+                    "&:hover": {
+                      color: "#d2b356",
+                      border: "2px #d2b356 solid",
+                    },
                   }}
                   className="logout-button"
                 >
@@ -245,18 +283,18 @@ export default function LoginForm() {
               )
             )}
             {!loggedIn ? (
-              <Grid container spacing={{ xs: 2, md: 2 }} sx={{ width: "75%" }}>
-                <Grid item xs={2} sm={4} md={5}>
+              <Box display="flex" justifyContent="center" sx={{ marginBottom: "4.7em"}}>
+                <Grid item xs={12} sm={6} sx={{ textAlign: "center"}}>
                   <Link href="/forgot" variant="body2">
                     Forgot Password?
                   </Link>
                 </Grid>
-                <Grid item xs={2} sm={4} md={7}>
+                <Grid item xs={12} sm={6} sx={{ textAlign: "center"}}>
                   <Link href="/signup" variant="body2">
                     Don't have an account? Sign Up HERE!
                   </Link>
                 </Grid>
-              </Grid>
+              </Box>
             ) : null}
           </Box>
         </Grid>

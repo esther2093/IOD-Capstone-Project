@@ -1,32 +1,43 @@
 import { useState, useEffect } from "react";
 
-function useTripData() {
+function useTripData(id) {
   const [allTrips, setAllTrips] = useState([]);
+  const [tripData, setTripData] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = [];
-
       try {
-        // Fetch trip data
-        const response = await fetch("http://localhost:8000/api/trips");
-        const result = await response.json();
+        // fetch all trips
+        const allTripsResponse = await fetch("http://localhost:8000/api/trips");
+        const allTripsResult = await allTripsResponse.json();
 
-        if (result.data) {
-          data.push(...result.data);
-          
+        if (allTripsResult.data) {
+          setAllTrips(allTripsResult.data);
+        } else {
+          setError(new Error("No trips found"));
+        }
+
+        // fetch id specific
+        if (id) {
+          const response = await fetch(`http://localhost:8000/api/trips/${id}`);
+          const result = await response.json();
+
+          if (result.data) {
+            setTripData(result.data);
+          } else {
+            setError(new Error("Trip not found"));
+          }
         }
       } catch (error) {
-        console.error("Error fetching trip data:", error);
+        setError(error);
       }
-      
-      setAllTrips(data);
     };
 
     fetchData();
-  }, []);
+  }, [id]);
 
-  return { allTrips };
+  return { allTrips, tripData, error };
 }
 
 export default useTripData;

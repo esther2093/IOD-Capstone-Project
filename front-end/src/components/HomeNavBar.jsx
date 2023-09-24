@@ -233,7 +233,7 @@ export default function NavBar() {
             <Tooltip title="Account Information" placement="left">
               <Icon
                 icon="fa-regular:user"
-                width="15"
+                width="20"
                 className="user-icon"
                 onClick={handleOpenUserMenu}
               />

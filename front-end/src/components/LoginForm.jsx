@@ -86,7 +86,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="login-container">
+    <Box sx={{ flexGrow: 1 }}>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -118,7 +118,7 @@ export default function LoginForm() {
             }}
           >
             <div className="login-logo-container">
-              <Icon icon="solar:box-bold-duotone" height="41" />
+              <Icon icon="solar:box-bold-duotone" height="41" className="login-icon-parcel"/>
               <img src={Logo} alt="Logo" className="login-logo" />
             </div>
             {loggedIn ? (
@@ -261,6 +261,6 @@ export default function LoginForm() {
           </Box>
         </Grid>
       </Grid>
-    </div>
+    </Box>
   );
 }

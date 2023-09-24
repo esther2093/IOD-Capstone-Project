@@ -1,92 +1,97 @@
-import * as React from "react";
+import React from "react";
 import { Icon } from "@iconify/react";
-
+import {
+  Box,
+  Typography,
+  Divider,
+  Grid,
+  Paper,
+  IconButton,
+} from "@mui/material";
 
 export default function About() {
   return (
-    <div className="about-section" id="about-top">
-      <div className="about-container">
-        <div className="col-33 about-col-33">
-          <div className="section-heading">
-            <h3 className="section-subhead">About Us</h3>
-            <h2 className="section-title">Why Use ParcelMe?</h2>
-            <p className="breakline">—</p>
-            <p className="section-subtitle">
-              We offer a easy way to get in contact with people who are on their
-              way somewhere and you can ask them to deliver a package for you!
-            </p>
-          </div>
-        </div>
+    <Paper square elevation={0} className="about-section" id="about-top">
+      <Box className="about-container">
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={4} className="about-col-33">
+            <Box className="section-heading">
+              <Typography variant="h6" className="section-subhead">
+                About Us
+              </Typography>
+              <Typography variant="h4" className="section-title">
+                Why Use ParcelMe?
+              </Typography>
+              <Divider className="breakline" />
+              <Typography variant="subtitle1" className="section-subtitle">
+                We offer an easy way to get in contact with people who are on
+                their way somewhere and you can ask them to deliver a package
+                for you!
+              </Typography>
+            </Box>
+          </Grid>
 
-        <div className="col-66 icon-block-66">
-          <div className="icon-container1">
-            <div className="col-2 ">
-              <div className="icon-block">
-                <Icon
-                  className="icon-block-icon"
-                  icon="fluent:text-abc-underline-double-32-filled"
-                ></Icon>
+          <Grid item xs={12} sm={8} className="icon-block-66">
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <Paper elevation={3} className="icon-block">
+                  <Icon
+                    className="icon-block-icon"
+                    icon="fluent:text-abc-underline-double-32-filled"
+                  />
+                  <Box className="icon-block-description">
+                    <Typography variant="h6">SIMPLE</Typography>
+                    <Typography variant="body2">
+                      Simple setup of posting your travels to be a driver or for
+                      the sender to see available routes
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
 
-                <div className="icon-block-description">
-                  <h4>SIMPLE</h4>
-                  <p>
-                    Simple setup of posting your travels to be a driver or for
-                    the sender to see avalilable routes
-                  </p>
-                </div>
-              </div>
-            </div>
+              <Grid item xs={6}>
+                <Paper elevation={3} className="icon-block">
+                  <Icon className="icon-block-icon" icon="clarity:lightning-line" />
+                  <Box className="icon-block-description">
+                    <Typography variant="h6">CONVENIENT</Typography>
+                    <Typography variant="body2">
+                      Choose the time and date that best suits you and contact
+                      the driver directly once you are matched
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
 
-            <div className="col-2">
-              <div className="icon-block">
-                <Icon
-                  className="icon-block-icon"
-                  icon="clarity:lightning-line"
-                ></Icon>
+              <Grid item xs={6}>
+                <Paper elevation={3} className="icon-block">
+                  <Icon className="icon-block-icon" icon="nimbus:money" />
+                  <Box className="icon-block-description">
+                    <Typography variant="h6">AFFORDABLE</Typography>
+                    <Typography variant="body2">
+                      Costs vary based on kms and size of items being delivered
+                      and will be more cost-efficient due to the driver going
+                      that way anyways
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
 
-                <div className="icon-block-description">
-                  <h4>CONVIENENT</h4>
-                  <p>
-                    Choose the time and date that best suits you and contact the
-                    driver directly once you are matched
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="icon-container2">
-            <div className="col-2">
-              <div className="icon-block">
-                <Icon className="icon-block-icon" icon="nimbus:money"></Icon>
-
-                <div className="icon-block-description">
-                  <h4>AFFORDABLE</h4>
-                  <p>
-                    Costs vary based on kms and size of items being delivered
-                    and will be more cost efficent due to the driver going that
-                    way anyways{" "}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="col-2 ">
-              <div className="icon-block">
-                <Icon
-                  className="icon-block-icon"
-                  icon="mingcute:phone-fill"
-                ></Icon>
-
-                <div className="icon-block-description">
-                  <h4>CONTACT US</h4>
-                  <p>Contact us if there any issues</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              <Grid item xs={6}>
+                <Paper elevation={3} className="icon-block">
+                  <Icon
+                    className="icon-block-icon"
+                    icon="mingcute:phone-fill"
+                  />
+                  <Box className="icon-block-description">
+                    <Typography variant="h6">CONTACT US</Typography>
+                    <Typography variant="body2">Contact us if there are any issues</Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+    </Paper>
   );
 }

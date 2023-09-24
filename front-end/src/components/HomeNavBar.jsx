@@ -91,8 +91,9 @@ export default function NavBar() {
       position={isSticky ? "fixed" : "static"}
       color="secondary"
       className={navClass}
+      sx={{width: "100%"}}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth="false" >
         <Toolbar disableGutters>
           <Typography
             variant="h6"

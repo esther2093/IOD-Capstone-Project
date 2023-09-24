@@ -1,14 +1,4 @@
-/* Root settings */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  font-family: 'Open Sans', sans-serif;
-}
 
-#root {
-  margin: auto;
-  width: 100%;
-}
 
 /* HOMEPAGE */
 
@@ -32,7 +22,7 @@
   animation: slideDown 0.5s ease-in-out; 
 }
 
-/* Homepage Banner  */
+/* HomeBanner  */
 
 #banner-top {
   margin-top: -64px;

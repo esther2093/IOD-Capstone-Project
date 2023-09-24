@@ -5,7 +5,6 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import axios from "axios";
-import Banner from "./Banner";
 import { Typography } from "@mui/material";
 
 export default function ForgotPassword() {

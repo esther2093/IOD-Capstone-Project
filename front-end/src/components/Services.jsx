@@ -1,33 +1,41 @@
 import React from "react";
-import Parcels from '../assets/parcels.jpg';
+import { Box, Typography, Divider, Grid, Paper } from "@mui/material";
+import Parcels from "../assets/parcels.jpg";
 
-
-
-export default function Services () {
+export default function Services() {
   return (
-    <div className="services-section" id="services-top">
-      <div className="services-container">
+    <Paper square elevation={0} className="services-section" id="services-top">
+      <Box className="services-container">
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} className="parcel-pic">
+            <img src={Parcels} alt="Parcel" />
+          </Grid>
 
-      <div className="col-2 parcel-pic">
-          <img src={Parcels} alt="Parcel" />
-        </div>
-
-        <div className="col-2">
-          <div className="section-heading">
-            <h3 className="section-subhead">SERVICES</h3>
-            <h2 className="section-title">How does it work?</h2>
-            <p className="breakline">—</p>
-            <p className="section-subtitle">Follow these instructions:</p>
-          </div>
-          <ol className="services-instructions">
-            <li>Login or Sign-up.</li>
-            <li>Look through available trips in the SEND section.</li>
-            <li>Contact the driver to organise logistics.</li>
-            <li>If you are going somewhere and would like to take an item, <br />post your trip in the DRIVE section.</li>
-          </ol>
-        </div>
-
-      </div>
-    </div>
+          <Grid item xs={12} sm={6}>
+            <Box className="section-heading">
+              <Typography variant="h6" className="section-subhead">
+                SERVICES
+              </Typography>
+              <Typography variant="h4" className="section-title">
+                How does it work?
+              </Typography>
+              <Divider className="breakline" />
+              <Typography variant="subtitle1" className="section-subtitle">
+                Follow these instructions:
+              </Typography>
+            </Box>
+            <ol className="services-instructions">
+              <li>Login or Sign-up.</li>
+              <li>Look through available trips in the SEND section.</li>
+              <li>Contact the driver to organize logistics.</li>
+              <li>
+                If you are going somewhere and would like to take an item,
+                <br />post your trip in the DRIVE section.
+              </li>
+            </ol>
+          </Grid>
+        </Grid>
+      </Box>
+    </Paper>
   );
 }

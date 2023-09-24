@@ -6,6 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import useTripData from "../hooks/useTripData";
 import Box from '@mui/system/Box';
+import { Divider } from "@mui/material";
 
 function TripList() {
   const { allTrips } = useTripData(); 
@@ -41,8 +42,22 @@ function TripList() {
   }, [allTrips]);
 
   return (
-
     <Box sx={{ flexGrow: 1 }}>
+       <Box className="banner-content" id="banner-top">
+          <Box className="col-45">
+            <Box className="banner-section-heading">
+            <p className="breakline">—</p>
+          <Typography variant="h4" id="ridePage-main-header">
+            FIND A TRIP
+          </Typography>
+          <Typography variant="h6" id="ridePage-main-subtitle">
+            Going somewhere? Earn some extra cash on the way!
+          </Typography>
+          <p className="breakline">—</p>
+        </Box>
+      </Box>
+    </Box>
+
       <Grid container spacing={2} sx={{backgroundColor: "white", padding: 2, textAlign: "right"}}>
         <input
           type="text"

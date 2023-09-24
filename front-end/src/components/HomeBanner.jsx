@@ -1,20 +1,27 @@
-import * as React from "react";
+import React from "react";
 import Button from "@mui/material/Button";
+import { Box, Typography, Divider } from "@mui/material";
 
 export default function HomeBanner() {
   return (
-    <div className="banner-content" id="banner-top">
-      <div className="col-45">
-        <div className="banner-section-heading">
-          <p className="breakline">—</p>
-          <h1 id="homepage-main-header">SEND A PARCEL</h1>
-          <h2 id="homepage-main-subtitle">
+    <Box className="banner-content" id="banner-top">
+      <Box className="col-45">
+        <Box className="banner-section-heading">
+          <Typography variant="h4" className="breakline">
+            —
+          </Typography>
+          <Typography variant="h1" id="homepage-main-header">
+            SEND A PARCEL
+          </Typography>
+          <Typography variant="h2" id="homepage-main-subtitle">
             Send a parcel with someone who's already going the same way! Faster
             and more secure!
-          </h2>
-          <p className="breakline">—</p>
-        </div>
-        <div className="button-group">
+          </Typography>
+          <Typography variant="h4" className="breakline">
+            —
+          </Typography>
+        </Box>
+        <Box className="button-group">
           <Button
             variant="outlined"
             sx={{
@@ -43,8 +50,8 @@ export default function HomeBanner() {
           >
             OFFER A DRIVE
           </Button>
-        </div>
-      </div>
-    </div>
+        </Box>
+      </Box>
+    </Box>
   );
 }

@@ -4,7 +4,7 @@ const Controllers = require("../controllers");
 const { verifyToken } = require("../middleware/auth");
 const { uploadFile } = require("../middleware/uploads");
 
-router.get('/', verifyToken, (req, res) => {
+router.get('/', (req, res) => {
     Controllers.userController.getUsers(res);
 })
 
@@ -20,9 +20,8 @@ router.post('/register', (req, res) => {
     Controllers.userController.registerUser(req, res)
 })
 
-router.get('/:id', verifyToken, (req, res) => {
-    const userId = req.params.id;
-    Controllers.userController.getUserById(userId, res);
+router.get('/:id', (req, res) => {
+    Controllers.userController.getUserById(req, res);
 });
 
 router.put('/:id', (req, res) => {

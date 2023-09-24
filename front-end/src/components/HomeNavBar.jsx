@@ -22,7 +22,7 @@ const sections = [
 ];
 
 const pages = [
-  { link: "/rides/", label: "SEND" },
+  { link: "/trips/", label: "SEND" },
   { link: "/drive/", label: "DRIVE" },
 ];
 
@@ -148,15 +148,13 @@ export default function NavBar() {
                   to={page.link}
                   sx={{
                     display: { xs: "block", md: "none" },
-                    fontWeight: 400,
                     lineHeight: 1.5,
-                    minHeight: "48px",
                     paddingTop: 0.75,
                     paddingBottom: 0.75,
                     paddingLeft: 2,
                     paddingRight: 2,
                     textAlign: "center",
-                    verticalAlign: "middle",
+                    minWidth: "10em"
                   }}
                 >
                   {page.label}
@@ -167,6 +165,15 @@ export default function NavBar() {
                   key={page.link}
                   component={NavLink}
                   to={page.link}
+                  sx={{
+                    display: { xs: "block", md: "none" },
+                    lineHeight: 1.5,
+                    paddingTop: 0.75,
+                    paddingBottom: 0.75,
+                    paddingLeft: 2,
+                    paddingRight: 2,
+                    textAlign: "center",
+                  }}
                 >
                   {page.label}
                 </Button>
@@ -205,6 +212,7 @@ export default function NavBar() {
                 component={HashLink}
                 smooth
                 to={page.link}
+                sx={{ fontSize: "1em"}}
               >
                 {page.label}
               </Button>
@@ -214,6 +222,7 @@ export default function NavBar() {
                   key={page.link}
                   component={NavLink}
                   to={page.link}
+                  sx={{ fontSize: "1em"}}
                 >
                   {page.label}
                 </Button>
@@ -224,18 +233,16 @@ export default function NavBar() {
             <Tooltip title="Account Information" placement="left">
               <Icon
                 icon="fa-regular:user"
-                height="20"
+                width="15"
                 className="user-icon"
                 onClick={handleOpenUserMenu}
-                sx={{ p: 0 }}
               />
             </Tooltip>
             <Menu
-              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: "top",
+                vertical: "bottom",
                 horizontal: "right",
               }}
               keepMounted
@@ -245,25 +252,30 @@ export default function NavBar() {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+              sx={{
+                display: { xs: "block", md: "block" },
+              }}
             >
               {settings.map((setting) => (
-                <MenuItem
+                <Button
                   key={setting.link}
                   component={NavLink}
                   to={setting.link}
                   onClick={handleCloseUserMenu}
-                  sx={{ fontSize: "0.875em" }}
+                  sx={{
+                    display: { xs: "block" },
+                    lineHeight: 1.5,
+                    paddingTop: 0.75,
+                    paddingBottom: 0.75,
+                    paddingLeft: 2,
+                    paddingRight: 2,
+                    textAlign: "center",
+                    minWidth: "10em"
+                  }}
                 >
                   {setting.label}
-                </MenuItem>
+                </Button>
               ))}
-              <MenuItem
-                  onClick={handleLogout}
-                  sx={{ fontSize: "0.875em" }}
-                  className="logout-menu-button"
-                >
-                  LOG OUT
-              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

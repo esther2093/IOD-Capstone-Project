@@ -1,55 +1,47 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import { Box, Typography, Divider } from "@mui/material";
+import { Box, Typography, Divider, ButtonGroup } from "@mui/material";
 
 export default function HomeBanner() {
   return (
     <Box className="banner-content" id="banner-top">
-      <Box className="col-45">
+      <Box className="banner-section-box">
         <Box className="banner-section-heading">
           <Typography variant="h4" className="breakline">
             —
           </Typography>
-          <Typography variant="h1" id="homepage-main-header">
-            SEND A PARCEL
+          <Typography variant="h1" gutterBottom id="homepage-main-header" sx={{ letterSpacing: -5}}>
+            WANT TO SEND A PARCEL?
           </Typography>
-          <Typography variant="h2" id="homepage-main-subtitle">
-            Send a parcel with someone who's already going the same way! Faster
-            and more secure!
+          <Typography variant="subtitle1" id="homepage-main-subtitle">
+            Send a parcel with someone who's already going the same  
+            <br />
+            way! Faster, cheaper and more secure!
           </Typography>
           <Typography variant="h4" className="breakline">
             —
           </Typography>
         </Box>
-        <Box className="button-group">
-          <Button
-            variant="outlined"
+        <Box className="banner-button-group">
+          
+          <ButtonGroup variant="text" aria-label="text button group" sx={{textAlign: "center"}}>
+        <Button  variant="outlined"
             sx={{
-              width: "40%",
               fontWeight: "bold",
-              border: 2,
-              padding: 2,
-              fontSize: 16,
+              border: 0,
+              fontSize: "1.3em",
             }}
             className="homepage-button"
-            href="/rides"
-          >
-            SEND A PARCEL
-          </Button>
-          <Button
-            variant="outlined"
+            href="/rides">SEND A PARCEL</Button>
+        <Button variant="outlined"
             sx={{
-              width: "40%",
               fontWeight: "bold",
-              border: 2,
-              padding: 2,
-              fontSize: 16,
+              fontSize: "1.3em",
+              border: 0,
             }}
             className="homepage-button"
-            href="/drive"
-          >
-            OFFER A DRIVE
-          </Button>
+            href="/drive">OFFER A DRIVE</Button>
+      </ButtonGroup>
         </Box>
       </Box>
     </Box>

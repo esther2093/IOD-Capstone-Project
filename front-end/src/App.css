@@ -1,5 +1,3 @@
-
-
 /* HOMEPAGE */
 
 /* Homepage NavBar */
@@ -13,62 +11,59 @@
   0% {
     transform: translateY(-100%);
   }
+
   100% {
     transform: translateY(0);
   }
 }
 
 .navbar-slide-down {
-  animation: slideDown 0.5s ease-in-out; 
+  animation: slideDown 0.5s ease-in-out;
+}
+
+.user-icon {
+  margin-right: 1em;
 }
 
 /* HomeBanner  */
 
 #banner-top {
-  margin-top: -64px;
+  margin-top: -4em;
 }
 
 .banner-content {
   width: 100%;
-  background-image: url("src/assets/bannerImage.jpg");
+  background-image: url("./src/assets/bannerImage.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-.col-45 {
-  width: 45%;
-  padding: 5em 3em 4em 3em;
+.banner-section-box {
+  padding: 5em 3em 3em 3em;
 }
 
 .breakline {
   font-size: 2em;
   font-weight: 800;
   color: #D2B356;
-}
-
-.banner-section-heading {
-  width: 100%;
+  padding: 1em 0em;
 }
 
 #homepage-main-header {
-  font-size: 3.5em;
+  font-size: 3em;
   font-weight: 800;
-  margin: 0;
+  word-spacing: 0.5;
 }
 
 #homepage-main-subtitle {
   font-weight: 300;
   font-size: 1.2em;
+  line-height: 1.3;
 }
 
-.button-group {
+.banner-button-group {
   display: flex;
-  justify-content: space-around;
-  padding: 1em;
-}
-
-.homepageButton {
-font-size: 1em;
+  padding: 0em 1.5em;
 }
 
 /* Hompage About */
@@ -77,72 +72,36 @@ font-size: 1em;
   background-color: white;
 }
 
-.about-container {
+.section-container {
   margin: 0em 1em;
   padding: 9em 0 0 0;
   position: relative;
   display: flex;
 }
 
-.about-col-33 {
-  padding: 1.2em;
-  margin-left: 1em;
-}
-
-.section-heading {
-  padding: 0 0 15px 0;
-}
-
 .section-subhead {
-  font-size: 0.9em;
-  font-weight: bold;
-  color: #ccc;
-  letter-spacing: 2px;
-  padding-bottom: 0;
+  color: #9c9c9c;
+  letter-spacing: 0.1em;
+  padding: 0.5em 0.5em 0.2em 0.5em;
+  border-bottom: 2px #D2B356 solid;
 }
 
 .section-title {
-  font-size: 2.1em;
+  padding: 0.25em 0em 0.25em 0.25em;
 }
 
 .section-subtitle {
-  font-size: 1em;
-  padding-top: 0;
-  font-weight: 300;
+  padding: 0em 0.5em;
   color: #9c9c9c;
 }
 
-.col-2 {
-  width: 50%;
-}
-
-.col-66 {
-  width: 66.66%;
-}
-
-.col-33 {
-  width: 33.33%;
-}
-
-.icon-block-66 {
-  display:block;
-  padding: 1em;
-}
-
 .icon-block {
-  padding: 1.5em;
+  padding: 1em;
 }
 
 .icon-block-icon {
   font-size: 2em;
-}
-
-.icon-container1 {
-display: flex;
-}
-
-.icon-container2 {
-  display: flex;
+  color: #D2B356
 }
 
 .icon-block-description p {
@@ -160,30 +119,61 @@ display: flex;
   background-color: white;
 }
 
-
 .services-container {
   margin: 0em 1em;
-  padding: 4em 0 10em 0;
+  padding: 9em 0 8em 0;
   position: relative;
   display: flex;
 }
 
-.col-2 img {
-  width: 80%;
+.services-parcel-pic {
+  width: 90%
+}
+
+/* ---- END HOMEPAGE ---- */
+
+
+/* SECOND BANNER */
+
+#second-banner-top{
+  margin-top: -4em;
+}
+
+.banner-section-box {
+  padding: 5em 3em 3em 3em;
+}
+
+.breakline {
+  font-size: 2em;
+  font-weight: 800;
+  color: #D2B356;
+  padding: 1em 0em;
+}
+
+#banner-main-header {
+  font-size: 3em;
+  font-weight: 800;
+  word-spacing: 0.5;
+}
+
+#banner-main-subtitle {
+  font-weight: 300;
+  font-size: 1.2em;
+  line-height: 1.3;
 }
 
 /* LOGIN PAGE */
 
-.login-icon-parcel {
+.icon-parcel {
   color: #D2B356;
 }
 
-.login-logo-container {
-  padding-top: 7em;
+.logo-container {
+  padding-top: 2.5em;
 }
 
 .login-welcome-icon {
-  font-size: 3em;
+  font-size: 3.5vw;
   margin-top: 1em;
   margin-bottom: -0.77em;
   z-index: 2;
@@ -204,20 +194,25 @@ display: flex;
 
 /* RIDES PAGE */
 
+.trips-top-box {
+  background-color: white;
+}
 
-#ridesPage-main-subtitle {
-  font-weight: 300;
-  font-size: 1.2em;
+.trips-title {
+  padding: 0.25em 0em 0.25em 0.25em;
+}
+
+.trips-subtitle {
+  padding: 0em 0.5em;
+  color: #9c9c9c;
 }
 
 
 
-/* DRIVE PAGE */
 
-#drivePage-main-subtitle {
-  font-weight: 300;
-  font-size: 1.2em;
-}
+
+
+
 
 
 /* ACCOUNT PAGE */
@@ -236,7 +231,7 @@ display: flex;
   width: 66.66%;
 }
 
-.profile-pic-box{ 
+.profile-pic-box {
   border: 2px solid black;
 }
 
@@ -246,7 +241,7 @@ display: flex;
 
 .posted-trips {
   border: 2px solid black;
-padding : 0;
+  padding: 0;
 }
 
 .active-trips {
@@ -256,14 +251,8 @@ padding : 0;
 /* FOOTER */
 
 .footer-section {
-display: flex;
-padding: 1em;
-background-color: #D2B356;
-vertical-align: middle;
-}
+  display: flex;
+  background-color: #D2B356;
+  text-align: center;
 
-.footer-list {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
 }

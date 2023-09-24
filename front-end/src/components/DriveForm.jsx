@@ -2,17 +2,12 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateField } from "@mui/x-date-pickers/DateField";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -61,17 +56,21 @@ export default function DriveForm() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-       <Box className="banner-content" id="banner-top">
-          <Box className="col-45">
+       <Box className="banner-content" id="second-banner-top" >
+          <Box className="banner-section-box">
             <Box className="banner-section-heading">
-            <p className="breakline">—</p>
-          <Typography variant="h4" id="ridePage-main-header">
-            FIND A TRIP
+            <Typography variant="h4" className="breakline">
+            —
           </Typography>
-          <Typography variant="h6" id="ridePage-main-subtitle">
-            Going somewhere? Earn some extra cash on the way!
+          <Typography gutterBottom variant="h1" id="banner-main-header" sx={{ letterSpacing: -5}}>
+            GOING SOMEWHERE?
           </Typography>
-          <p className="breakline">—</p>
+          <Typography variant="subtitle1" id="banner-main-subtitle">
+            Why not earn some extra cash on the way!
+          </Typography>
+          <Typography variant="h4" className="breakline">
+            —
+          </Typography>
         </Box>
       </Box>
     </Box>
@@ -90,29 +89,32 @@ export default function DriveForm() {
               alignItems: "center",
             }}
           >
-            <div className="signup-logo-container">
-              <Icon icon="solar:box-bold-duotone" height="41" />
+            <Box className="logo-container">
+              <Icon icon="solar:box-bold-duotone" height="41" className="icon-parcel" />
               <img src={Logo} alt="Logo" className="login-logo" />
-            </div>
-            <Typography component="h4" className="login-subtitle">
-              Please fill out your details below of your trip!
-            </Typography>
+            </Box>
+            <Typography
+                variant="body2"
+                sx={{ fontWeight: 300, textAlign: "center" }}
+              >
+                Fill out the details of your trip! 
+              </Typography>
 
             <Box
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
+              sx={{ mt: 3, textAlign: "center"}}
             >
               <Typography variant="body2" color="error">
                 {error}
-              </Typography>{" "}
+              </Typography>
               <Typography variant="body2" color="success">
                 {submitResult}
               </Typography>
-              <br />
+              
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ paddingRight: "1em"}}>
                   <TextField
                     required
                     fullWidth
@@ -124,7 +126,7 @@ export default function DriveForm() {
                     helperText="Where from?"
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ paddingRight: "1em"}}>
                   <TextField
                     required
                     fullWidth
@@ -135,7 +137,7 @@ export default function DriveForm() {
                     helperText="Where to?"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{ paddingRight: "1em"}}>
                   <TextField
                     required
                     fullWidth
@@ -146,7 +148,7 @@ export default function DriveForm() {
                     helperText="Depature Date"
                   />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6} sx={{ paddingRight: "1em"}}>
                   <TextField
                     required
                     fullWidth
@@ -157,7 +159,7 @@ export default function DriveForm() {
                     helperText="Arrival Date"
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ paddingRight: "1em"}}>
                   <TextField
                     required
                     fullWidth
@@ -168,7 +170,7 @@ export default function DriveForm() {
                     helperText="Available Space"
                   />
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} sx={{ paddingRight: "1em"}}>
                   <TextField
                     fullWidth
                     name="otherComments"
@@ -178,14 +180,25 @@ export default function DriveForm() {
                   />
                 </Grid>
               </Grid>
+              <Grid item xs={12} sx={{ padding: "0em 1em"}}>
               <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                POST TRIP
-              </Button>
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2, 
+                    backgroundColor: "#D2B356",
+                   
+                    marginLeft: 0,
+                    "   &:hover": {
+                      backgroundColor: "#fff",
+                      color: "#D2B356",
+                      border: "none"
+                    },
+                  }}
+                >
+                  POST TRIP
+                </Button>
+                </Grid>
             </Box>
           </Box>
         </Container>

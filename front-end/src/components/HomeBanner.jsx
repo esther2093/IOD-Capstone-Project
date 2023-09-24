@@ -1,7 +1,7 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 
-export default function Banner() {
+export default function HomeBanner() {
   return (
     <div className="banner-content" id="banner-top">
       <div className="col-45">

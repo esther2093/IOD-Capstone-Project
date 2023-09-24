@@ -9,41 +9,39 @@ import Box from '@mui/system/Box';
 
 function TripList() {
   const { allTrips } = useTripData(); 
-  const [filteredTrips, setFilteredTrips] = useState([]);
+  const [filteredTrips, setFilteredTrips] = useState(allTrips);
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-  
-    const filtered = allTrips.filter((trip) => {
-      return (
-        trip.cityFrom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        trip.cityTo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        trip.depatureDate.includes(searchTerm) ||
-        trip.arrivalDate.includes(searchTerm) ||
-        trip.availableSpace.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        trip.otherComments.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    });
-
-    setFilteredTrips(filtered);
-  }, [allTrips, searchTerm]);
-
   const handleSearch = () => {
+    const formattedSearchTerm = searchTerm.toLowerCase();
+
     const filtered = allTrips.filter((trip) => {
+      const tripDepartureDate = new Date(trip.depatureDate);
+      const tripArrivalDate = new Date(trip.arrivalDate);
+    
+      // Format the trip dates
+      const formattedDepartureDate = `${tripDepartureDate.getDate()}/${tripDepartureDate.getMonth() + 1}/${tripDepartureDate.getFullYear()}`;
+      const formattedArrivalDate = `${tripArrivalDate.getDate()}/${tripArrivalDate.getMonth() + 1}/${tripArrivalDate.getFullYear()}`;
+    
       return (
-        trip.cityFrom.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        trip.cityTo.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        trip.depatureDate.includes(searchTerm) ||
-        trip.arrivalDate.includes(searchTerm) ||
-        trip.availableSpace.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        trip.otherComments.toLowerCase().includes(searchTerm.toLowerCase())
+        formattedDepartureDate.includes(formattedSearchTerm) ||
+        formattedArrivalDate.includes(formattedSearchTerm) ||
+        trip.cityFrom.toLowerCase().includes(formattedSearchTerm) ||
+        trip.cityTo.toLowerCase().includes(formattedSearchTerm) ||
+        trip.availableSpace.toLowerCase().includes(formattedSearchTerm) ||
+        trip.otherComments.toLowerCase().includes(formattedSearchTerm)
       );
     });
 
     setFilteredTrips(filtered);
   };
 
+  useEffect(() => {
+    handleSearch();
+  }, [allTrips]);
+
   return (
+
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2} sx={{backgroundColor: "white", padding: 2, textAlign: "right"}}>
         <input
@@ -54,7 +52,7 @@ function TripList() {
         />
         <button onClick={handleSearch}>SEARCH</button>
       </Grid>
-      <Typography variant="h5">Available Trips </Typography>
+      <Typography variant="h5">Available Trips</Typography>
       <Grid container spacing={2} rowSpacing={2} sx={{backgroundColor: "white"}}>
         {filteredTrips.map((trip) => (
           <Grid item key={trip.id} xs={12} sm={6} md={3} sx={{ paddingRight: 2, paddingBottom: 2 }}>

@@ -60,20 +60,21 @@ export default function DriveForm() {
   };
 
   return (
-    <div>
-      <div className="banner-content" id="banner-top">
-        <div className="col-45">
-          <div className="banner-section-heading">
+    <Box sx={{ flexGrow: 1 }}>
+       <Box className="banner-content" id="banner-top">
+          <Box className="col-45">
+            <Box className="banner-section-heading">
             <p className="breakline">—</p>
-            <h2 id="drivePage-main-header">POST A TRIP</h2>
-            <h3 id="ridesPage-main-subtitle">
-              Going somewhere? Earn some extra cash on the way!
-            </h3>
-            <p className="breakline">—</p>
-          </div>
-        </div>
-      </div>
-
+          <Typography variant="h4" id="ridePage-main-header">
+            FIND A TRIP
+          </Typography>
+          <Typography variant="h6" id="ridePage-main-subtitle">
+            Going somewhere? Earn some extra cash on the way!
+          </Typography>
+          <p className="breakline">—</p>
+        </Box>
+      </Box>
+    </Box>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Container
           component="main"
@@ -189,6 +190,6 @@ export default function DriveForm() {
           </Box>
         </Container>
       </LocalizationProvider>
-    </div>
+    </Box>
   );
 }

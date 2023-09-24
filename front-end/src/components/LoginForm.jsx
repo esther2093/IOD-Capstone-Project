@@ -21,9 +21,11 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
+import { useCookies } from "react-cookie";
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
+  const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
 
   const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
   const [errMsg, setErrMsg] = React.useState("");
@@ -57,6 +59,12 @@ export default function LoginForm() {
       });
       loggedInUser = response.data.data;
       console.log(loggedInUser);
+      
+      let expires = new Date();
+      expires.setTime(expires.getTime() + (response.data.expires_in * 1000));
+      setCookie('access_token', response.data.access_token, { path: '/', expires });
+      setCookie('refresh_token', response.data.refresh_token, { path: '/', expires });
+
     } catch (err) {
       console.log(err.message);
       setErrMsg("Please try again");

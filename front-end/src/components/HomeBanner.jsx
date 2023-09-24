@@ -10,11 +10,16 @@ export default function HomeBanner() {
           <Typography variant="h4" className="breakline">
             —
           </Typography>
-          <Typography variant="h1" gutterBottom id="homepage-main-header" sx={{ letterSpacing: -5}}>
+          <Typography
+            variant="h1"
+            gutterBottom
+            id="homepage-main-header"
+            sx={{ letterSpacing: -5 }}
+          >
             WANT TO SEND A PARCEL?
           </Typography>
           <Typography variant="subtitle1" id="homepage-main-subtitle">
-            Send a parcel with someone who's already going the same  
+            Send a parcel with someone who's already going the same
             <br />
             way! Faster, cheaper and more secure!
           </Typography>
@@ -22,26 +27,38 @@ export default function HomeBanner() {
             —
           </Typography>
         </Box>
+
         <Box className="banner-button-group">
-          
-          <ButtonGroup variant="text" aria-label="text button group" sx={{textAlign: "center"}}>
-        <Button  variant="outlined"
-            sx={{
-              fontWeight: "bold",
-              border: 0,
-              fontSize: "1.3em",
-            }}
-            className="homepage-button"
-            href="/rides">SEND A PARCEL</Button>
-        <Button variant="outlined"
-            sx={{
-              fontWeight: "bold",
-              fontSize: "1.3em",
-              border: 0,
-            }}
-            className="homepage-button"
-            href="/drive">OFFER A DRIVE</Button>
-      </ButtonGroup>
+          <ButtonGroup
+            variant="text"
+            aria-label="text button group"
+            sx={{ textAlign: "center" }}
+          >
+            <Button
+              variant="outlined"
+              sx={{
+                fontWeight: "bold",
+                border: 0,
+                fontSize: "1.3em",
+              }}
+              className="homepage-button"
+              href="/rides"
+            >
+              SEND A PARCEL
+            </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                fontWeight: "bold",
+                fontSize: "1.3em",
+                border: 0,
+              }}
+              className="homepage-button"
+              href="/drive"
+            >
+              OFFER A DRIVE
+            </Button>
+          </ButtonGroup>
         </Box>
       </Box>
     </Box>

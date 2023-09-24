@@ -1,33 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Import the Link component
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
+import useTripData from "../hooks/useTripData";
 import Box from '@mui/system/Box';
 
 function TripList() {
-  const [allTrips, setAllTrips] = useState([]);
-  const [filteredTrips, setFilteredTrips] = useState([]);
+  const { allTrips, filteredTrips } = useTripData();
+
   const [searchTerm, setSearchTerm] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Fetch trip data
-        const tripResponse = await fetch("http://localhost:8000/api/trips");
-        const tripResult = await tripResponse.json();
-        if (tripResult.data) {
-          setAllTrips(tripResult.data);
-          setFilteredTrips(tripResult.data);
-        }
-      } catch (error) {
-        console.error("Error fetching trip data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const handleSearch = () => {
     const filtered = allTrips.filter((trip) => {

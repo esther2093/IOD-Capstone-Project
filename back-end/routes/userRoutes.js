@@ -20,6 +20,11 @@ router.post('/register', (req, res) => {
     Controllers.userController.registerUser(req, res)
 })
 
+router.get('/:id', verifyToken, (req, res) => {
+    const userId = req.params.id;
+    Controllers.userController.getUserById(userId, res);
+});
+
 router.put('/:id', (req, res) => {
     Controllers.userController.updateUser(req, res)
 })

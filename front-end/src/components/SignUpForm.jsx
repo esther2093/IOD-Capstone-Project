@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -26,10 +26,10 @@ import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
 
 export default function SignUpForm() {
-
   const [error, setError] = useState("");
   const [submitResult, setSubmitResult] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [redirect, setRedirect] = useState(false); // Add state for redirection
 
   const [result, setResult] = React.useState('');
   const { currentUser, handleUpdateUser } = useUserContext();
@@ -55,22 +55,20 @@ export default function SignUpForm() {
       setError("Password must be at least 6 characters long");
     } else if (userPassword === userEmail) {
       setError("Password cannot be the same as your email address");
-      // } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(userPassword)) {
-      //   setError("Password must include a capital letter and a number.");
     } else if (!/^[A-Za-z]+$/i.test(userFirstName)) {
       setError("Invalid first name");
     } else if (!/^[A-Za-z]+$/i.test(userLastName)) {
       setError("Invalid last name");
-    // } else if (age < 18) {
-    //   setError("You must be over 18 years old to sign up");
-    // } else if (userPhoneNumber.length <= 10) {
-    //   setError("You must input a valid phone number");
+    } else if (!/^[0-9]+$/.test(userPhoneNumber)) {
+      setError("Phone Number must contain only numbers");
+    } else if (!/^[0-9]+$/.test(userDateOfBirth)) {
+      setError("Date of Birth must contain only numbers");
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userEmail)) {
       setError("Invalid email address");
     } else {
       setError("");
   
-      // convert form data to object and post to backend
+      // convert form data to object and post to the backend
       axios
         .post("http://localhost:8000/api/users/register", Object.fromEntries(data.entries()))
         .then((response) => {
@@ -81,7 +79,12 @@ export default function SignUpForm() {
           setResult(result);
           if (user) {
             handleUpdateUser(user);
-            navigate("/");
+            setSubmitResult("Welcome to the family!");
+
+            // Delay redirection after 5 seconds
+            setTimeout(() => {
+              setRedirect(true);
+            }, 5000);
           }
         })
         .catch((error) => {
@@ -90,11 +93,17 @@ export default function SignUpForm() {
         });
     }
   };
-  
+
+  // Use useEffect to handle the redirection
+  useEffect(() => {
+    if (redirect) {
+      navigate("/login");
+    }
+  }, [redirect]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-       <Box className="banner-content" id="second-banner-top">
+      <Box className="banner-content" id="second-banner-top">
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
             <Typography variant="h4" className="breakline">
@@ -134,13 +143,14 @@ export default function SignUpForm() {
             }}
           >
             <div className="logo-container">
-              <Icon     icon="solar:box-bold-duotone"
+              <Icon
+                icon="solar:box-bold-duotone"
                 height="41"
-                className="icon-parcel" />
+                className="icon-parcel"
+              />
               <img src={Logo} alt="Logo" className="login-logo" />
             </div>
-            <Typography  variant="body2"
-                sx={{ fontWeight: 300, textAlign: "center" }} >
+            <Typography variant="body2" sx={{ fontWeight: 300, textAlign: "center" }}>
               Please fill out your details below to join the party!
             </Typography>
 
@@ -148,16 +158,17 @@ export default function SignUpForm() {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
+              sx={{ mt: 3, pr:"1em"}}
             >
               <Typography variant="body2" color="error">
-                 {error}
+                {error}
               </Typography>{" "}
               <Typography variant="body2" color="success">
                 {submitResult}
               </Typography>
               <br />
-              <Grid container spacing={2}>
+
+              <Grid container spacing={2} sx={{ paddingRight: "1em"}}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     autoComplete="given-name"
@@ -250,31 +261,36 @@ export default function SignUpForm() {
                     }
                   />
                 </Grid>
-              </Grid>
-              <Button
+                <Button
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, 
+                sx={{
+                  margin: "3em 0.3em 3em 1.5em",
                   backgroundColor: "#D2B356",
-                  margin: "1em",
-                  marginLeft: 0,
-                  "   &:hover": {
+                  "&:hover": {
                     backgroundColor: "#fff",
                     color: "#D2B356",
-                    border: "none"
+                    border: "none",
                   },
                 }}
               >
                 Sign Up
               </Button>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  <Link href="/login" variant="body2">
-                    Already have an account? Sign in
+              </Grid>
+              
+
+              <Box
+                display="flex"
+                justifyContent="center"
+                sx={{ marginBottom: "4.7em" }}
+              >
+                <Grid item xs={12} sm={6} sx={{ textAlign: "center" }}>
+                  <Link href="/signup" variant="body2">
+                    Already have an account? Log in HERE!
                   </Link>
                 </Grid>
-              </Grid>
+              </Box>
             </Box>
           </Box>
         </Container>

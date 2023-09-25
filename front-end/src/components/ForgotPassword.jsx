@@ -12,7 +12,7 @@ export default function ForgotPassword() {
   const [resultMsg, setResultMsg] = useState("");
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault(); 
     axios
       .post("http://localhost:8000/api/users/sendpw", { email: email })
       .then((response) => setResultMsg(response.data.result))

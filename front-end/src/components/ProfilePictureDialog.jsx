@@ -88,7 +88,34 @@ export default function ProfilePictureDialog() {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogContent>
+        <DialogTitle id="responsive-dialog-title" >
+        <Typography
+                  variant="h6"
+                  className="section-subhead"
+                  sx={{ fontSize: "0.6em" }}
+                >
+                  CHANGE YOUR PROFILE PICTURE
+                </Typography> 
+                <Typography
+                  variant="h4"
+                  className="section-title"
+                  sx={{ fontSize: "1em", fontWeight: 800 }}
+                >
+                  Current picture
+                </Typography>
+        </DialogTitle>  
+        
           <Container component="main" sx={{ pl: 0 }}>
+          <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 300,
+                textAlign: "center",
+                color: "green"
+              }}
+            >
+              {status}
+            </Typography>
             <Avatar q
               variant="square"
               sx={{
@@ -114,26 +141,19 @@ export default function ProfilePictureDialog() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                justifyContent: "center"
               }}
             >
               {image.preview && (
                 <img src={image.preview} width="100" height="100" />
               )}
+              <Box sx={{ pl: "4.9em"}}>
               <input name="photo" type="file" onChange={handleFileChange} />
-
+              </Box>
               <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
                 Submit
               </Button>
             </Box>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 300,
-                textAlign: "center",
-              }}
-            >
-              {status}
-            </Typography>
           </Container>
         </DialogContent>
         <DialogActions>

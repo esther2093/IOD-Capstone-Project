@@ -98,17 +98,17 @@ export default function MyAccount() {
                   Profile Details:
                 </Typography>
               </Box>
-              <Box sx={{ flexGrow: 1, padding: "0.5em 1em 2em 2.5em" }}>
-                <Typography variant="body1">
+              <Box sx={{ flexGrow: 1, padding: "0.5em 1em 2em 2.5em", }}>
+                <Typography variant="body1" sx={{ fontSize: "0.9em"}}>
                   Name: {currentUser.firstName} {currentUser.lastName}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{ fontSize: "0.9em"}}>
                   Date of Birth: {formatDate(currentUser.dateOfBirth)}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{ fontSize: "0.9em"}}>
                   Email: {currentUser.email}
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" sx={{ fontSize: "0.9em"}}>
                   Phone number: +61 {currentUser.phoneNumber}
                 </Typography>
               </Box>

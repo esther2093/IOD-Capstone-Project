@@ -43,8 +43,9 @@ export default function DriveForm() {
 
         setSubmitResult(result);
         if (trip) {
-          handleUpdateUser(user);
-          navigate("/");
+          handleUpdateUser(currentUser);
+          setError("")
+
         } else {
           setError("Trip submission failed.");
         }

@@ -29,7 +29,6 @@ export default function SignUpForm() {
   const [error, setError] = useState("");
   const [submitResult, setSubmitResult] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [redirect, setRedirect] = useState(false); // Add state for redirection
 
   const [result, setResult] = React.useState('');
   const { currentUser, handleUpdateUser } = useUserContext();
@@ -51,24 +50,30 @@ export default function SignUpForm() {
     const userPhoneNumber = data.get("phoneNumber");
     const userDateOfBirth = data.get("dateOfBirth")
   
+    
     if (userPassword.length < 6) {
       setError("Password must be at least 6 characters long");
     } else if (userPassword === userEmail) {
       setError("Password cannot be the same as your email address");
+            // } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(userPassword)) {
+      //   setError("Password must include a capital letter and a number.");
     } else if (!/^[A-Za-z]+$/i.test(userFirstName)) {
       setError("Invalid first name");
     } else if (!/^[A-Za-z]+$/i.test(userLastName)) {
       setError("Invalid last name");
-    } else if (!/^[0-9]+$/.test(userPhoneNumber)) {
-      setError("Phone Number must contain only numbers");
-    } else if (!/^[0-9]+$/.test(userDateOfBirth)) {
-      setError("Date of Birth must contain only numbers");
+    } else if (!/^\d{2}-\d{2}-\d{4}$/.test(userDateOfBirth)) {
+      setError("Date of Birth must be in the format DD-MM-YYYY");
+          // } else if (age < 18) {
+    //   setError("You must be over 18 years old to sign up");
+    } else if (userPhoneNumber.length > 10) {
+      setError("You must input a valid phone number");
+  } else if (!/^[0-9]+$/.test(userPhoneNumber)) {
+    setError("Phone number must contain numbers only");
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userEmail)) {
       setError("Invalid email address");
     } else {
       setError("");
   
-      // convert form data to object and post to the backend
       axios
         .post("http://localhost:8000/api/users/register", Object.fromEntries(data.entries()))
         .then((response) => {
@@ -79,12 +84,8 @@ export default function SignUpForm() {
           setResult(result);
           if (user) {
             handleUpdateUser(user);
-            setSubmitResult("Welcome to the family!");
-
-            // Delay redirection after 5 seconds
-            setTimeout(() => {
-              setRedirect(true);
-            }, 5000);
+            setSubmitResult("You've sucessfully signed up! You will be redirected to the homepage in a few seconds...");
+            navigate("/login");
           }
         })
         .catch((error) => {
@@ -93,13 +94,6 @@ export default function SignUpForm() {
         });
     }
   };
-
-  // Use useEffect to handle the redirection
-  useEffect(() => {
-    if (redirect) {
-      navigate("/login");
-    }
-  }, [redirect]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -158,12 +152,12 @@ export default function SignUpForm() {
               component="form"
               noValidate
               onSubmit={handleSubmit}
-              sx={{ mt: 3, pr:"1em"}}
+              sx={{ mt: 3}}
             >
-              <Typography variant="body2" color="error">
-                {error}
-              </Typography>{" "}
-              <Typography variant="body2" color="success">
+              <Typography variant="body2" color="error" sx={{ textAlign: "center"}}>
+              {error}
+            </Typography>
+              <Typography variant="body2" color="success" sx={{ textAlgin: "center"}}>
                 {submitResult}
               </Typography>
               <br />
@@ -286,7 +280,7 @@ export default function SignUpForm() {
                 sx={{ marginBottom: "4.7em" }}
               >
                 <Grid item xs={12} sm={6} sx={{ textAlign: "center" }}>
-                  <Link href="/signup" variant="body2">
+                  <Link href="/login" variant="body2">
                     Already have an account? Log in HERE!
                   </Link>
                 </Grid>

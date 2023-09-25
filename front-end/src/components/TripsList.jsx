@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import useTripData from "../hooks/useTripData";
 import Box from "@mui/system/Box";
-import { Button, TextField } from "@mui/material";
+import { Button, ButtonBase, TextField } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 
 export default function TripsList() {
@@ -29,7 +29,7 @@ export default function TripsList() {
     const formattedSearchTerm = searchTerm.toLowerCase();
 
     const filtered = allTrips.filter((trip) => {
-      const tripDepartureDate = new Date(trip.depatureDate);
+      const tripDepartureDate = new Date(trip.departureDate);
       const tripArrivalDate = new Date(trip.arrivalDate);
 
       const formattedDepartureDate = tripDepartureDate.toLocaleString();
@@ -166,15 +166,48 @@ export default function TripsList() {
                 sx={{ padding: "1em" }}
               >
                 <Card>
+                <Grid item>
+                  <ButtonBase sx={{ width: 128, height: 128 }}>
+                    <Img alt="complex" src="/static/images/grid/complex.jpg" />
+                  </ButtonBase>
+                </Grid>
+                <Grid item xs={12} sm container>
+                  <Grid item xs container direction="column" spacing={2}>
+                  <Grid item xs>
+              <Typography gutterBottom variant="subtitle1" component="div">
+                Standard license
+              </Typography>
+              <Typography variant="body2" gutterBottom>
+                Full resolution 1920x1080 • JPEG
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                ID: 1030114
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Typography sx={{ cursor: 'pointer' }} variant="body2">
+                Remove
+              </Typography>
+            </Grid>
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1" component="div">
+              $19.00
+            </Typography>
+
+            </Grid> 
+            </Grid>
+
+
                   <CardContent>
                     <Typography variant="h6"> From: {trip.cityFrom}</Typography>
                     <Typography variant="h6"> To: {trip.cityTo}</Typography>
                     <Typography variant="body2">
-                      Departure Date:{" "}
-                      {new Date(trip.depatureDate).toLocaleDateString()}
+                      Departure Date:
+                      {new Date(trip.departureDate).toLocaleDateString()}
                     </Typography>
                     <Typography variant="body2">
-                      Arrival Date:{" "}
+                      Arrival Date:
                       {new Date(trip.arrivalDate).toLocaleDateString()}
                     </Typography>
                     <Typography variant="body1">

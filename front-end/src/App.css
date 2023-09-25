@@ -133,6 +133,7 @@
 /* ---- END HOMEPAGE ---- */
 
 
+
 /* SECOND BANNER */
 
 #second-banner-top{
@@ -169,7 +170,8 @@
 }
 
 .logo-container {
-  padding-top: 2.5em;
+  padding-top: 2em;
+  padding-bottom: 0.5em;
 }
 
 .login-welcome-icon {
@@ -179,6 +181,7 @@
   z-index: 2;
   color: #D2B356;
 }
+
 
 /* SIGNUP PAGE */
 
@@ -192,7 +195,8 @@
 }
 
 
-/* RIDES PAGE */
+
+/* TRIPS PAGE */
 
 .trips-top-box {
   background-color: white;
@@ -207,7 +211,11 @@
   color: #9c9c9c;
 }
 
+/* DRIVE PAGE */
 
+.drive-form-pic {
+  width: 105%
+}
 
 
 
@@ -247,6 +255,8 @@
 .active-trips {
   border: 2px solid black;
 }
+
+
 
 /* FOOTER */
 

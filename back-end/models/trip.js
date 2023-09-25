@@ -19,7 +19,7 @@ Trip.init({
         cityTo: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
-        depatureDate: {
+        departureDate: {
             type: DataTypes.DATE, allowNull: false, required: true
         },  
         arrivalDate: {

@@ -87,11 +87,14 @@ const registerUser = async (req, res) => {
 
     // Encrypt user password
     let encryptedPassword = await bcrypt.hash(password, 10);
+    let capitalizeFirstLetter = (string) => {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    };
 
     // Create user in our database
     const userMetadata = await Models.User.create({
-      firstName,
-      lastName,
+      firstName: capitalizeFirstLetter(firstName),
+      lastName: capitalizeFirstLetter(lastName),
       email: email.toLowerCase(), // sanitize: convert email to lowercase
       password: encryptedPassword,
       dateOfBirth: datedDOB,

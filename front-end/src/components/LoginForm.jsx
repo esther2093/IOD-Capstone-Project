@@ -94,8 +94,30 @@ export default function LoginForm() {
   };
 
   return (
-    <Box sx={{ flexGrow: 1, marginTop: "-4em" }}>
-      <Grid container component="main" >
+    <Box sx={{ flexGrow: 1, marginTop: "-4em",  }}>
+
+       <Box className="banner-content" id="second-banner-top">
+        <Box className="banner-section-box">
+          <Box className="banner-section-heading">
+            <Typography variant="h4" className="breakline">
+              —
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="h1"
+              id="banner-main-header"
+              sx={{ letterSpacing: -5 }}
+            >
+              LOGIN
+            </Typography>
+            <Typography variant="h4" className="breakline">
+              —
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
+
+      <Grid container component="main" sx={{ padding: "1em"}}>
         <CssBaseline />
         <Grid
           item
@@ -193,6 +215,7 @@ export default function LoginForm() {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  variant="outlined"
                   sx={{
                     fieldset: {
                       borderColor: "#D2B356",

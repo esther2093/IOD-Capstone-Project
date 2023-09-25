@@ -58,19 +58,22 @@ export default function SignUpForm() {
       // } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(userPassword)) {
       //   setError("Password must include a capital letter and a number.");
     } else if (!/^[A-Za-z]+$/i.test(userFirstName)) {
-      setError("Invalid first name");
+      setError("Invalid first name - must only contain letters");
     } else if (!/^[A-Za-z]+$/i.test(userLastName)) {
-      setError("Invalid last name");
+      setError("Invalid last name - must only contain letters");
     // } else if (age < 18) {
     //   setError("You must be over 18 years old to sign up");
+    } else if (!/^\d+$/.test(userDateOfBirth)) {
+      setError("Date of birth must contain only numbers.");
     // } else if (userPhoneNumber.length <= 10) {
     //   setError("You must input a valid phone number");
+    } else if (!/^\d+$/.test(userPhoneNumber)) {
+      setError("Phone number must contain only numbers.");
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userEmail)) {
       setError("Invalid email address");
     } else {
       setError("");
   
-      // convert form data to object and post to backend
       axios
         .post("http://localhost:8000/api/users/register", Object.fromEntries(data.entries()))
         .then((response) => {
@@ -90,7 +93,6 @@ export default function SignUpForm() {
         });
     }
   };
-  
 
   return (
     <Box sx={{ flexGrow: 1 }}>

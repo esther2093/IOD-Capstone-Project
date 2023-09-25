@@ -11,7 +11,7 @@ export default function HomeBanner() {
             —
           </Typography>
           <Typography
-            variant="h1"
+            variant="h1" 
             gutterBottom
             id="homepage-main-header"
             sx={{ letterSpacing: -5 }}

@@ -14,7 +14,7 @@ export default function Footer() {
           <Box className="col-33">
             <Typography variant="body2">
             © 2023 Esther Lee inc.
-            </Typography>
+            </Typography> 
           </Box>
         </Grid>
         <Grid item xs={12} sm={4} sx={{paddingRight: "1em", paddingBottom: "1em"}}>

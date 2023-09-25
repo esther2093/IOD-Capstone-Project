@@ -49,12 +49,12 @@ export default function SignUpForm() {
     const userPassword = data.get("password");
     const userEmail = data.get("email");
     const userPhoneNumber = data.get("phoneNumber");
-    const userDateofBirth = data.get("dateOfBirth")
+    const userDateOfBirth = data.get("dateOfBirth")
   
     if (userPassword.length < 6) {
       setError("Password must be at least 6 characters long");
     } else if (userPassword === userEmail) {
-      setError("Password must not match the email address");
+      setError("Password cannot be the same as your email address");
       // } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(userPassword)) {
       //   setError("Password must include a capital letter and a number.");
     } else if (!/^[A-Za-z]+$/i.test(userFirstName)) {
@@ -63,7 +63,7 @@ export default function SignUpForm() {
       setError("Invalid last name");
     // } else if (age < 18) {
     //   setError("You must be over 18 years old to sign up");
-    // } else if (userPhoneNumber.length < 10) {
+    // } else if (userPhoneNumber.length <= 10) {
     //   setError("You must input a valid phone number");
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(userEmail)) {
       setError("Invalid email address");
@@ -93,19 +93,30 @@ export default function SignUpForm() {
   
 
   return (
-    <div>
-      <div className="banner-content" id="banner-top">
-        <div className="col-45">
-          <div className="banner-section-heading">
-            <p className="breakline">—</p>
-            <h2 id="signup-main-header">JOIN THE FAMILY</h2>
-            <h3 id="signup-main-subtitle">
-              Looking to ship? 
-            </h3>
-            <p className="breakline">—</p>
-          </div>
-        </div>
-      </div>
+    <Box sx={{ flexGrow: 1 }}>
+       <Box className="banner-content" id="second-banner-top">
+        <Box className="banner-section-box">
+          <Box className="banner-section-heading">
+            <Typography variant="h4" className="breakline">
+              —
+            </Typography>
+            <Typography
+              gutterBottom
+              variant="h4"
+              id="banner-main-header"
+              sx={{ letterSpacing: -5 }}
+            >
+              JOINING THE FAMILY?
+            </Typography>
+            <Typography variant="subtitle1" id="banner-main-subtitle">
+              Let's be friends!
+            </Typography>
+            <Typography variant="h4" className="breakline">
+              —
+            </Typography>
+          </Box>
+        </Box>
+      </Box>
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Container
@@ -122,11 +133,14 @@ export default function SignUpForm() {
               alignItems: "center",
             }}
           >
-            <div className="signup-logo-container">
-              <Icon icon="solar:box-bold-duotone" height="41" />
+            <div className="logo-container">
+              <Icon     icon="solar:box-bold-duotone"
+                height="41"
+                className="icon-parcel" />
               <img src={Logo} alt="Logo" className="login-logo" />
             </div>
-            <Typography component="h4" className="login-subtitle">
+            <Typography  variant="body2"
+                sx={{ fontWeight: 300, textAlign: "center" }} >
               Please fill out your details below to join the party!
             </Typography>
 
@@ -241,7 +255,16 @@ export default function SignUpForm() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2 }}
+                sx={{ mt: 3, mb: 2, 
+                  backgroundColor: "#D2B356",
+                  margin: "1em",
+                  marginLeft: 0,
+                  "   &:hover": {
+                    backgroundColor: "#fff",
+                    color: "#D2B356",
+                    border: "none"
+                  },
+                }}
               >
                 Sign Up
               </Button>
@@ -256,6 +279,6 @@ export default function SignUpForm() {
           </Box>
         </Container>
       </LocalizationProvider>
-    </div>
+    </Box>
   );
 }

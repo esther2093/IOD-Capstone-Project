@@ -13,7 +13,7 @@ import { NavLink } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Box from "@mui/material/Box";
 import { HashLink } from "react-router-hash-link";
-import { useUserContext } from "../context/UserContext";
+import { useUserContext } from "../context/UserContext"; 
 
 const sections = [
   { link: "/#banner-top", label: "HOME" },

@@ -12,7 +12,7 @@ export default function Services() {
           </Grid>
 
           <Grid item xs={12} sm={6} sx={{paddingRight: "1em"}}>
-            <Box className="section-heading">
+            <Box className="section-heading"> 
             <Typography variant="h6" className="section-subhead" sx={{fontSize: "1em"}}>
               SERVICES
               </Typography>

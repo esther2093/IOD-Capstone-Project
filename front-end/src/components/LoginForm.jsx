@@ -155,6 +155,7 @@ export default function LoginForm() {
               >
                 Login with your details below
               </Typography>
+              
             </Box>
             {loggedIn ? (
               <>

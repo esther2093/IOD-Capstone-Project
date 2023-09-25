@@ -9,23 +9,10 @@ import useTripData from "../hooks/useTripData";
 import { Avatar, Button, Card, CardContent, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 
-
 function formatDate(dateString) {
   const date = new Date(dateString);
   const options = { year: "numeric", month: "short", day: "numeric" };
   return date.toLocaleDateString(undefined, options);
-}
-
-function CustomizedDialogs() {
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-  return 
 }
 
 export default function MyAccount() {
@@ -60,36 +47,71 @@ export default function MyAccount() {
       </Box>
 
       <Box sx={{ flexGrow: 1 }}>
-        <Grid spacing={1} container className="my-account-box" sx={{ margin: "0"}}>
+        <Grid
+          spacing={1}
+          container
+          className="my-account-box"
+          sx={{ margin: "0" }}
+        >
           <Grid
             item
             className="my-acount-details"
             xs={12}
             sm={12}
             md={4}
-            sx={{ pr: "0.5em", pb: "0.5em" }}
+            sx={{ ml: "-0.5em" }}
           >
             <Paper square elevation={3}>
-              <Box sx={{ justifyContent: "center"}}>
-              <Avatar variant="square" sx={{ width: "100%", height: "100%", margin: 0, backgroundColor: "white" }}>
-                   <img className="uploaded-profile-pic" src={"http://localhost:8000/"+currentUser.profilePicture} width="285" /> 
+              <Box sx={{ justifyContent: "center" }}>
+                <Avatar
+                  variant="square"
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    pt: "1em",
+                    pb: "1em",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <img
+                    src={"http://localhost:8000/" + currentUser.profilePhoto}
+                    width="80%"
+                    alt={currentUser.profilePhotoTitle}
+                  />
                 </Avatar>
                 <ProfilePictureDialog />
               </Box>
 
-
-              <Typography variant="h4">Profile Details</Typography>
-              <Typography variant="h6">
-                Name: {currentUser.firstName} {currentUser.lastName}
-              </Typography>
-              <Typography variant="h6">
-                Date of Birth: {formatDate(currentUser.dateOfBirth)}
-              </Typography>
-              <Typography variant="h6">Email: {currentUser.email}</Typography>
-              <Typography variant="h6">
-                {" "}
-                Phone Number: +61 {currentUser.phoneNumber}
-              </Typography>
+              <Box sx={{ flexGrow: 1, padding: "1.5em 1.5em 0em 1.5em" }}>
+                <Typography
+                  variant="h6"
+                  className="section-subhead"
+                  sx={{ fontSize: "1em" }}
+                >
+                  ABOUT YOU
+                </Typography>
+                <Typography
+                  variant="h4"
+                  className="section-title"
+                  sx={{ fontSize: "1.7em", fontWeight: 800 }}
+                >
+                  Profile Details:
+                </Typography>
+              </Box>
+              <Box sx={{ flexGrow: 1, padding: "0.5em 1em 2em 2.5em" }}>
+                <Typography variant="body1">
+                  Name: {currentUser.firstName} {currentUser.lastName}
+                </Typography>
+                <Typography variant="body1">
+                  Date of Birth: {formatDate(currentUser.dateOfBirth)}
+                </Typography>
+                <Typography variant="body1">
+                  Email: {currentUser.email}
+                </Typography>
+                <Typography variant="body1">
+                  Phone number: +61 {currentUser.phoneNumber}
+                </Typography>
+              </Box>
             </Paper>
           </Grid>
 
@@ -98,19 +120,42 @@ export default function MyAccount() {
             className="my-posted-trips"
             xs={12}
             sm={12}
-            md={8}
-            sx={{ pr: "0.5em", pb: "0.5em" }}
+            md={8.15}
+            sx={{ pr: "0.5em", pb: "0.5em", mr: "-1em" }}
           >
-            <Paper square elevation={3} >
-            <Typography variant="h4">Posted Trips</Typography>
-              <Grid container className="trip-card" sx={{ padding: "1em" }}>
-              
-              {userTrips.length === 0 ? (
-                <Typography variant="h6">You haven't posted any trips yet :(</Typography>
-              ) : (
+            <Paper square elevation={3} sx={{ mb: "0.5em" }}>
+              <Box x={{ flexGrow: 1 }} sx={{ padding: "1em 1em 0em 1em" }}>
+                <Typography
+                  variant="h6"
+                  className="section-subhead"
+                  sx={{ fontSize: "1em" }}
+                >
+                  ACTIVE TRIPS
+                </Typography>
+                <Typography
+                  variant="h4"
+                  className="section-title"
+                  sx={{ fontSize: "1.7em", fontWeight: 800 }}
+                >
+                  Active Trips:
+                </Typography>
+              </Box>
 
-                userTrips.map((trip) => (  
-                    <Grid item key={trip.id} xs={12} sm={6} md={4} sx={{ padding: "1em" }} >
+              <Grid container className="trip-card" sx={{ padding: "1em" }}>
+                {userTrips.length === 0 ? (
+                  <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
+                    You haven't enquired on any trips yet :(
+                  </Typography>
+                ) : (
+                  userTrips.map((trip) => (
+                    <Grid
+                      item
+                      key={trip.id}
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      sx={{ padding: "1em" }}
+                    >
                       <Card>
                         <CardContent>
                           <Typography variant="h6">
@@ -150,15 +195,88 @@ export default function MyAccount() {
                         </CardContent>
                       </Card>
                     </Grid>
-                  
-                ))
-              )}
+                  ))
+                )}
               </Grid>
             </Paper>
-            
+
+            <Paper square elevation={3} sx={{ mb: "0.5em" }}>
+              <Box x={{ flexGrow: 1 }} sx={{ padding: "1em 1em 0em 1em" }}>
+                <Typography
+                  variant="h6"
+                  className="section-subhead"
+                  sx={{ fontSize: "1em" }}
+                >
+                  YOUR TRIPS
+                </Typography>
+                <Typography
+                  variant="h4"
+                  className="section-title"
+                  sx={{ fontSize: "1.7em", fontWeight: 800 }}
+                >
+                  Posted Trips:
+                </Typography>
+              </Box>
+              <Grid container className="trip-card" sx={{ padding: "1em" }}>
+                {userTrips.length === 0 ? (
+                 <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
+                 You haven't posted any trips yet :(
+               </Typography>
+                ) : (
+                  userTrips.map((trip) => (
+                    <Grid
+                      item
+                      key={trip.id}
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      sx={{ padding: "1em" }}
+                    >
+                      <Card>
+                        <CardContent>
+                          <Typography variant="h6">
+                            From: {trip.cityFrom}
+                          </Typography>
+                          <Typography variant="h6">
+                            To: {trip.cityTo}
+                          </Typography>
+                          <Typography variant="body2">
+                            Departure Date: {formatDate(trip.depatureDate)}
+                          </Typography>
+                          <Typography variant="body2">
+                            Arrival Date: {formatDate(trip.arrivalDate)}
+                          </Typography>
+
+                          <Box display="flex" justifyContent="center">
+                            <Link
+                              to={`/trip/${trip.id}`}
+                              style={{ textDecoration: "none" }}
+                            >
+                              <Button
+                                variant="contained"
+                                sx={{
+                                  backgroundColor: "#D2B356",
+                                  margin: "1em",
+                                  marginLeft: 0,
+                                  "   &:hover": {
+                                    backgroundColor: "#fff",
+                                    color: "#D2B356",
+                                  },
+                                }}
+                              >
+                                More Details
+                              </Button>
+                            </Link>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </Grid>
+                  ))
+                )}
+              </Grid>
+            </Paper>
           </Grid>
         </Grid>
-        <Box className="active-trips"></Box>
       </Box>
     </Box>
   );

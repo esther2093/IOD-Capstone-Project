@@ -10,11 +10,20 @@ import { Button, TextField } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 
 export default function TripsList() {
-  const { allTrips } = useTripData();
+    const { allTrips } = useTripData();
   const { users } = useUserData();
 
   const [filteredTrips, setFilteredTrips] = useState(allTrips);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [userFirstNames, setUserFirstNames] = useState([]);
+
+  useEffect(() => {
+    const firstNamesArray = users.map((user) => user.firstName);
+    setUserFirstNames(firstNamesArray);
+    console.log("Users:", users); 
+    console.log("First Names:", firstNamesArray); 
+  }, [users]);
 
   const handleSearch = () => {
     const formattedSearchTerm = searchTerm.toLowerCase();
@@ -42,6 +51,8 @@ export default function TripsList() {
   useEffect(() => {
     handleSearch();
   }, [allTrips]);
+
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -167,7 +178,7 @@ export default function TripsList() {
                       {new Date(trip.arrivalDate).toLocaleDateString()}
                     </Typography>
                     <Typography variant="body1">
-                      Posted by: {trip.userId}
+                      Posted by: {userFirstNames[trip.userId - 1]}
                     </Typography>
 
                     <Box display="flex" justifyContent="center">

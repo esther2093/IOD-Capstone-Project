@@ -10,33 +10,33 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import Switch from '@mui/material/Switch';
 
 export default function ProfilePictureDialog() {
   const [image, setImage] = useState({ preview: "", data: "" });
   const [status, setStatus] = useState("");
   const { currentUser, handleUpdateUser } = useUserContext();
   const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
-
   const [open, setOpen] = React.useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    resetForm();
     setOpen(false);
   };
 
-  console.log(currentUser);
+  const resetForm = () => {
+    setImage({ preview: "", data: "" });
+    setStatus("");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     let formData = new FormData();
     formData.append("file", image.data);
 
@@ -44,7 +44,7 @@ export default function ProfilePictureDialog() {
       const response = await axios.post(
         `http://localhost:8000/api/users/${currentUser.id}/image`,
         formData
-      ); // see backend for this route
+      );
       console.log(response.data);
       setStatus(response.data.result);
       handleUpdateUser({ ...currentUser, ...response.data.data });
@@ -54,8 +54,6 @@ export default function ProfilePictureDialog() {
   };
 
   const handleFileChange = (e) => {
-    console.log(e.target.files[0]);
-
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
       data: e.target.files[0],
@@ -64,65 +62,79 @@ export default function ProfilePictureDialog() {
   };
 
   return (
-    <Box>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Change your profile picture
+    <Box
+      sx={{
+        flexGrow: 1,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        mb: "1em" 
+      }}
+    >
+      <Button variant="outlined" onClick={handleClickOpen} sx={{ 
+                    border: 1,
+                    padding: "0.3em 1em",
+                    fontSize: "0.8em",
+                    "&:hover": {
+                      color: "#d2b356",
+                      border: "1px #d2b356 solid",
+                    },
+                  }}>
+        Update Profile Picture
       </Button>
       <Dialog
-        fullScreen={fullScreen}
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-         <DialogContent>
-        <Container component="main" sx={{ pl: 0 }}>
-          <Avatar
-            variant="square"
-            sx={{
-              m: 1,
-              width: "100%",
-              height: "100%",
-              margin: 0,
-              backgroundColor: "white",
-            }}
-          >
-            <img
-              className="uploaded-profile-pic"
-              src={"http://localhost:8000/" + currentUser.profilePicture}
-              width="285"
-            />
-          </Avatar>
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            noValidate
-            sx={{
-              marginTop: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            {image.preview && (
-              <img src={image.preview} width="100" height="100" />
-            )}
-            <input name="photo" type="file" onChange={handleFileChange} />
+        <DialogContent>
+          <Container component="main" sx={{ pl: 0 }}>
+            <Avatar q
+              variant="square"
+              sx={{
+                m: 1,
+                width: "100%",
+                height: "100%",
+                margin: 0,
+                backgroundColor: "white",
+              }}
+            >
+              <img
+                src={"http://localhost:8000/" + currentUser.profilePhoto}
+                width="50%"
+                alt={currentUser.profilePhotoTitle}
+              />
+            </Avatar>
+            <Box
+              component="form"
+              onSubmit={handleSubmit}
+              noValidate
+              sx={{
+                marginTop: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {image.preview && (
+                <img src={image.preview} width="100" height="100" />
+              )}
+              <input name="photo" type="file" onChange={handleFileChange} />
 
-            <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
-              Submit
-            </Button>
-          </Box>
-          <Typography
-            variant="body2"
-            sx={{
-              fontWeight: 300,
-              margin: "1em",
-              textAlign: "center",
-            }}
-          >
-            {status}
-          </Typography>
-        </Container>
+              <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
+                Submit
+              </Button>
+            </Box>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 300,
+                textAlign: "center",
+              }}
+            >
+              {status}
+            </Typography>
+          </Container>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} autoFocus>

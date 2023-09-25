@@ -31,7 +31,7 @@ function TripDetails() {
       <Typography variant="body1">
         Other Comments: {tripData.otherComments}
       </Typography>
-      {/* You can add more trip details here as needed */}
+    
       <Button variant="contained" onClick={() => history.goBack()}>
         Back to Trips
       </Button>

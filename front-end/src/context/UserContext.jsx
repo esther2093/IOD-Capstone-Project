@@ -14,8 +14,9 @@ export const UserProvider = (props) => {
     const handleUpdateUser = (user) => {
         if (user.email) {
             setCookie('user', JSON.stringify(user), { path: '/', maxAge: 60 * 60 * 24 * 2 }) 
+          } else {
             removeCookie('user')
-        }        
+        }         
         setCurrentUser(user);
     };
 

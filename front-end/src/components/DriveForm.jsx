@@ -82,18 +82,23 @@ export default function DriveForm() {
       </Box>
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Grid container component="main" sx={{ padding: "1em", backgroundColor: "white"}}>
+          <Grid container component="main" sx={{ display: { xs: "block", sm: "block", md: "flex" }, padding: "1em", backgroundColor: "white"}}>
             <Grid
               item
               xs={null}
               sm={5}
               md={5}
-              sx={{ display: { xs: "block", md: "flex" } }}
+              sx={{
+                backgroundImage: `url(${driveformpic})`,
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "contain",
+                backgroundColor: "white",
+                backgroundPosition: "center",
+              }}
             >
-              <img src={driveformpic} alt="car+parcels" className="drive-form-pic"></img>
             </Grid>
 
-            <Grid item xs={12} sm={7} md={7}>
+            <Grid item xs={12} sm={12} md={7}>
               <Box
                 sx={{
                   my: 8,

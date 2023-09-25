@@ -83,7 +83,7 @@ export default function LoginForm() {
 
       setTimeout(() => {
         window.location.href = "/";
-      }, 2000000);
+      }, 4000);
     }
   };
 

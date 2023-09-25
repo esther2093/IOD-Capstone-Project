@@ -51,7 +51,8 @@ export default function TripsList() {
             <Typography variant="h4" className="breakline">
               —
             </Typography>
-            <Typography gutterBottom
+            <Typography
+              gutterBottom
               variant="h4"
               id="banner-main-header"
               sx={{ letterSpacing: -5 }}
@@ -80,13 +81,26 @@ export default function TripsList() {
             <Typography
               variant="h4"
               className="trips-title"
-              sx={{ fontSize: "1.7em", fontWeight: 800, paddingTop: '1em', paddingLeft: '1em' }}
+              sx={{
+                fontSize: "1.7em",
+                fontWeight: 800,
+                paddingTop: "1em",
+                paddingLeft: "1em",
+              }}
             >
               Available Trips
             </Typography>
-            <Typography variant="subtitle1" className="trips-subtitle" sx={{ paddingLeft: '1.5em', paddingBottom: "1em", lineHeight: "1.2" }}>
+            <Typography
+              variant="subtitle1"
+              className="trips-subtitle"
+              sx={{
+                paddingLeft: "1.5em",
+                paddingBottom: "1em",
+                lineHeight: "1.2",
+              }}
+            >
               Look through the trips below and find the one that best suits you!
-              <br/> 
+              <br />
               You can also search if you need to.
             </Typography>
           </Grid>
@@ -155,33 +169,27 @@ export default function TripsList() {
                     <Typography variant="body1">
                       Posted by: {trip.userId}
                     </Typography>
-                    {/* <Typography variant="body2">
-                      Available Space: {trip.availableSpace}
-                    </Typography>
-                    <Typography variant="body2">
-                      Other Comments: {trip.otherComments}
-                    </Typography> */}
 
-<Box display="flex" justifyContent="center">
-                    <Link
-                      to={`/trip/${trip.id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: "#D2B356",
-                          margin: "1em",
-                          marginLeft: 0,
-                          "   &:hover": {
-                            backgroundColor: "#fff",
-                            color: "#D2B356",
-                          },
-                        }}
+                    <Box display="flex" justifyContent="center">
+                      <Link
+                        to={`/trip/${trip.id}`}
+                        style={{ textDecoration: "none" }}
                       >
-                        More Details
-                      </Button>
-                    </Link>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: "#D2B356",
+                            margin: "1em",
+                            marginLeft: 0,
+                            "   &:hover": {
+                              backgroundColor: "#fff",
+                              color: "#D2B356",
+                            },
+                          }}
+                        >
+                          More Details
+                        </Button>
+                      </Link>
                     </Box>
                   </CardContent>
                 </Card>

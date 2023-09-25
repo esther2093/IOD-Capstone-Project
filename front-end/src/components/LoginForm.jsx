@@ -1,47 +1,45 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { useUserContext } from "../context/UserContext";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
-import { Container, OutlinedInput } from "@mui/material";
+import { OutlinedInput } from "@mui/material";
 import axios from "axios";
-import FilledInput from "@mui/material/FilledInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
-import { useCookies } from "react-cookie";
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
-  const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
 
   const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
   const [errMsg, setErrMsg] = React.useState("");
   const [loginAttempts, setLoginAttempts] = React.useState(0);
   const [showPassword, setShowPassword] = useState(false);
 
-  console.log(currentUser);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
+  console.log(currentUser);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
+
     console.log({
       email: data.get("email"),
       password: data.get("password"),
@@ -60,10 +58,6 @@ export default function LoginForm() {
       loggedInUser = response.data.data;
       console.log(loggedInUser);
       
-      let expires = new Date();
-      expires.setTime(expires.getTime() + (response.data.expires_in * 1000));
-      setCookie('access_token', response.data.access_token, { path: '/', expires });
-      setCookie('refresh_token', response.data.refresh_token, { path: '/', expires });
 
     } catch (err) {
       console.log(err.message);
@@ -89,7 +83,7 @@ export default function LoginForm() {
 
       setTimeout(() => {
         window.location.href = "/";
-      }, 200000);
+      }, 4000);
     }
   };
 

@@ -10,11 +10,20 @@ import { Button, TextField } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 
 export default function TripsList() {
-  const { allTrips } = useTripData();
+    const { allTrips } = useTripData();
   const { users } = useUserData();
 
   const [filteredTrips, setFilteredTrips] = useState(allTrips);
   const [searchTerm, setSearchTerm] = useState("");
+
+  const [userFirstNames, setUserFirstNames] = useState([]);
+
+  useEffect(() => {
+    const firstNamesArray = users.map((user) => user.firstName);
+    setUserFirstNames(firstNamesArray);
+    console.log("Users:", users); 
+    console.log("First Names:", firstNamesArray); 
+  }, [users]);
 
   const handleSearch = () => {
     const formattedSearchTerm = searchTerm.toLowerCase();
@@ -43,6 +52,8 @@ export default function TripsList() {
     handleSearch();
   }, [allTrips]);
 
+
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box className="banner-content" id="second-banner-top">
@@ -51,7 +62,8 @@ export default function TripsList() {
             <Typography variant="h4" className="breakline">
               —
             </Typography>
-            <Typography gutterBottom
+            <Typography
+              gutterBottom
               variant="h4"
               id="banner-main-header"
               sx={{ letterSpacing: -5 }}
@@ -80,13 +92,26 @@ export default function TripsList() {
             <Typography
               variant="h4"
               className="trips-title"
-              sx={{ fontSize: "1.7em", fontWeight: 800, paddingTop: '1em', paddingLeft: '1em' }}
+              sx={{
+                fontSize: "1.7em",
+                fontWeight: 800,
+                paddingTop: "1em",
+                paddingLeft: "1em",
+              }}
             >
               Available Trips
             </Typography>
-            <Typography variant="subtitle1" className="trips-subtitle" sx={{ paddingLeft: '1.5em', paddingBottom: "1em", lineHeight: "1.2" }}>
+            <Typography
+              variant="subtitle1"
+              className="trips-subtitle"
+              sx={{
+                paddingLeft: "1.5em",
+                paddingBottom: "1em",
+                lineHeight: "1.2",
+              }}
+            >
               Look through the trips below and find the one that best suits you!
-              <br/> 
+              <br />
               You can also search if you need to.
             </Typography>
           </Grid>
@@ -153,35 +178,29 @@ export default function TripsList() {
                       {new Date(trip.arrivalDate).toLocaleDateString()}
                     </Typography>
                     <Typography variant="body1">
-                      Posted by: {trip.userId}
+                      Posted by: {userFirstNames[trip.userId - 1]}
                     </Typography>
-                    {/* <Typography variant="body2">
-                      Available Space: {trip.availableSpace}
-                    </Typography>
-                    <Typography variant="body2">
-                      Other Comments: {trip.otherComments}
-                    </Typography> */}
 
-<Box display="flex" justifyContent="center">
-                    <Link
-                      to={`/trip/${trip.id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: "#D2B356",
-                          margin: "1em",
-                          marginLeft: 0,
-                          "   &:hover": {
-                            backgroundColor: "#fff",
-                            color: "#D2B356",
-                          },
-                        }}
+                    <Box display="flex" justifyContent="center">
+                      <Link
+                        to={`/trip/${trip.id}`}
+                        style={{ textDecoration: "none" }}
                       >
-                        More Details
-                      </Button>
-                    </Link>
+                        <Button
+                          variant="contained"
+                          sx={{
+                            backgroundColor: "#D2B356",
+                            margin: "1em",
+                            marginLeft: 0,
+                            "   &:hover": {
+                              backgroundColor: "#fff",
+                              color: "#D2B356",
+                            },
+                          }}
+                        >
+                          More Details
+                        </Button>
+                      </Link>
                     </Box>
                   </CardContent>
                 </Card>

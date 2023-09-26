@@ -18,9 +18,11 @@ const createTrip = (data, res) => {
 }
 
 const registerTrip = async (req, res) => {
-    let depatureDate = req.body.depatureDate;
-    let arrivalDate = req.body.arrivalDate;          
-    let reverseDepDate = depatureDate.split("-").reverse().join("-");
+    let departureDate = req.body.departureDate;
+    console.log(departureDate);
+    let arrivalDate = req.body.arrivalDate;     
+    console.log(arrivalDate); 
+    let reverseDepDate = departureDate.split("-").reverse().join("-");
     let reverseArrDate = arrivalDate.split("-").reverse().join("-");
     let convertedDepD = new Date(reverseDepDate);
     console.log(convertedDepD);
@@ -29,7 +31,7 @@ const registerTrip = async (req, res) => {
 
     try {
 
-        const { userId, cityFrom, cityTo, depatureDate, arrivalDate, availableSpace, otherComments } = req.body;
+        const { userId, cityFrom, cityTo, departureDate, arrivalDate, availableSpace, otherComments } = req.body;
 
         if (!(userId, cityFrom && cityTo && convertedDepD && convertedArrD && availableSpace && otherComments)) {
             res.status(400).json({ result: "All input is required"});
@@ -40,7 +42,7 @@ const registerTrip = async (req, res) => {
             userId,
             cityFrom,
             cityTo,
-            depatureDate: convertedDepD, 
+            departureDate: convertedDepD, 
             arrivalDate: convertedArrD,
             availableSpace,
             otherComments

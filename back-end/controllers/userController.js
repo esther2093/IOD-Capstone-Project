@@ -8,9 +8,7 @@ const EmailHelper = require("../libraries/EmailHelper");
 const getUsers = (res) => {
   Models.User.findAll({})
     .then(function (data) {
-      res
-        .status(200)
-        .json({ result: "User data fetched successfully", data: data });
+      res.status(200).json({ result: "User data fetched successfully", data: data });
     })
     .catch((err) => {
       res.status(500).json({ result: err.message });
@@ -45,9 +43,7 @@ const loginUser = async (req, res) => {
       console.log(user);
 
       // send back logged in user details including token
-      res
-        .status(200)
-        .json({ result: "User successfully logged in", data: user });
+      res.status(200).json({ result: "User successfully logged in", data: user });
     } else res.status(400).json({ result: "Invalid user credentials" });
   } catch (err) {
     console.log(err);
@@ -55,7 +51,6 @@ const loginUser = async (req, res) => {
   }
 };
 
-// registers a new user by validating their details, encrypting their password, and generating a token
 const registerUser = async (req, res) => {
   let dateOfBirth = req.body.dateOfBirth;
   console.log(dateOfBirth);
@@ -63,55 +58,66 @@ const registerUser = async (req, res) => {
   console.log(reverseDate);
   let datedDOB = new Date(reverseDate);
   console.log(datedDOB);
+  const age = new Date().getFullYear() - datedDOB.getFullYear() - (new Date().getMonth() < datedDOB.getMonth() || 
+  (new Date().getMonth() === datedDOB.getMonth() && new Date().getDate() < datedDOB.getDate()) ? 1 : 0);
+
 
   try {
-    // Get user input by destructuring request body
-    const { firstName, lastName, email, password, phoneNumber, dateOfBirth } =
-      req.body;
+    const { firstName, lastName, email, password, phoneNumber, dateOfBirth } = req.body;
 
-    // Validate user input
-    if (
-      !(email && password && firstName && lastName && datedDOB && phoneNumber)
-    ) {
+    if (!(email && password && firstName && lastName && dateOfBirth && phoneNumber)) {
       res.status(400).json({ result: "All input is required" });
-      return; // when sending responses and finishing early, manually return or end the function to stop further processing
+    } else if (password.length < 6) {
+      res.status(400).json({ result: "Password must be at least 6 characters long" });
+    } else if (password === email) {
+      res.status(400).json({ result: "Password cannot be the same as your email address" });
+    // } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(password)) {
+    //   res.status(400).json({ result: "Password must include a capital letter and a number." });
+    } else if (!/^[A-Za-z]+$/i.test(firstName)) {
+      res.status(400).json({ result: "Invalid first name" });
+    } else if (!/^[A-Za-z]+$/i.test(lastName)) {
+      res.status(400).json({ result: "Invalid last name" });
+    } else if (!/^\d{2}-\d{2}-\d{4}$/.test(dateOfBirth)) {
+      res.status(400).json({ result: "Date of Birth must be in the format DD-MM-YYYY" });
+    } else if (age < 18) {
+      res.status(400).json({ result: "You must be over 18 years old to sign up" });
+    } else if (phoneNumber.length > 10) {
+      res.status(400).json({ result: "You must input a valid phone number" });
+    } else if (!/^[0-9]+$/.test(phoneNumber)) {
+      res.status(400).json({ result: "Phone number must contain numbers only" });
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      res.status(400).json({ result: "Invalid email address" });
+    } else {
+      const oldUser = await Models.User.findOne({ where: { email } });
+      if (oldUser) {
+        res.status(409).json({ result: "This email address already exists. Please login!" });
+        return;
+      }
+
+      // Encrypt user password
+      let encryptedPassword = await bcrypt.hash(password, 10);
+
+      let capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      };
+
+      // Create user in our database
+      const userMetadata = await Models.User.create({
+        firstName: capitalizeFirstLetter(firstName),
+        lastName: capitalizeFirstLetter(lastName),
+        email: email.toLowerCase(),
+        password: encryptedPassword,
+        dateOfBirth: datedDOB,
+        phoneNumber,
+      });
+      const user = userMetadata.get({ plain: true });
+
+      // Create token
+      const token = createToken(user.id, email);
+      user.token = token;
+
+      res.status(201).json({ result: "User successfully registered", data: user });
     }
-
-    // Validate if user exists in our database
-    const oldUser = await Models.User.findOne({ where: { email } });
-
-    if (oldUser) {
-      res.status(409).json({ result: "User already exists. Please login" });
-      return; // when sending responses and finishing early, manually return or end the function to stop further processing
-    }
-
-    // Encrypt user password
-    let encryptedPassword = await bcrypt.hash(password, 10);
-    let capitalizeFirstLetter = (string) => {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    };
-
-    // Create user in our database
-    const userMetadata = await Models.User.create({
-      firstName: capitalizeFirstLetter(firstName),
-      lastName: capitalizeFirstLetter(lastName),
-      email: email.toLowerCase(), // sanitize: convert email to lowercase
-      password: encryptedPassword,
-      dateOfBirth: datedDOB,
-      phoneNumber,
-    });
-    const user = userMetadata.get({ plain: true }); // get just the user fields, no extra sequelize metadata
-
-    // Create token
-    const token = createToken(user.id, email);
-
-    // save user token to send back to front-end
-    user.token = token;
-
-    // return new user
-    res
-      .status(201)
-      .json({ result: "User successfully registered", data: user });
   } catch (err) {
     console.log(err);
     res.status(500).json({ result: err.message });
@@ -124,9 +130,7 @@ const getUserById = (userId, res) => {
       if (!user) {
         res.status(404).json({ result: "User not found" });
       } else {
-        res
-          .status(200)
-          .json({ result: "User data fetched successfully", data: user });
+        res.status(200).json({ result: "User data fetched successfully", data: user });
       }
     })
     .catch((err) => {
@@ -174,8 +178,7 @@ const deleteUser = (req, res) => {
 const addProfileImage = (req, res) => {
   console.log(req.file); // saved filename is in req.file.filename
   const userUpdates = {
-    profilePhoto: "/images/" + req.file.filename,
-    profilePhotoTitle: req.body.imageTitle,
+    profilePicture: "/images/" + req.file.filename,
   };
   console.log(userUpdates);
 
@@ -183,12 +186,10 @@ const addProfileImage = (req, res) => {
   Models.User.update(userUpdates, { where: { id: req.params.userId } })
     .then(
       (response) =>
-        res
-          .status(200)
-          .json({
-            result: "Image uploaded to profile successfully",
-            data: userUpdates,
-          }) // send updated info back in response
+        res.status(200).json({
+          result: "Image uploaded to profile successfully",
+          data: userUpdates,
+        }) // send updated info back in response
     )
     .catch((err) => res.status(500).json({ result: err.message }));
 };
@@ -202,17 +203,12 @@ const sendPassword = async (req, res) => {
     // reset password to last 10 chars of email address, then send an email notifying them
     let newPassword = await bcrypt.hash(email.substring(email.length - 10), 10);
 
-    let [updatedUserCount, updatedUserRows] = await Models.User.update(
-      { password: newPassword },
-      { where: { email: email } }
-    );
+    let [updatedUserCount, updatedUserRows] = await Models.User.update({ password: newPassword }, { where: { email: email } });
 
     if (updatedUserCount < 1) {
-      res
-        .status(404)
-        .json({
-          result: "User with email " + email + " not found, register first",
-        });
+      res.status(404).json({
+        result: "User with email " + email + " not found, register first",
+      });
       return;
     }
   } catch (err) {
@@ -226,9 +222,7 @@ const sendPassword = async (req, res) => {
     .then((response) => {
       //EmailHelper.sendHTMLEmail(email, 'Your password has been reset', 'Your password is now the last 10 characters of your email address').then(response => {
       //console.log(response);
-      res
-        .status(200)
-        .json({ result: "Reset email sent successfully, check your email" });
+      res.status(200).json({ result: "Reset email sent successfully, check your email" });
     })
     .catch((error) => {
       console.log(error.response.body.errors);

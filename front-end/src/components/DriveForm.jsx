@@ -15,14 +15,29 @@ import driveformpic from "../assets/driveformpic.jpeg";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import { FormControl } from "@mui/material";
+import { FormControl, FormHelperText, InputAdornment, Tooltip } from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
+
+let toolTipText = `
+    Space: 
+    Small = ≤ 30cm x 30cm)
+    Medium = ≤ 60cm x 60cm)
+    Large = ≤ 100cm x 100cm)
+    Extra Large = > 100cm x 100cm)`;
+
+let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
 export default function DriveForm() {
   const [error, setError] = useState("");
   const [submitResult, setSubmitResult] = useState("");
+  const [availableSpace, setAvailableSpace] = useState([]);
 
   const { currentUser, handleUpdateUser } = useUserContext();
   const navigate = useNavigate();
+
+  const handleChange = (event) => {
+    setAvailableSpace(event.target.value);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,7 +46,6 @@ export default function DriveForm() {
 
     const data = new FormData(event.currentTarget);
     const userId = currentUser.id;
-    console.log(userId);
     data.append("userId", userId);
 
     axios
@@ -118,7 +132,7 @@ export default function DriveForm() {
               </Typography>
 
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                <Typography variant="body2" color="error" sx={{textAlign: "center"}}>
+                <Typography variant="body2" color="error" sx={{ textAlign: "center" }}>
                   {error}
                 </Typography>
                 <Typography variant="body2" color="success">
@@ -156,25 +170,41 @@ export default function DriveForm() {
 
                   <Grid item xs={12} sx={{ paddingRight: "1em" }}>
                     <FormControl fullWidth required>
-                      <InputLabel id="demo-simple-select-label">Available Space</InputLabel>
-                      <Select required name="availableSpace" label="Available Space" id="availableSpace" helperText="Available Space">
-                        <MenuItem value={"small"}>Small ( ≤ 30cm x 30cm)</MenuItem>
-                        <MenuItem value={"medium"}>Medium ( ≤ 60cm x 60cm)</MenuItem>
-                        <MenuItem value={"large"}>Large ( ≤ 100cm x 100cm)</MenuItem>
-                        <MenuItem value={"x-large"}>Extra Large ( > 100cm x 100cm)</MenuItem>
+                     
+                      <Select
+                        id="availableSpace"
+                        multiple
+          
+                        value={availableSpace}
+                        onChange={handleChange}
+                        
+                        startAdornment={
+                          <InputAdornment position="start">
+                            <Tooltip title={toolTipText} arrow placement="bottom">
+                              <InfoIcon />
+                            </Tooltip>
+                          </InputAdornment>
+                        }
+                      >
+                        {spaceSizes.map((spaceSize) => (
+                          <MenuItem key={spaceSize} value={spaceSize}>
+                            {spaceSize}
+                          </MenuItem>
+                        ))}
                       </Select>
+                      <FormHelperText>Available Space</FormHelperText>
                     </FormControl>
                   </Grid>
 
                   <Grid item xs={12} sx={{ paddingRight: "1em" }}>
-                    <TextField fullWidth name="otherComments" label="Other comments" id="otherComments" autoComplete="otherComments" />
+                    <TextField fullWidth name="comments" label="Write any additional comments" id="comments" autoComplete="comments" helperText="Comments" />
                   </Grid>
                   <Button
                     type="submit"
                     fullWidth
                     variant="contained"
                     sx={{
-                      margin: "4em 1em",
+                      margin: "3em 1em",
                       backgroundColor: "#D2B356",
                       "&:hover": {
                         backgroundColor: "#fff",

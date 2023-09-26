@@ -10,6 +10,10 @@ import { Avatar, Button, Card, CardContent, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import UpdateProfile from "./UpdateProfile";
 
+function formatPhoneNumber(phoneNumber) {
+  return phoneNumber.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '+61 $1-$2-$3');
+}
+
 function formatDate(dateString) {
   const date = new Date(dateString);
   const options = { year: "numeric", month: "short", day: "numeric" };
@@ -44,7 +48,7 @@ export default function MyAccount() {
 
       <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center", p: "0.5em" }}>
         <Grid container spacing={0} className="my-account-box">
-          <Grid item spacing={0} className="my-acount-details" xs={12} sm={6} md={4} lg={3} xl={2.5}>
+          <Grid item className="my-acount-details" xs={12} sm={6} md={4} lg={3} xl={2.5}>
             <Paper square elevation={3} sx={{ m: "0.5em" }}>
               <Grid item sx={{ ml: "1em" }}>
                 <Avatar
@@ -83,18 +87,19 @@ export default function MyAccount() {
                     Email: {currentUser.email}
                   </Typography>
                   <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
-                    Phone number: +61 {currentUser.phoneNumber}
+                    Phone number: {currentUser.phoneNumber}
                   </Typography>
                 </Box>
-
+ 
                 <Box>
                   <UpdateProfile />
                 </Box>
+
               </Grid>
             </Paper>
           </Grid>
 
-          <Grid item className="my-active-trips" xs={12} sm={6} md={8} lg={9} xl={9.5} >
+          <Grid item className="my-active-trips" xs={12} sm={6} md={8} lg={9} xl={9.5}>
             <Paper square elevation={3} sx={{ m: "0.5em" }}>
               <Box sx={{ flexGrow: 1, padding: "1em 1em 0em 1em" }}>
                 <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
@@ -112,7 +117,7 @@ export default function MyAccount() {
                   </Typography>
                 ) : (
                   userTrips.map((trip) => (
-                    <Grid item key={trip.id} xs={12} sm={6} md={4} sx={{ padding: "1em" }}>
+                    <Grid item key={trip.id} xs={12} sm={12} md={6} lg={4} xl={3} sx={{ padding: "1em" }}>
                       <Card>
                         <CardContent>
                           <Typography variant="h6">From: {trip.cityFrom}</Typography>

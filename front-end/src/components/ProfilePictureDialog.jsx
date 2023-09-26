@@ -122,9 +122,9 @@ export default function ProfilePictureDialog() {
               }}
             >
               <img
-                src={"http://localhost:8000/" + currentUser.profilePhoto}
+                src={"http://localhost:8000/" + currentUser.profilePicture}
                 width="50%"
-                alt={currentUser.profilePhotoTitle}
+                alt={"NO PROFILE PICTURE"}
               />
             </Avatar>
             <Box

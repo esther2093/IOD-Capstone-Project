@@ -40,7 +40,7 @@ Trip.init({
         availableSpace: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
-        otherComments: {
+        comments: {
             type: DataTypes.STRING, allowNull: false, required: true
         }
     },

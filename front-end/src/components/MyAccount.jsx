@@ -8,6 +8,7 @@ import { useUserContext } from "../context/UserContext";
 import useTripData from "../hooks/useTripData";
 import { Avatar, Button, Card, CardContent, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
+import UpdateProfile from "./UpdateProfile";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -21,7 +22,7 @@ export default function MyAccount() {
   const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
       <Box className="banner-content" id="second-banner-top">
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
@@ -41,59 +42,61 @@ export default function MyAccount() {
         </Box>
       </Box>
 
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid spacing={0} container className="my-account-box">
-          <Grid item className="my-acount-details" xs={12} sm={12} md={12} lg={4}>
-            
-            <Paper square elevation={3}>
-              <Grid container spacing={0}>
-                <Grid item xs={12} sm={6} xl={6} sx={{ justifyContent: "center" }}>
-                  <Avatar
-                    variant="square"
-                    sx={{
-                      width: "80%",
-                      height: "80%",
-                      pt: "1em",
-                      pb: "1em",
-                      backgroundColor: "white",
-                    }}
-                  >
-                    <img src={"http://localhost:8000/" + currentUser.profilePicture} width="100%" alt={"NO PROFILE PICTURE"} />
-                  </Avatar>
-                  <ProfilePictureDialog />
-                </Grid>
+      <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center", p: "0.5em" }}>
+        <Grid container spacing={0} className="my-account-box">
+          <Grid item spacing={0} className="my-acount-details" xs={12} sm={6} md={4} lg={3} xl={2.5}>
+            <Paper square elevation={3} sx={{ m: "0.5em" }}>
+              <Grid item sx={{ ml: "1em" }}>
+                <Avatar
+                  variant="square"
+                  sx={{
+                    width: "90%",
+                    height: "90%",
+                    pt: "1em",
+                    pb: "1em",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <img src={"http://localhost:8000/" + currentUser.profilePicture} width="100%" alt={"NO PROFILE PICTURE"} />
+                </Avatar>
+              </Grid>
+              <Box>
+                <ProfilePictureDialog />
+              </Box>
 
-                <Grid xs={6} sm={6} md= {12} lg={12} xl={6} item sx={{ padding: "1.5em 1.5em 0em 1.5em" }}>
-                  <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
-                    ABOUT YOU
+              <Grid item sx={{ p: "1em" }}>
+                <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
+                  ABOUT YOU
+                </Typography>
+                <Typography variant="h4" className="section-title" sx={{ fontSize: "1.7em", fontWeight: 800 }}>
+                  Profile Details:
+                </Typography>
+
+                <Box sx={{ px: "2em", py: "1em" }}>
+                  <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
+                    Name: {currentUser.firstName} {currentUser.lastName}
                   </Typography>
-                  <Typography variant="h4" className="section-title" sx={{ fontSize: "1.7em", fontWeight: 800 }}>
-                    Profile Details:
+                  <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
+                    Date of Birth: {formatDate(currentUser.dateOfBirth)}
                   </Typography>
+                  <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
+                    Email: {currentUser.email}
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
+                    Phone number: +61 {currentUser.phoneNumber}
+                  </Typography>
+                </Box>
 
-                  <Box sx={{ padding: "0.5em 1em 2em 2.5em" }}>
-                    <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
-                      Name: {currentUser.firstName} {currentUser.lastName}
-                    </Typography>
-                    <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
-                      Date of Birth: {formatDate(currentUser.dateOfBirth)}
-                    </Typography>
-                    <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
-                      Email: {currentUser.email}
-                    </Typography>
-                    <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
-                      Phone number: +61 {currentUser.phoneNumber}
-                    </Typography>
-                  </Box>
-                </Grid>
-
+                <Box>
+                  <UpdateProfile />
+                </Box>
               </Grid>
             </Paper>
           </Grid>
 
-          <Grid item className="my-posted-trips" sx={{ pr: "0.5em", pb: "0.5em", mr: "-1em" }}>
-            <Paper square elevation={3} sx={{ mb: "0.5em" }}>
-              <Box x={{ flexGrow: 1 }} sx={{ padding: "1em 1em 0em 1em" }}>
+          <Grid item className="my-active-trips" xs={12} sm={6} md={8} lg={9} xl={9.5} >
+            <Paper square elevation={3} sx={{ m: "0.5em" }}>
+              <Box sx={{ flexGrow: 1, padding: "1em 1em 0em 1em" }}>
                 <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
                   ACTIVE TRIPS
                 </Typography>
@@ -143,8 +146,8 @@ export default function MyAccount() {
               </Grid>
             </Paper>
 
-            <Paper square elevation={3} sx={{ mb: "0.5em" }}>
-              <Box x={{ flexGrow: 1 }} sx={{ padding: "1em 1em 0em 1em" }}>
+            <Paper square elevation={3} sx={{ m: "0.5em " }}>
+              <Box sx={{ flexGrow: 1, padding: "1em 1em 0em 1em" }}>
                 <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
                   YOUR TRIPS
                 </Typography>
@@ -152,6 +155,7 @@ export default function MyAccount() {
                   Posted Trips:
                 </Typography>
               </Box>
+
               <Grid container className="trip-card" sx={{ padding: "1em" }}>
                 {userTrips.length === 0 ? (
                   <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>

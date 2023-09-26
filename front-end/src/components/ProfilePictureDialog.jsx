@@ -1,18 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { Container, CssBaseline, Box, Button } from "@mui/material";
+import { Container, Box, Button } from "@mui/material";
 import { useUserContext } from "../context/UserContext";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import Switch from '@mui/material/Switch';
 
 export default function ProfilePictureDialog() {
   const [image, setImage] = useState({ preview: "", data: "" });

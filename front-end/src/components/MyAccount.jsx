@@ -74,9 +74,9 @@ export default function MyAccount() {
                   }}
                 >
                   <img
-                    src={"http://localhost:8000/" + currentUser.profilePhoto}
+                    src={"http://localhost:8000/" + currentUser.profilePicture}
                     width="80%"
-                    alt={currentUser.profilePhotoTitle}
+                    alt={"NO PROFILE PICTURE"}
                   />
                 </Avatar>
                 <ProfilePictureDialog />

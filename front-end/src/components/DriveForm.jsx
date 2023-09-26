@@ -49,7 +49,7 @@ export default function DriveForm() {
         }
       })
       .catch((error) => {
-        setError("There has been an error.");
+        setError("Please fill in all the required inputs");
         console.log(error);
       });
   };
@@ -118,7 +118,7 @@ export default function DriveForm() {
               </Typography>
 
               <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                <Typography variant="body2" color="error">
+                <Typography variant="body2" color="error" sx={{textAlign: "center"}}>
                   {error}
                 </Typography>
                 <Typography variant="body2" color="success">

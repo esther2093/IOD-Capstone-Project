@@ -2,15 +2,14 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import useTripData from "../hooks/useTripData";
 import Box from "@mui/system/Box";
-import { Button, ButtonBase, TextField } from "@mui/material";
+import { Button, ButtonBase, Paper, TextField } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 
 export default function TripsList() {
-    const { allTrips } = useTripData();
+  const { allTrips } = useTripData();
   const { users } = useUserData();
 
   const [filteredTrips, setFilteredTrips] = useState(allTrips);
@@ -18,11 +17,18 @@ export default function TripsList() {
 
   const [userFirstNames, setUserFirstNames] = useState([]);
 
+  const [userProfilePicture, setUserProfilePictures] = useState([]);
+
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-    console.log("Users:", users); 
-    console.log("First Names:", firstNamesArray); 
+    console.log("First Names:", firstNamesArray);
+  }, [users]);
+
+  useEffect(() => {
+    const profilePictureArray = users.map((user) => user.profilePicture);
+    setUserProfilePictures(profilePictureArray);
+    console.log("Profile Picture:", profilePictureArray);
   }, [users]);
 
   const handleSearch = () => {
@@ -51,8 +57,6 @@ export default function TripsList() {
   useEffect(() => {
     handleSearch();
   }, [allTrips]);
-
-
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -154,93 +158,87 @@ export default function TripsList() {
               </Button>
             </Box>
           </Grid>
-
-          <Grid container sx={{ backgroundColor: "white", padding: "1em" }}>
-            {filteredTrips.map((trip) => (
-              <Grid
-                item
-                key={trip.id}
-                xs={12}
-                sm={6}
-                md={4}
-                sx={{ padding: "1em" }}
-              >
-                <Card>
-                <Grid item>
-                  <ButtonBase sx={{ width: 128, height: 128 }}>
-                    <Img alt="complex" src="/static/images/grid/complex.jpg" />
-                  </ButtonBase>
-                </Grid>
-                <Grid item xs={12} sm container>
-                  <Grid item xs container direction="column" spacing={2}>
-                  <Grid item xs>
-              <Typography gutterBottom variant="subtitle1" component="div">
-                Standard license
-              </Typography>
-              <Typography variant="body2" gutterBottom>
-                Full resolution 1920x1080 • JPEG
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                ID: 1030114
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography sx={{ cursor: 'pointer' }} variant="body2">
-                Remove
-              </Typography>
-            </Grid>
-          </Grid>
-          <Grid item>
-            <Typography variant="subtitle1" component="div">
-              $19.00
-            </Typography>
-
-            </Grid> 
-            </Grid>
-
-
-                  <CardContent>
-                    <Typography variant="h6"> From: {trip.cityFrom}</Typography>
-                    <Typography variant="h6"> To: {trip.cityTo}</Typography>
-                    <Typography variant="body2">
-                      Departure Date:
-                      {new Date(trip.departureDate).toLocaleDateString()}
-                    </Typography>
-                    <Typography variant="body2">
-                      Arrival Date:
-                      {new Date(trip.arrivalDate).toLocaleDateString()}
-                    </Typography>
-                    <Typography variant="body1">
-                      Posted by: {userFirstNames[trip.userId - 1]}
-                    </Typography>
-
-                    <Box display="flex" justifyContent="center">
-                      <Link
-                        to={`/trip/${trip.id}`}
-                        style={{ textDecoration: "none" }}
-                      >
-                        <Button
-                          variant="contained"
-                          sx={{
-                            backgroundColor: "#D2B356",
-                            margin: "1em",
-                            marginLeft: 0,
-                            "   &:hover": {
-                              backgroundColor: "#fff",
-                              color: "#D2B356",
-                            },
-                          }}
-                        >
-                          More Details
-                        </Button>
-                      </Link>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
         </Grid>
+
+
+        <Grid container spacing={2} sx={{ backgroundColor: "white", padding: "1em" }}>
+          {filteredTrips.map((trip) => (
+            <Grid
+              item
+              key={trip.id}
+              xs={12}
+              sm={6}
+              md={4}
+              xl={3}
+              sx={{ padding: "1em" }}
+            >
+              <Card>
+              <Grid container spacing={2}>
+
+                <Grid item xs={4} sx={{ pr: "1em", pb: "1em"}}>
+                  <Box>
+                    <img
+                      alt="no-profile-picture"
+                      // src={".../back-end/public" + {userProfilePicture[trip.userId - 1]} }
+                      src={userProfilePicture[trip.userId - 1]}
+                    />
+                  </Box>
+                </Grid>
+
+                <Grid item xs={8} sx={{ pr: "1em", pb: "1em"}}>
+                  <Grid item container direction="column" spacing={2}>
+                    <Grid item sx={{ pr: "1em", pb: "1em"}}>
+                      <Typography gutterBottom variant="subtitle1">
+                        Posted by: {userFirstNames[trip.userId - 1]}
+                      </Typography>
+
+                      <Typography variant="body2">
+                        {" "}
+                        From: {trip.cityFrom}
+                      </Typography>
+                      <Typography gutterBottom variant="body2">
+                        {" "}
+                        To: {trip.cityTo}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Departure Date:
+                        {new Date(trip.departureDate).toLocaleDateString()}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        Arrival Date:
+                        {new Date(trip.arrivalDate).toLocaleDateString()}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                  <Box display="flex" justifyContent="right">
+                    <Link
+                      to={`/trip/${trip.id}`}
+                      style={{ textDecoration: "none" }}
+                    >
+                      <Button
+                        variant="contained"
+                        sx={{
+                          backgroundColor: "#D2B356",
+                          margin: "0.5em",
+                          "   &:hover": {
+                            backgroundColor: "#fff",
+                            color: "#D2B356",
+                          },
+                        }}
+                      >
+                        More Details
+                      </Button>
+                    </Link>
+                  </Box>
+                </Grid>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
+
       </Box>
     </Box>
   );

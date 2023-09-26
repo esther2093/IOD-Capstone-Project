@@ -43,7 +43,7 @@ export const mainTheme = createTheme({
         },  
     }
   },
-    MuiTextField: { defaultProps: { variant: "filled" } },
+    MuiTextField: { defaultProps: { variant: "outlined" } },
   },
 });
 

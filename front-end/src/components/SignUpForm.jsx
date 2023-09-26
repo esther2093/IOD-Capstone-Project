@@ -24,6 +24,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useUserContext } from '../context/UserContext';
+import { OutlinedInput } from "@mui/material";
 
 export default function SignUpForm() {
   const [error, setError] = useState("");
@@ -195,29 +196,39 @@ export default function SignUpForm() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl variant="filled" fullWidth>
-                    <InputLabel htmlFor="password" required>
-                      Password
-                    </InputLabel>
-                    <FilledInput
-                      id="password"
-                      name="password"
-                      autoComplete="password"
-                      type={showPassword ? "text" : "password"}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                  </FormControl>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  sx={{
+                    fieldset: {
+                      borderColor: "#D2B356",
+                      "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
+                    },
+                  }}
+                >
+                  <InputLabel htmlFor="password" required>
+                    Password
+                  </InputLabel>
+                  <OutlinedInput
+                    id="password"
+                    name="password"
+                    label="Password*"
+                    autoComplete="password"
+                    type={showPassword ? "text" : "password"}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>

@@ -69,7 +69,7 @@ export default function About() {
                 </Paper>
               </Grid>
 
-              <Grid item xs={12}  md={6} sx={{paddingRight: "1em", paddingBottom: "1em"}}>
+              <Grid item xs={12} md={6} sx={{paddingRight: "1em", paddingBottom: "1em"}}>
                 <Paper elevation={0} className="icon-block">
                   <Icon
                     className="icon-block-icon"

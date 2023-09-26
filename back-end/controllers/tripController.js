@@ -31,9 +31,9 @@ const registerTrip = async (req, res) => {
 
     try {
 
-        const { userId, suburbFrom, cityFrom, stateFrom,  suburbTo, cityTo, stateTo, departureDate, arrivalDate, availableSpace, otherComments } = req.body;
+        const { userId, suburbFrom, cityFrom, stateFrom,  suburbTo, cityTo, stateTo, departureDate, arrivalDate, availableSpace, comments } = req.body;
 
-        if (!(userId, suburbFrom && cityFrom && stateFrom && suburbTo && cityTo && stateTo && convertedDepD && convertedArrD && availableSpace && otherComments)) {
+        if (!(userId, suburbFrom && cityFrom && stateFrom && suburbTo && cityTo && stateTo && convertedDepD && convertedArrD && availableSpace && comments)) {
             res.status(400).json({ result: "All input is required"});
             return; 
         }
@@ -49,7 +49,7 @@ const registerTrip = async (req, res) => {
           departureDate: convertedDepD,
           arrivalDate: convertedArrD,
           availableSpace,
-          otherComments,
+          comments,
         });
         const trip = tripMetadata.get({plain: true}) 
 

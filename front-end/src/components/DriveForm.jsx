@@ -127,24 +127,24 @@ export default function DriveForm() {
 
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={12} md={4} sx={{ paddingRight: "1em" }}>
-                    <TextField fullWidth id="suburbFrom" label="Suburb" name="suburbFrom" autoComplete="suburb" autoFocus helperText="Where from?" />
+                    <TextField fullWidth id="suburbFrom" label="Suburb" name="suburbFrom" autoComplete="suburb" helperText="Where from?" />
                   </Grid>
                   <Grid item xs={12} sm={12} md={4} sx={{ paddingRight: "1em" }}>
-                    <TextField required fullWidth id="cityFrom" label="City" name="cityFrom" autoComplete="city" autoFocus />
+                    <TextField required fullWidth id="cityFrom" label="City" name="cityFrom" autoComplete="city" />
                   </Grid>
                   <Grid item xs={12} sm={12} md={4} sx={{ paddingRight: "1em" }}>
-                    <TextField required fullWidth id="stateFrom" label="State" name="stateFrom" autoComplete="state" autoFocus />
-                  </Grid>
-
-                  <Grid item xs={12} sm={12} md={4} sx={{ paddingRight: "1em" }}>
-                    <TextField fullWidth id="suburbTo" label="Suburb" name="suburbTo" autoComplete="suburb" autoFocus helperText="Where to?" />
+                    <TextField required fullWidth id="stateFrom" label="State" name="stateFrom" autoComplete="state" />
                   </Grid>
 
                   <Grid item xs={12} sm={12} md={4} sx={{ paddingRight: "1em" }}>
-                    <TextField required fullWidth id="cityTo" label="City" name="cityTo" autoComplete="city" autoFocus />
+                    <TextField fullWidth id="suburbTo" label="Suburb" name="suburbTo" autoComplete="suburb" helperText="Where to?" />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={4} sx={{ paddingRight: "1em" }}>
+                    <TextField required fullWidth id="cityTo" label="City" name="cityTo" autoComplete="city" />
                   </Grid>
                   <Grid item xs={12} sm={12} md={4} sx={{ paddingRight: "1em" }}>
-                    <TextField required fullWidth id="stateTo" label="State" name="stateTo" autoComplete="state" autoFocus />
+                    <TextField required fullWidth id="stateTo" label="State" name="stateTo" autoComplete="state" />
                   </Grid>
 
                   <Grid item xs={12} sm={12} md={6} sx={{ paddingRight: "1em" }}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -19,31 +19,66 @@ import FormControl from "@mui/material/FormControl";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
+  // console.log(currentUser);
 
   const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
-  const [errMsg, setErrMsg] = React.useState("");
+  const [errorMsg, setErrorMsg] = React.useState("");
   const [loginAttempts, setLoginAttempts] = React.useState(0);
   const [showPassword, setShowPassword] = useState(false);
+  const [lockoutTimer, setLockoutTimer] = useState(null);
+  const [isLockedOut, setIsLockedOut] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  console.log(currentUser);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Clear the lockout timer when the component unmounts
+    return () => {
+      clearTimeout(lockoutTimer);
+    };
+  }, [lockoutTimer]);
+
+
+  const handleLoginFailure = () => {
+    let newAttempts = loginAttempts + 1;
+
+    if (newAttempts === 5) {
+      setIsLockedOut(true); 
+      setErrorMsg("Maximum login attempts exceeded. Please try again later.");
+      const lockoutTimerId = setTimeout(() => {
+        setLoginAttempts(0); // Reset login attempts after lockout duration
+        setErrorMsg("");
+        setIsLockedOut(false); // Reset lockout status
+      }, 5 * 60 * 100 );
+      setLockoutTimer(lockoutTimerId);
+    } else {
+      setErrorMsg("Unsuccessful login " + (5 - newAttempts) + " attempts remaining");
+    }
+    setLoginAttempts(newAttempts);
+    setLoggedIn(false);
+  };
+
+  const handleLoginSuccess = (loggedInUser) => {
+    setErrorMsg("");
+    handleUpdateUser(loggedInUser);
+    setLoggedIn(true);
+
+    setTimeout(() => {
+      navigate("/");
+    }, 4000);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     const data = new FormData(event.currentTarget);
-
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
 
     let userEmail = data.get("email");
     let userPassword = data.get("password");
@@ -57,52 +92,32 @@ export default function LoginForm() {
       });
       loggedInUser = response.data.data;
       console.log(loggedInUser);
-      
-
-    } catch (err) {
-      console.log(err.message);
-      setErrMsg("Please try again");
+    } catch (error) {
+      console.log(error.message);
+      setErrorMsg("Please try again");
     }
 
-    if (!loggedInUser) {
-      let newAttempts = loginAttempts + 1;
-
-      if (newAttempts === 5) {
-        setErrMsg("Maximum login attempts exceeded. Please try again later.");
-      } else {
-        setErrMsg(
-          "Unsuccessful login " + (5 - newAttempts) + " attempts remaining"
-        );
-      }
-      setLoginAttempts(newAttempts);
-      setLoggedIn(false);
+    if (loggedInUser) {
+      handleLoginSuccess(loggedInUser);
     } else {
-      setErrMsg("");
-      handleUpdateUser(loggedInUser);
-      setLoggedIn(true);
-
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 4000);
+      handleLoginFailure();
     }
   };
 
-  return (
-    <Box sx={{ flexGrow: 1, marginTop: "-4em",  }}>
 
-       <Box className="banner-content" id="second-banner-top">
+  return (
+    <Box sx={{ flexGrow: 1, marginTop: "-4em" }}>
+      <Box className="banner-content" id="second-banner-top">
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
             <Typography variant="h4" className="breakline">
               —
             </Typography>
-            <Typography
-              gutterBottom
-              variant="h1"
-              id="banner-main-header"
-              sx={{ letterSpacing: -5 }}
-            >
-              LOGIN
+            <Typography gutterBottom variant="h1" id="banner-main-header" sx={{ letterSpacing: -5 }}>
+              LOG IN
+            </Typography>
+            <Typography variant="subtitle1" id="banner-main-subtitle">
+              Login with your details below
             </Typography>
             <Typography variant="h4" className="breakline">
               —
@@ -111,7 +126,7 @@ export default function LoginForm() {
         </Box>
       </Box>
 
-      <Grid container component="main" sx={{ padding: "1em"}}>
+      <Grid container component="main" sx={{ padding: "1em" }}>
         <CssBaseline />
         <Grid
           item
@@ -119,20 +134,16 @@ export default function LoginForm() {
           sm={5}
           md={7}
           sx={{
-            backgroundImage:
-              "url(https://source.unsplash.com/random?wallpapers)",
+            backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
             backgroundRepeat: "no-repeat",
-            backgroundColor: (t) =>
-              t.palette.mode === "light"
-                ? t.palette.grey[50]
-                : t.palette.grey[900],
+            backgroundColor: (t) => (t.palette.mode === "light" ? t.palette.grey[50] : t.palette.grey[900]),
             backgroundSize: "cover",
             backgroundPosition: "center",
             display: { xs: "block", md: "flex" },
           }}
         />
 
-        <Grid item xs={12} sm={7} md={5} square>
+        <Grid item xs={12} sm={7} md={5}>
           <Box
             sx={{
               my: 8,
@@ -143,26 +154,12 @@ export default function LoginForm() {
             }}
           >
             <Box className="logo-container">
-              <Icon
-                icon="solar:box-bold-duotone"
-                height="41"
-                className="icon-parcel"
-              />
+              <Icon icon="solar:box-bold-duotone" height="41" className="icon-parcel" />
               <img src={Logo} alt="Logo" className="login-logo" />
-              <Typography
-                variant="body2"
-                sx={{ fontWeight: 300, textAlign: "center" }}
-              >
-                Login with your details below
-              </Typography>
-              
             </Box>
             {loggedIn ? (
               <>
-                <Icon
-                  icon="emojione-monotone:ribbon"
-                  className="login-welcome-icon"
-                />
+                <Icon icon="emojione-monotone:ribbon" className="login-welcome-icon" />
                 <Typography
                   component="h1"
                   variant="h6"
@@ -190,96 +187,83 @@ export default function LoginForm() {
                 </Typography>
               </>
             ) : null}
-            <Typography variant="body2" color="error">
-              {errMsg}
-            </Typography>
+
+            {isLockedOut ? (
+              <Box sx={{ textAlign: "center", padding: "4em"}}>
+                <Typography variant="body2" color="error">
+                  {errorMsg}
+                </Typography>
+              </Box>
+            ) : null}
 
             {!loggedIn && loginAttempts < 5 ? (
-              <Box
-                component="form"
-                noValidate
-                onSubmit={handleSubmit}
-                sx={{ mt: 1, marginBottom: "1em" }}
-              >
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                  autoFocus
-                  variant="outlined"
+              <Box>
+                <Box sx={{ textAlign: "center" }}>
+                  <Typography variant="body2" sx={{ fontWeight: 300 }}>
+                    Login with your details below
+                  </Typography>
+                  <Typography variant="body2" color="error" sx={{ pt: "1em" }}>
+                    {errorMsg}
+                  </Typography>
+                </Box>
+                <Box
+                  component="form"
+                  noValidate
+                  onSubmit={handleSubmit}
                   sx={{
-                    fieldset: {
-                      borderColor: "#D2B356",
-                      "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
-                    },
-                  }}
-                />
-                <FormControl
-                  fullWidth
-                  variant="outlined"
-                  sx={{
+                    mt: 1,
+                    marginBottom: "1em",
                     fieldset: {
                       borderColor: "#D2B356",
                       "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
                     },
                   }}
                 >
-                  <InputLabel htmlFor="password" required>
-                    Password
-                  </InputLabel>
-                  <OutlinedInput
-                    id="password"
-                    name="password"
-                    label="Password*"
-                    autoComplete="password"
-                    type={showPassword ? "text" : "password"}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  />
-                </FormControl>
+                  <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
+                  <FormControl fullWidth>
+                    <InputLabel htmlFor="password" required>
+                      Password
+                    </InputLabel>
+                    <OutlinedInput
+                      id="password"
+                      name="password"
+                      label="Password*"
+                      autoComplete="password"
+                      type={showPassword ? "text" : "password"}
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
 
-                <Grid item xs={12} sx={{ textAlign: "left" }}>
-                  <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
-                    label={
-                      <Typography sx={{ fontSize: "0.7em", textAlign: "left" }}>
-                        Remember me
-                      </Typography>
-                    }
-                  />
-                </Grid>
+                  <Grid item xs={12} sx={{ textAlign: "left" }}>
+                    <FormControlLabel control={<Checkbox value="remember" color="primary" />} label={<Typography sx={{ fontSize: "0.7em", textAlign: "left" }}>Remember me</Typography>} />
+                  </Grid>
 
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2, 
-                    backgroundColor: "#D2B356",
-                    margin: "1em",
-                    marginLeft: 0,
-                    "   &:hover": {
-                      backgroundColor: "#fff",
-                      color: "#D2B356",
-                      border: "none"
-                    },
-                  }}
-                >
-                  LOG IN
-                </Button>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      backgroundColor: "#D2B356",
+                      margin: "1em",
+                      marginLeft: 0,
+                      "   &:hover": {
+                        backgroundColor: "#fff",
+                        color: "#D2B356",
+                        border: "none",
+                      },
+                    }}
+                  >
+                    LOG IN
+                  </Button>
+                </Box>
               </Box>
             ) : (
               loggedIn &&
@@ -309,13 +293,13 @@ export default function LoginForm() {
               )
             )}
             {!loggedIn ? (
-              <Box display="flex" justifyContent="center" sx={{ marginBottom: "4.7em"}}>
-                <Grid item xs={12} sm={6} sx={{ textAlign: "center"}}>
+              <Box display="flex" justifyContent="center" sx={{ marginBottom: "4.7em" }}>
+                <Grid item xs={12} sm={6} sx={{ textAlign: "center" }}>
                   <Link href="/forgot" variant="body2">
                     Forgot Password?
                   </Link>
                 </Grid>
-                <Grid item xs={12} sm={6} sx={{ textAlign: "center"}}>
+                <Grid item xs={12} sm={6} sx={{ textAlign: "center" }}>
                   <Link href="/signup" variant="body2">
                     Don't have an account? Sign Up HERE!
                   </Link>

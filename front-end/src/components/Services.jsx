@@ -7,7 +7,7 @@ export default function Services() {
     <Paper square elevation={0} className="services-section" id="services-top">
       <Box className="services-container">
         <Grid container spacing={2}>
-          <Grid box xs={12} md={6} className="parcel-pic" sx={{ textAlign: "center"}}>
+          <Grid item xs={12} md={6} className="parcel-pic" sx={{ textAlign: "center"}}>
             <img src={Parcels} alt="Parcel" className="services-parcel-pic"/>
           </Grid>
 

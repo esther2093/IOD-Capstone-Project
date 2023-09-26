@@ -42,7 +42,7 @@ export default function HomeBanner() {
                 fontSize: "1.3em",
               }}
               className="homepage-button"
-              href="/rides"
+              href="/trips"
             >
               SEND A PARCEL
             </Button>

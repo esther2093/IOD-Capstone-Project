@@ -23,13 +23,3 @@ body {
   padding: 0;
   height: 100%;
 }
-
-button:hover {
-  color: #d2b356;
-  border-color: #d2b356;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}

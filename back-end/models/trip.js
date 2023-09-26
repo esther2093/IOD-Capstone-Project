@@ -13,10 +13,22 @@ Trip.init({
         userId: {
             type: DataTypes.INTEGER, references: { model: User, key: "id" }, allowNull: false, required: true
         },
+        suburbFrom: {
+            type: DataTypes.STRING, allowNull: true, required: false
+        },
         cityFrom: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
+        stateFrom: {
+            type: DataTypes.STRING, allowNull: false, required: true
+        },
+        suburbTo: {
+            type: DataTypes.STRING, allowNull: true, required: false
+        },
         cityTo: {
+            type: DataTypes.STRING, allowNull: false, required: true
+        },
+        stateTo: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
         departureDate: {

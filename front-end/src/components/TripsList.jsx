@@ -9,6 +9,7 @@ import { Button, ButtonBase, Paper, TextField, styled } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 import TripDetails from "./TripDetails";
 import bannerBg from "../assets/bannerImage.jpg";
+import formatDate from "./formatDateLocale";
 
 const Img = styled("img")({
   margin: 'auto',
@@ -32,13 +33,13 @@ export default function TripsList() {
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-    console.log("First Names:", firstNamesArray);
+    // console.log("First Names:", firstNamesArray);
   }, [users]);
 
   useEffect(() => {
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
-    console.log("Profile Picture:", profilePictureArray);
+    // console.log("Profile Picture:", profilePictureArray);
   }, [users]);
 
   const handleSearch = () => {
@@ -89,11 +90,9 @@ export default function TripsList() {
         </Box>
       </Box>
 
-      <Box sx={{ flexGrow: 1, display: "flex",
-              flexDirection: "column",
-              alignItems: "center",}} className="trips-main-container">
+      <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center",}} className="trips-main-container">
         <Grid container spacing={0} className="trips-top-box">
-          <Grid item xs={12} sm={7} className="trips-title-box" sx={{ paddingRight: "1em" }}>
+          <Grid item xs={12} sm={12} md={7} className="trips-title-box" >
             <Typography
               variant="h4"
               className="trips-title"
@@ -121,11 +120,11 @@ export default function TripsList() {
             </Typography>
           </Grid>
 
-          <Grid item xs={12} sm={5} sx={{ padding: "1.5em", marginTop: "2em" }} justifyContent="end">
-            <Box display="flex" justifyContent="center">
+          <Grid item xs={12} sm={12} md={5} sx={{ padding: "1.5em" }} >
+            <Box sx={{display: "flex"}} >
               <TextField
                 sx={{
-                  width: "25em",
+                  width: "80%",
                   fieldset: {
                     borderColor: "#D2B356",
                     "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
@@ -159,7 +158,7 @@ export default function TripsList() {
           {filteredTrips.map((trip) => (
             <Grid item key={trip.id} xs={12} sm={6} md={4} xl={3} sx={{ padding: "1em" }}>
               <Card>
-                <Grid container spacing={0}>
+                <Grid container spacing={0} sx={{ }}>
                   <Grid item xs={4}>
                     <Img alt="no-profile-picture" src={"http://localhost:8000/" + userProfilePicture[trip.userId - 1]} />
                   </Grid>
@@ -175,18 +174,18 @@ export default function TripsList() {
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Departure Date:
-                      {new Date(trip.departureDate).toLocaleDateString()}
+                      {formatDate(trip.departureDate)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Arrival Date:
-                      {new Date(trip.arrivalDate).toLocaleDateString()}
+                      {formatDate(trip.arrivalDate)}
                     </Typography>
                   </Grid>
+                </Grid>
 
-                  <Box display="flex" justifyContent="right">
+                <Box display="flex" justifyContent="center">
                     <TripDetails tripId={trip.id} />
                   </Box>
-                </Grid>
 
               </Card>
             </Grid>

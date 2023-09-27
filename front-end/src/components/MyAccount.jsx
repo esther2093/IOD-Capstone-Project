@@ -10,16 +10,8 @@ import { Avatar, Button, Card, CardContent, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import UpdateProfile from "./UpdateProfile";
 import bannerBg from "../assets/bannerImage.jpg";
-
-function formatPhoneNumber(phoneNumber) {
-  return phoneNumber.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '+61 $1-$2-$3');
-}
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = { year: "numeric", month: "short", day: "numeric" };
-  return date.toLocaleDateString(undefined, options);
-}
+import formatDate from "./formatDateLocale";
+import formatPNumber from "./formatPNumber";
 
 export default function MyAccount() {
   const { currentUser } = useUserContext();
@@ -88,7 +80,7 @@ export default function MyAccount() {
                     Email: {currentUser.email}
                   </Typography>
                   <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
-                    Phone number: {currentUser.phoneNumber}
+                    Phone number: {formatPNumber(currentUser.phoneNumber)}
                   </Typography>
                 </Box>
  

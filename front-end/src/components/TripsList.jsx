@@ -7,6 +7,7 @@ import useTripData from "../hooks/useTripData";
 import Box from "@mui/system/Box";
 import { Button, ButtonBase, Paper, TextField } from "@mui/material";
 import useUserData from "../hooks/useUserData";
+import TripDetails from "./TripDetails";
 
 export default function TripsList() {
   const { allTrips } = useTripData();
@@ -213,12 +214,7 @@ export default function TripsList() {
                 </Grid>
 
                   <Box display="flex" justifyContent="right">
-                    <Link
-                      to={`/trips/${trip.id}`}
-                      style={{ textDecoration: "none" }}
-                    >
-                      More Details
-                    </Link>
+                   <TripDetails />
                   </Box>
                 </Grid>
               </Card>

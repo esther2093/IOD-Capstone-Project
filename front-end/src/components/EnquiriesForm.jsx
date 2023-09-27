@@ -1,51 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/UserContext";
 
 export default function EnquiryForm() {
-  const { trip } = useTripData();
-  const { users } = useUserData();
-
-  const [submitResult, setSubmitResult] = useState("");
-
-  const handleEnquiryChange = (e) => {
-    const { name, value } = e.target;
-    setEnquiry((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
   const [enquiry, setEnquiry] = useState();
+  const [submitResult, setSubmitResult] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
-  const handleSubmitEnquiry = () => {
+  const { currentUser, handleUpdateUser } = useUserContext();
+
+  const handleSubmitEnquiry = (event) => {
     event.preventDefault();
+    setErrorMsg("");
+    setSubmitResult("");
+
     const data = new FormData(event.currentTarget);
+    data.append("userId", currentUser.id);
 
     axios
-      .post("http://localhost:8000/api/enquiries/register", Object.fromEntries(data.entries()))
+      .post("http://localhost:8000/api/enquiries/register", enquiry) // Send the enquiry object
       .then((response) => {
         let result = response.data.result;
-        let enquiry = response.data.data;
 
-        setSubmit(result);
-        if (enquiry) {
-          setSubmitResult("You've sucessfully signed up! You will be redirected to the homepage in a few seconds...");
-          navigate("/login");
+        if (result === "success") {
+          setSubmitResult("You've successfully submitted your enquiry!");
+          // Optionally, you can redirect the user to a different page after submission.
+          // navigate("/some-other-page");
+        } else {
+          setErrorMsg("Enquiry submission failed.");
         }
       })
-      .catch((error) => {
-        //console.log(error);
-        setError(error.response.data.result);
+      .catch((errorMsg) => {
+        console.error(errorMsg);
+        setErrorMsg(errorMsg.response.data.result);
       });
   };
 
   return (
     <form onSubmit={handleSubmitEnquiry}>
-      <TextField name="itemToSend" label="Item to Send" fullWidth value={enquiry.itemToSend} onChange={handleEnquiryChange} margin="normal" variant="outlined" />
-      <TextField name="comments" label="Comments" fullWidth multiline rows={4} value={enquiry.comments} onChange={handleEnquiryChange} margin="normal" variant="outlined" />
+      <TextField name="comments" label="Comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
       <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
         Submit Enquiry
       </Button>
+      {submitResult && <div>{submitResult}</div>}
+      {errorMsg && <div>{errorMsg}</div>}
     </form>
   );
 }

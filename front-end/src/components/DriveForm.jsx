@@ -52,6 +52,7 @@ export default function DriveForm() {
     const data = new FormData(event.currentTarget);
     data.append("userId", currentUser.id);
 
+
     axios
       .post("http://localhost:8000/api/trips/register", Object.fromEntries(data.entries()))
       .then((response) => {
@@ -203,7 +204,7 @@ export default function DriveForm() {
                   <Typography sx={{fontSize: "0.8em"}}>Small = ≤ 30cm x 30cm</Typography>
                   <Typography sx={{fontSize: "0.8em"}}>Medium = ≤ 60cm x 60cm</Typography>
                   <Typography sx={{fontSize: "0.8em"}}>Large = ≤ 100cm x 100cm </Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Extra Large = > 100cm x 100cm</Typography>
+                  <Typography sx={{fontSize: "0.8em"}}>Extra Large = over 100cm x 100cm</Typography>
                   </Box>
                 </Popover>
               </Grid>

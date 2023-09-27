@@ -93,9 +93,9 @@ export default function LoginForm() {
         password: userPassword,
       });
       loggedInUser = response.data.data;
-      console.log(loggedInUser);
+      // console.log(loggedInUser);
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
       setErrorMsg("Please try again");
     }
 

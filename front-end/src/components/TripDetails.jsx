@@ -16,35 +16,25 @@ function formatDate(dateString) {
   return date.toLocaleDateString(undefined, options);
 }
 
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-  "& .MuiDialogContent-root": {
-    padding: theme.spacing(2),
-  },
-  "& .MuiDialogActions-root": {
-    padding: theme.spacing(1),
-  },
-}));
-
 export default function TripDetails({ tripId }) {
   const { trip } = useTripData(tripId);
   const { users } = useUserData();
 
-  console.log(trip);
-
   const [userFirstNames, setUserFirstNames] = useState([]);
   const [userProfilePicture, setUserProfilePictures] = useState([]);
   const [open, setOpen] = React.useState(false);
+  const [showEnquireMessage, setShowEnquireMessage] = useState(false);
 
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-    console.log("First Names:", firstNamesArray);
+    //console.log("First Names:", firstNamesArray);
   }, [users]);
 
   useEffect(() => {
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
-    console.log("Profile Picture:", profilePictureArray);
+    //console.log("Profile Picture:", profilePictureArray);
   }, [users]);
 
   const handleClickOpen = () => {
@@ -52,6 +42,10 @@ export default function TripDetails({ tripId }) {
   };
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const toggleEnquireMessage = () => {
+    setShowEnquireMessage(!showEnquireMessage);
   };
 
   if (!trip) {
@@ -119,22 +113,44 @@ export default function TripDetails({ tripId }) {
                 <Typography variant="body2">Comments: {trip.comments}</Typography>
 
                 <Box display="flex" justifyContent="center">
-                  <Link to={"/"} style={{ textDecoration: "none" }}>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        backgroundColor: "#D2B356",
-                        margin: "1em",
-                        marginLeft: 0,
-                        "   &:hover": {
-                          backgroundColor: "#fff",
-                          color: "#D2B356",
-                        },
-                      }}
-                    >
-                      PARCELME
-                    </Button>
-                  </Link>
+                  <Button
+                    variant="contained"
+                    onClick={toggleEnquireMessage}
+                    sx={{
+                      backgroundColor: "#D2B356",
+                      margin: "1em",
+                      marginLeft: 0,
+                      "   &:hover": {
+                        backgroundColor: "#fff",
+                        color: "#D2B356",
+                      },
+                    }}
+                  >
+                    PARCELME
+                  </Button>
+
+                  {showEnquireMessage && (
+                    <Box sx={{ padding: "1em" }}>
+                      <Typography variant="body2">Enquire about this trip:</Typography>
+                      <form onSubmit={handleSubmitEnquiry}>
+                        <TextField name="itemToSend" label="Item to Send" fullWidth value={enquireFormData.itemToSend} onChange={handleEnquireFormChange} margin="normal" variant="outlined" />
+                        <TextField
+                          name="comments"
+                          label="Comments"
+                          fullWidth
+                          multiline
+                          rows={4}
+                          value={enquireFormData.comments}
+                          onChange={handleEnquireFormChange}
+                          margin="normal"
+                          variant="outlined"
+                        />
+                        <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
+                          Submit Enquiry
+                        </Button>
+                      </form>
+                    </Box>
+                  )}
                 </Box>
               </Grid>
             </Grid>

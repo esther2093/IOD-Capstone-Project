@@ -7,7 +7,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import formatDate from "./formatDateLocale"
+import formatDate from "./FormatDateLocale"
 
 export default function UpdateProfileDialog() {
   const { currentUser, handleUpdateUser } = useUserContext();

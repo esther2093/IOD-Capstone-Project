@@ -50,7 +50,7 @@ export default function SignUpForm() {
       .then((response) => {
         let result = response.data.result;
         let user = response.data.data;
-        console.log(user);
+        //console.log(user);
 
         setResult(result);
         if (user) {
@@ -60,7 +60,7 @@ export default function SignUpForm() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        //console.log(error);
         setError(error.response.data.result);
       });
   };

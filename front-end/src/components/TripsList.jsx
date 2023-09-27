@@ -9,6 +9,7 @@ import { Button, ButtonBase, Paper, TextField, styled } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 import TripDetails from "./TripDetails";
 import bannerBg from "../assets/bannerImage.jpg";
+import formatDate from "./formatDateLocale";
 
 const Img = styled("img")({
   margin: 'auto',
@@ -32,13 +33,13 @@ export default function TripsList() {
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-    console.log("First Names:", firstNamesArray);
+    // console.log("First Names:", firstNamesArray);
   }, [users]);
 
   useEffect(() => {
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
-    console.log("Profile Picture:", profilePictureArray);
+    // console.log("Profile Picture:", profilePictureArray);
   }, [users]);
 
   const handleSearch = () => {
@@ -173,11 +174,11 @@ export default function TripsList() {
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Departure Date:
-                      {new Date(trip.departureDate).toLocaleDateString()}
+                      {formatDate(trip.departureDate)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
                       Arrival Date:
-                      {new Date(trip.arrivalDate).toLocaleDateString()}
+                      {formatDate(trip.arrivalDate)}
                     </Typography>
                   </Grid>
                 </Grid>

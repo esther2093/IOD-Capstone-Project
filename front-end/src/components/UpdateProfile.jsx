@@ -1,17 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "axios";
-import { Container, Box, Button, TextField, Grid } from "@mui/material";
+import { Container, Box, Button, Grid } from "@mui/material";
 import { useUserContext } from "../context/UserContext";
 import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import formatDate from "./formatDateLocale"
 
 export default function UpdateProfileDialog() {
   const { currentUser, handleUpdateUser } = useUserContext();
   const [open, setOpen] = React.useState(false);
 
+
+  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -30,14 +33,6 @@ export default function UpdateProfileDialog() {
     } catch (err) {
       setStatus(err.message);
     }
-  };
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedUser({
-      ...updatedUser,
-      [name]: value,
-    });
   };
 
   return (
@@ -67,26 +62,30 @@ export default function UpdateProfileDialog() {
       </Button>
 
       <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
-
         <DialogTitle id="responsive-dialog-title">
           <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
-            CHANGE YOUR DETAILS:     
+            UDPATE YOUR PROFILE
           </Typography>
+          <Typography variant="h4" className="section-title" sx={{ fontSize: "1em", fontWeight: 800 }}>
+              Current details:
+            </Typography>
         </DialogTitle>
 
         <DialogContent>
-          <Grid container spacing={0}>
-            <Grid item sx={4}>
-            <Typography  variant="subtitle1">
-                      Posted by: {currentUser.firstName}
-                    </Typography>
-                    <Typography variant="body2"> </Typography>
-                    <Typography  variant="body2">
-                   
-                    </Typography>
+          <Grid container spacing={0} >
+            <Grid item xs={6} sm={6} sx={{textAlign: "left"}}>
+            <Typography variant="body2"> Name: {currentUser.firstName} {currentUser.lastName}</Typography>
+              <Typography variant="body2"> Email: {currentUser.email}</Typography>
+              <Typography variant="body2"> Password: ****** </Typography>
+              <Typography variant="body2"> Date of Birth: {formatDate(currentUser.dateOfBirth)}</Typography>
+              <Typography variant="body2"> Phone Number: +61 {currentUser.phoneNumber}</Typography>
             </Grid>
-            <Grid item sx={4}>
-              Change details:
+            <Grid item xs={6} sm={6} sx={{textAlign: "right"}}>
+              <Typography variant="body2"> Change Name </Typography>
+              <Typography variant="body2"> Change Email</Typography>
+              <Typography variant="body2"> Change Password</Typography>
+              <Typography variant="body2"> Change D.O.B</Typography>
+              <Typography variant="body2"> Change Phone Number</Typography>
             </Grid>
           </Grid>
 
@@ -114,12 +113,6 @@ export default function UpdateProfileDialog() {
                 justifyContent: "center",
               }}
             >
-              {/* <TextField name="firstName" label="First Name" value={updatedUser.firstName} onChange={handleInputChange} sx={{ mt: 2 }} />
-              <TextField name="lastName" label="Last Name" value={updatedUser.lastName} onChange={handleInputChange} sx={{ mt: 2 }} />
-              <TextField name="dateOfBirth" label="Date of Birth" value={updatedUser.dateOfBirth} onChange={handleInputChange} sx={{ mt: 2 }} />
-              <TextField name="email" label="Email" value={updatedUser.email} onChange={handleInputChange} sx={{ mt: 2 }} />
-              <TextField name="password" label="Password" type="password" value={updatedUser.password} onChange={handleInputChange} sx={{ mt: 2 }} />
-              <TextField name="phoneNumber" label="Phone Number" value={updatedUser.phoneNumber} onChange={handleInputChange} sx={{ mt: 2 }} /> */}
               <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
                 Submit
               </Button>

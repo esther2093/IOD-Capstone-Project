@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import { TextField, Button } from "@mui/material";
+import { TextField, Button, Box, Grid } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
-export default function EnquiryForm() {
-  const [enquiry, setEnquiry] = useState();
-  const [submitResult, setSubmitResult] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
-
+export default function EnquiryForm(props) {
   const { currentUser, handleUpdateUser } = useUserContext();
+  const { tripId } = props;
 
+  const [errorMsg, setErrorMsg] = useState("");
+    const [submitResult, setSubmitResult] = useState("");
+
+  
   const handleSubmitEnquiry = (event) => {
     event.preventDefault();
     setErrorMsg("");
@@ -18,9 +18,14 @@ export default function EnquiryForm() {
 
     const data = new FormData(event.currentTarget);
     data.append("userId", currentUser.id);
+    console.log("curentuser id", currentUser.id);
+    data.append("tripId", tripId);
+    console.log("current tripId", tripId);
+
+    console.log("Submitting data:", Object.fromEntries(data.entries()));
 
     axios
-      .post("http://localhost:8000/api/enquiries/register", enquiry) // Send the enquiry object
+      .post("http://localhost:8000/api/enquiries/register", Object.fromEntries(data.entries())) // Send the enquiry object
       .then((response) => {
         let result = response.data.result;
 
@@ -39,13 +44,15 @@ export default function EnquiryForm() {
   };
 
   return (
-    <form onSubmit={handleSubmitEnquiry}>
-      <TextField name="comments" label="Comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
+    <Box component="form" onSubmit={handleSubmitEnquiry} sx={{width: "100%"}}>
+      <Grid item xs={12} >
+      <TextField required name="comments" label="Comments" id="comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
       <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
         Submit Enquiry
       </Button>
       {submitResult && <div>{submitResult}</div>}
       {errorMsg && <div>{errorMsg}</div>}
-    </form>
+      </Grid>
+    </Box>
   );
 }

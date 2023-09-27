@@ -127,7 +127,7 @@ export default function TripDetails({ tripId }) {
 
                 
                 {showEnquireForm && (
-                  <EnquiryForm />
+                  <EnquiryForm tripId={trip.id}/>
                 )}
               
             </Grid>

@@ -4,8 +4,6 @@ import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
@@ -26,11 +24,9 @@ export default function DriveForm() {
   const [errorMsg, setErrorMsg] = useState("");
   const [submitResult, setSubmitResult] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const { currentUser, handleUpdateUser } = useUserContext();
-  const navigate = useNavigate();
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);

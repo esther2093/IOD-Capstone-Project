@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useTripData from "../hooks/useTripData";
-import { Typography, Button, Card, CardContent, Box, Grid, styled, Avatar, ButtonBase, Paper } from "@mui/material";
+import { Typography, Button, Card, CardContent, Box, Grid, styled, Avatar, ButtonBase, Paper, TextField } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 import { Link } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
@@ -23,7 +23,11 @@ export default function TripDetails({ tripId }) {
   const [userFirstNames, setUserFirstNames] = useState([]);
   const [userProfilePicture, setUserProfilePictures] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const [showEnquireMessage, setShowEnquireMessage] = useState(false);
+  const [showEnquireForm, setShowEnquireForm] = useState(false); // Control the visibility of the form
+  const [enquiry, setEnquiry] = useState({
+    itemToSend: "",
+    comments: "",
+  });
 
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
@@ -44,8 +48,23 @@ export default function TripDetails({ tripId }) {
     setOpen(false);
   };
 
-  const toggleEnquireMessage = () => {
-    setShowEnquireMessage(!showEnquireMessage);
+  const handleShowEnquireForm = () => {
+    setShowEnquireForm((prevShowEnquireForm) => !prevShowEnquireForm); // Toggle the visibility of the form
+  };
+
+  const handleEnquiryChange = (e) => {
+    const { name, value } = e.target;
+    setEnquiry((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmitEnquiry = () => {
+    // Handle submission of the enquiry form, e.g., send data to the server
+    // You can access the form data using enquireFormData
+    // Reset the form or close the message box as needed
+    // For example, setEnquireFormData({ itemToSend: "", comments: "" });
   };
 
   if (!trip) {
@@ -85,9 +104,7 @@ export default function TripDetails({ tripId }) {
           <Box sx={{ flexGrow: 1, display: "flex" }}>
             <Grid container spacing={0}>
               <Grid item xs={12} sm={4}>
-                <Typography variant="h6">Posted by:</Typography>
-                <Typography variant="h6">{userFirstNames[trip.userId - 1]}</Typography>
-                <Avatar
+              <Avatar
                   variant="square"
                   sx={{
                     width: "90%",
@@ -97,14 +114,12 @@ export default function TripDetails({ tripId }) {
                 >
                   <img src={"http://localhost:8000/" + userProfilePicture[trip.userId - 1]} width="100%" alt={"NO PROFILE PICTURE"} />
                 </Avatar>
+                <Typography variant="body2">Parceler: {userFirstNames[trip.userId - 1]}</Typography>
               </Grid>
 
               <Grid item xs={12} sm={8}>
                 <Typography variant="h6">
-                  From: {trip.suburbFrom}, {trip.cityFrom}, {trip.stateFrom}
-                </Typography>
-                <Typography variant="h6">
-                  To: {trip.suburbTo}, {trip.cityTo}, {trip.stateTo}
+                  {trip.suburbFrom}, {trip.cityFrom}, {trip.stateFrom} - {trip.suburbTo}, {trip.cityTo}, {trip.stateTo}
                 </Typography>
                 <Typography variant="body2">
                   Date: {formatDate(trip.departureDate)} - {formatDate(trip.arrivalDate)}
@@ -115,7 +130,7 @@ export default function TripDetails({ tripId }) {
                 <Box display="flex" justifyContent="center">
                   <Button
                     variant="contained"
-                    onClick={toggleEnquireMessage}
+                    onClick={handleShowEnquireForm}
                     sx={{
                       backgroundColor: "#D2B356",
                       margin: "1em",
@@ -128,31 +143,22 @@ export default function TripDetails({ tripId }) {
                   >
                     PARCELME
                   </Button>
-
-                  {showEnquireMessage && (
-                    <Box sx={{ padding: "1em" }}>
-                      <Typography variant="body2">Enquire about this trip:</Typography>
-                      <form onSubmit={handleSubmitEnquiry}>
-                        <TextField name="itemToSend" label="Item to Send" fullWidth value={enquireFormData.itemToSend} onChange={handleEnquireFormChange} margin="normal" variant="outlined" />
-                        <TextField
-                          name="comments"
-                          label="Comments"
-                          fullWidth
-                          multiline
-                          rows={4}
-                          value={enquireFormData.comments}
-                          onChange={handleEnquireFormChange}
-                          margin="normal"
-                          variant="outlined"
-                        />
-                        <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
-                          Submit Enquiry
-                        </Button>
-                      </form>
-                    </Box>
-                  )}
                 </Box>
-              </Grid>
+                </Grid>
+
+                
+                {showEnquireForm && (
+                  <Grid item sx={{ padding: "1em" }}>
+                    <form onSubmit={handleSubmitEnquiry}>
+                      <TextField name="itemToSend" label="Item to Send" fullWidth value={enquiry.itemToSend} onChange={handleEnquiryChange} margin="normal" variant="outlined" />
+                      <TextField name="comments" label="Comments" fullWidth multiline rows={4} value={enquiry.comments} onChange={handleEnquiryChange} margin="normal" variant="outlined" />
+                      <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
+                        Submit Enquiry
+                      </Button>
+                    </form>
+                  </Grid>
+                )}
+              
             </Grid>
           </Box>
         </DialogContent>

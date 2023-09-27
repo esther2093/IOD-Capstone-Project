@@ -10,16 +10,12 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EnquiryForm from "./EnquiriesForm";
-
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const options = { year: "numeric", month: "short", day: "numeric" };
-  return date.toLocaleDateString(undefined, options);
-}
+import formatDate from "./FormatDateLocale"
 
 export default function TripDetails({ tripId }) {
   const { trip } = useTripData(tripId);
   const { users } = useUserData();
+    console.log(trip);
 
   const [userFirstNames, setUserFirstNames] = useState([]);
   const [userProfilePicture, setUserProfilePictures] = useState([]);
@@ -49,6 +45,10 @@ export default function TripDetails({ tripId }) {
   const handleShowEnquireForm = () => {
     setShowEnquireForm((prevShowEnquireForm) => !prevShowEnquireForm); // Toggle the visibility of the form
   };
+
+  if (!trip) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -136,7 +136,7 @@ export default function TripDetails({ tripId }) {
 
         <DialogActions>
           <Button autoFocus onClick={handleClose}>
-            Save changes
+            DONE
           </Button>
         </DialogActions>
       </Dialog>

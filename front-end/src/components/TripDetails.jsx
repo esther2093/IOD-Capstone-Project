@@ -25,7 +25,6 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-
 export default function TripDetails({ tripId }) {
   const { trip } = useTripData(tripId);
   const { users } = useUserData();
@@ -60,12 +59,12 @@ export default function TripDetails({ tripId }) {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
+    <Box sx={{ flexGrow: 1, backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>
       <Button variant="outlined" onClick={handleClickOpen}>
         More Details
       </Button>
 
-      <BootstrapDialog fullWidth onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
         <Box>
           <Grid container spacing={0}>
             <Grid item xs={10}>
@@ -107,7 +106,6 @@ export default function TripDetails({ tripId }) {
               </Grid>
 
               <Grid item xs={12} sm={8}>
-                
                 <Typography variant="h6">
                   From: {trip.suburbFrom}, {trip.cityFrom}, {trip.stateFrom}
                 </Typography>
@@ -148,7 +146,7 @@ export default function TripDetails({ tripId }) {
             Save changes
           </Button>
         </DialogActions>
-      </BootstrapDialog>
+      </Dialog>
     </Box>
   );
 }

@@ -36,10 +36,7 @@ export default function ProfilePictureDialog() {
     formData.append("file", image.data);
 
     try {
-      const response = await axios.post(
-        `http://localhost:8000/api/users/${currentUser.id}/image`,
-        formData
-      );
+      const response = await axios.post(`http://localhost:8000/api/users/${currentUser.id}/image`, formData);
       console.log(response.data);
       setStatus(response.data.result);
       handleUpdateUser({ ...currentUser, ...response.data.data });
@@ -63,55 +60,49 @@ export default function ProfilePictureDialog() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        mb: "1em" 
+        mb: "1em",
       }}
     >
-      <Button variant="outlined" onClick={handleClickOpen} sx={{ 
-                    border: 1,
-                    padding: "0.3em 1em",
-                    fontSize: "0.8em",
-                    "&:hover": {
-                      color: "#d2b356",
-                      border: "1px #d2b356 solid",
-                    },
-                  }}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        sx={{
+          border: 1,
+          padding: "0.3em 1em",
+          fontSize: "0.8em",
+          "&:hover": {
+            color: "#d2b356",
+            border: "1px #d2b356 solid",
+          },
+        }}
+      >
         Update Profile Picture
       </Button>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="responsive-dialog-title"
-      >
+      
+      <Dialog open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
         <DialogContent>
-        <DialogTitle id="responsive-dialog-title" >
-        <Typography
-                  variant="h6"
-                  className="section-subhead"
-                  sx={{ fontSize: "0.6em" }}
-                >
-                  CHANGE YOUR PROFILE PICTURE
-                </Typography> 
-                <Typography
-                  variant="h4"
-                  className="section-title"
-                  sx={{ fontSize: "1em", fontWeight: 800 }}
-                >
-                  Current picture
-                </Typography>
-        </DialogTitle>  
-        
+          <DialogTitle id="responsive-dialog-title">
+            <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
+              CHANGE YOUR PROFILE PICTURE
+            </Typography>
+            <Typography variant="h4" className="section-title" sx={{ fontSize: "1em", fontWeight: 800 }}>
+              Current picture
+            </Typography>
+          </DialogTitle>
+
           <Container component="main" sx={{ pl: 0 }}>
-          <Typography
+            <Typography
               variant="body2"
               sx={{
                 fontWeight: 300,
                 textAlign: "center",
-                color: "green"
+                color: "green",
               }}
             >
               {status}
             </Typography>
-            <Avatar q
+            <Avatar
+              q
               variant="square"
               sx={{
                 m: 1,
@@ -121,11 +112,7 @@ export default function ProfilePictureDialog() {
                 backgroundColor: "white",
               }}
             >
-              <img
-                src={"http://localhost:8000/" + currentUser.profilePicture}
-                width="50%"
-                alt={"NO PROFILE PICTURE"}
-              />
+              <img src={"http://localhost:8000/" + currentUser.profilePicture} width="50%" alt={"NO PROFILE PICTURE"} />
             </Avatar>
             <Box
               component="form"
@@ -136,14 +123,12 @@ export default function ProfilePictureDialog() {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
             >
-              {image.preview && (
-                <img src={image.preview} width="100" height="100" />
-              )}
-              <Box sx={{ pl: "4.9em"}}>
-              <input name="photo" type="file" onChange={handleFileChange} />
+              {image.preview && <img src={image.preview} width="100" height="100" />}
+              <Box sx={{ pl: "4.9em" }}>
+                <input name="photo" type="file" onChange={handleFileChange} />
               </Box>
               <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
                 Submit

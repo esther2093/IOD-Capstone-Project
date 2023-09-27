@@ -86,6 +86,15 @@ const registerTrip = async (req, res) => {
     }
   };
   
+  const getTripById = (req, res) => {
+    Models.Trip.findOne({ where: { id: req.params.id } })
+      .then(function (trip) {
+        res.status(200).json({ result: "Trip data fetched successfully", data: trip });
+      })
+      .catch((err) => {
+        res.status(500).json({ result: "Unable to find trip" + err.message });
+      });
+  };
 
 const updateTrip = (req, res) => {
     Models.Trip.update(req.body, { where: { id: req.params.id }
@@ -109,6 +118,7 @@ module.exports = {
     getTrips,
     createTrip,
     registerTrip,
+    getTripById,
     updateTrip,
     deleteTrip
 }

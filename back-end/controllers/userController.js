@@ -24,9 +24,20 @@ const loginUser = async (req, res) => {
 
     // Validate user input
     if (!(email && password)) {
-      res.status(400).json({ result: "All input is required" });
-      return; // when sending responses and finishing early, manually return or end the function to stop further processing
+      return res.status(400).json({ result: "All input is required" });
     }
+
+    // Validate if user exists in our database
+    const emailAddress = await Models.User.findOne({
+      raw: true,
+      where: { email: email },
+    });
+
+    // Check if a user with the given email exists
+    if (!emailAddress) {
+      return res.status(400).json({ result: "Email is not registered" });
+    }
+
     // Validate if user exists in our database
     const user = await Models.User.findOne({
       raw: true,
@@ -124,17 +135,13 @@ const registerUser = async (req, res) => {
   }
 };
 
-const getUserById = (userId, res) => {
-  Models.User.findByPk(userId)
+const getUserById = (req, res) => {
+  Models.User.findOne({ where: { id: req.params.id } })
     .then(function (user) {
-      if (!user) {
-        res.status(404).json({ result: "User not found" });
-      } else {
-        res.status(200).json({ result: "User data fetched successfully", data: user });
-      }
+      res.status(200).json({ result: "User data fetched successfully", data: user });
     })
     .catch((err) => {
-      res.status(500).json({ result: err.message });
+      res.status(500).json({ result: "Unable to find user" + err.message });
     });
 };
 

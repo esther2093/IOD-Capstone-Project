@@ -28,13 +28,12 @@ export default function EnquiryForm(props) {
       .post("http://localhost:8000/api/enquiries/register", Object.fromEntries(data.entries())) // Send the enquiry object
       .then((response) => {
         let result = response.data.result;
+        const enquiry = response.data.data;
 
-        if (result === "success") {
-          setSubmitResult("You've successfully submitted your enquiry!");
-          // Optionally, you can redirect the user to a different page after submission.
-          // navigate("/some-other-page");
-        } else {
-          setErrorMsg("Enquiry submission failed.");
+        setSubmitResult(result);
+        if (enquiry) {
+          setErrorMsg("");
+          event.target.reset()
         }
       })
       .catch((errorMsg) => {

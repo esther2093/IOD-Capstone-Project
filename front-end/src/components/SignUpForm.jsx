@@ -25,6 +25,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { OutlinedInput } from "@mui/material";
+import bannerBg from "../assets/bannerImage.jpg";
 
 export default function SignUpForm() {
   const [error, setError] = useState("");
@@ -66,7 +67,7 @@ export default function SignUpForm() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Box className="banner-content" id="second-banner-top">
+      <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize:"cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
             <Typography variant="h4" className="breakline">

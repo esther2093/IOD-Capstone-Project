@@ -9,6 +9,7 @@ import useTripData from "../hooks/useTripData";
 import { Avatar, Button, Card, CardContent, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import UpdateProfile from "./UpdateProfile";
+import bannerBg from "../assets/bannerImage.jpg";
 
 function formatPhoneNumber(phoneNumber) {
   return phoneNumber.replace(/\D/g, '').replace(/(\d{3})(\d{3})(\d{4})/, '+61 $1-$2-$3');
@@ -27,7 +28,7 @@ export default function MyAccount() {
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
-      <Box className="banner-content" id="second-banner-top">
+      <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize:"cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
             <Typography variant="h4" className="breakline">

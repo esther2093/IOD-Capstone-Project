@@ -1,10 +1,12 @@
 import React from "react";
 import Button from "@mui/material/Button";
 import { Box, Typography, Divider, ButtonGroup } from "@mui/material";
+import bannerBg from "../assets/bannerImage.jpg";
+
 
 export default function HomeBanner() {
   return (
-    <Box className="banner-content" id="banner-top">
+    <Box className="banner-content" id="banner-top" sx={{ width: "100%", backgroundSize:"cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
       <Box className="banner-section-box">
         <Box className="banner-section-heading">
           <Typography variant="h4" className="breakline">

@@ -20,6 +20,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
+import bannerBg from "../assets/bannerImage.jpg";
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
@@ -108,7 +109,7 @@ export default function LoginForm() {
 
   return (
     <Box sx={{ flexGrow: 1, marginTop: "-4em" }}>
-      <Box className="banner-content" id="second-banner-top">
+      <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize:"cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
             <Typography variant="h4" className="breakline">

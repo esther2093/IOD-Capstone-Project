@@ -15,15 +15,10 @@ import driveformpic from "../assets/driveformpic.jpeg";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import { FormControl, FormHelperText, InputAdornment, Tooltip } from "@mui/material";
+import { FormControl, FormHelperText, InputAdornment, Popover, Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import bannerBg from "../assets/bannerImage.jpg";
 
-let toolTipText = `
-    Space: 
-    Small = ≤ 30cm x 30cm)
-    Medium = ≤ 60cm x 60cm)
-    Large = ≤ 100cm x 100cm)
-    Extra Large = > 100cm x 100cm)`;
 
 let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
@@ -34,6 +29,19 @@ export default function DriveForm() {
 
   const { currentUser, handleUpdateUser } = useUserContext();
   const navigate = useNavigate();
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   const handleChange = (event) => {
     setAvailableSpace(event.target.value);
@@ -68,7 +76,7 @@ export default function DriveForm() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <Box className="banner-content" id="second-banner-top">
+      <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
             <Typography variant="h4" className="breakline">
@@ -92,7 +100,7 @@ export default function DriveForm() {
         component="main"
         sx={{
           padding: "1em",
-          backgroundColor: "white"
+          backgroundColor: "white",
         }}
       >
         <Grid
@@ -121,8 +129,8 @@ export default function DriveForm() {
           </Box>
 
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: "0.5em", mb: "2em" }}>
-            <Box sx= {{ pb: "1em" }}>
-              <Typography variant="body2" color="red" sx={{fontWeight: 600}}>
+            <Box sx={{ pb: "1em" }}>
+              <Typography variant="body2" color="red" sx={{ fontWeight: 600 }}>
                 {errorMsg}
               </Typography>
               <Typography variant="body2" color="red">
@@ -137,39 +145,38 @@ export default function DriveForm() {
                 fieldset: {
                   borderColor: "#D2B356",
                   "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
-                  
                 },
               }}
             >
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField fullWidth id="suburbFrom" label="Suburb" name="suburbFrom" autoComplete="suburb" helperText="Where from?" />
               </Grid>
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em"}}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth id="cityFrom" label="City" name="cityFrom" autoComplete="city" />
               </Grid>
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em"}}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth id="stateFrom" label="State" name="stateFrom" autoComplete="state" />
               </Grid>
 
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em"}}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField fullWidth id="suburbTo" label="Suburb" name="suburbTo" autoComplete="suburb" helperText="Where to?" />
               </Grid>
 
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em"}}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth id="cityTo" label="City" name="cityTo" autoComplete="city" />
               </Grid>
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em"}}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth id="stateTo" label="State" name="stateTo" autoComplete="state" />
               </Grid>
 
-              <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em"}}>
+              <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth name="departureDate" label="DD-MM-YYYY" id="departureDate" format="DD-MM-YYYY" helperText="Departure Date" />
               </Grid>
-              <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em"}}>
+              <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth name="arrivalDate" label="DD-MM-YYYY" id="arrivalDate" format="DD-MM-YYYY" helperText="Arrival Date" />
               </Grid>
 
-              <Grid item xs={11} sx={{ p: "0.25em"}}>
+              <Grid item xs={11} sx={{ p: "0.25em" }}>
                 <FormControl fullWidth required>
                   <InputLabel htmlFor="availableSpace">Avaliable Space</InputLabel>
                   <Select required id="availableSpace" label="Available Space" name="availableSpace" value={availableSpace} onChange={handleChange}>
@@ -182,13 +189,30 @@ export default function DriveForm() {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356"}}>
-                <Tooltip title={toolTipText} arrow placement="top-start">
-                  <InfoIcon />
-                </Tooltip>
+              <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356" }}>
+                <InfoIcon onClick={handleClick} />
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                
+                >
+                  <Box sx={{ flexGrow: 1, p: "1em", }}>
+                  <Typography sx={{fontSize: "0.9em"}}>Size information:</Typography>
+                  <Typography sx={{fontSize: "0.8em"}}>Small = ≤ 30cm x 30cm</Typography>
+                  <Typography sx={{fontSize: "0.8em"}}>Medium = ≤ 60cm x 60cm</Typography>
+                  <Typography sx={{fontSize: "0.8em"}}>Large = ≤ 100cm x 100cm </Typography>
+                  <Typography sx={{fontSize: "0.8em"}}>Extra Large = > 100cm x 100cm</Typography>
+                  </Box>
+                </Popover>
               </Grid>
 
-              <Grid item xs={12} sx={{ p: "0.25em"}}>
+              <Grid item xs={12} sx={{ p: "0.25em" }}>
                 <TextField fullWidth multiline maxRows={4} name="comments" label="Any additional comments" id="comments" autoComplete="comments" />
               </Grid>
 

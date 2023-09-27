@@ -41,17 +41,17 @@ export default function MyAccount() {
 
       <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center", p: "0.5em" }}>
         <Grid container spacing={0} className="my-account-box">
-          <Grid item className="my-acount-details" xs={12} sm={6} md={4} lg={3} xl={2.5}>
+          <Grid item className="my-acount-details" xs={12} sm={5} md={4} lg={3} xl={2.5}>
             <Paper square elevation={3} sx={{ m: "0.5em" }}>
-              <Grid item sx={{ ml: "1em" }}>
+              <Grid item >
                 <Avatar
                   variant="square"
                   sx={{
                     width: "90%",
                     height: "90%",
-                    pt: "1em",
-                    pb: "1em",
+                    py: "1em",
                     backgroundColor: "white",
+                    m:"auto"
                   }}
                 >
                   <img src={"http://localhost:8000/" + currentUser.profilePicture} width="100%" alt={"NO PROFILE PICTURE"} />
@@ -92,7 +92,7 @@ export default function MyAccount() {
             </Paper>
           </Grid>
 
-          <Grid item className="my-active-trips" xs={12} sm={6} md={8} lg={9} xl={9.5}>
+          <Grid item className="my-active-trips" xs={12} sm={7} md={8} lg={9} xl={9.5}>
             <Paper square elevation={3} sx={{ m: "0.5em" }}>
               <Box sx={{ flexGrow: 1, padding: "1em 1em 0em 1em" }}>
                 <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>

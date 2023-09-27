@@ -25,21 +25,19 @@ export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
   // console.log(currentUser);
 
-  const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
+  const [loggedIn, setLoggedIn] = React.useState(currentUser.email);
   const [errorMsg, setErrorMsg] = React.useState("");
   const [loginAttempts, setLoginAttempts] = React.useState(0);
   const [showPassword, setShowPassword] = useState(false);
   const [lockoutTimer, setLockoutTimer] = useState(null);
-  const [isLockedOut, setIsLockedOut] = useState(false);
+  const [lockedOut, setLockedOut] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+  const handleMouseDownPassword = (event) => {event.preventDefault()};
 
   const navigate = useNavigate();
+
   useEffect(() => {
-    // Clear the lockout timer when the component unmounts
     return () => {
       clearTimeout(lockoutTimer);
     };
@@ -50,13 +48,15 @@ export default function LoginForm() {
     let newAttempts = loginAttempts + 1;
 
     if (newAttempts === 5) {
-      setIsLockedOut(true); 
+      setLockedOut(true); 
       setErrorMsg("Maximum login attempts exceeded. Please try again later.");
+
       const lockoutTimerId = setTimeout(() => {
         setLoginAttempts(0); // Reset login attempts after lockout duration
         setErrorMsg("");
-        setIsLockedOut(false); // Reset lockout status
+        setLockedOut(false); // Reset lockout status
       }, 5 * 60 * 100 );
+
       setLockoutTimer(lockoutTimerId);
     } else {
       setErrorMsg("Unsuccessful login " + (5 - newAttempts) + " attempts remaining");
@@ -77,6 +77,7 @@ export default function LoginForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setErrorMsg("");
 
     const data = new FormData(event.currentTarget);
 
@@ -188,7 +189,7 @@ export default function LoginForm() {
               </>
             ) : null}
 
-            {isLockedOut ? (
+            {lockedOut ? (
               <Box sx={{ textAlign: "center", padding: "4em"}}>
                 <Typography variant="body2" color="error">
                   {errorMsg}

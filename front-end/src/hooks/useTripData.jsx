@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 function useTripData(id) {
   const [allTrips, setAllTrips] = useState([]);
-  const [tripData, setTripData] = useState(null);
+  const [idTrip, setIdTripData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -20,11 +20,11 @@ function useTripData(id) {
 
         // fetch id specific
         if (id) {
-          const response = await fetch(`http://localhost:8000/api/trips/${id}`);
-          const result = await response.json();
+          const idTripResponse = await fetch(`http://localhost:8000/api/trips/${id}`);
+          const idTripResult = await idTripResponse.json();
 
-          if (result.data) {
-            setTripData(result.data);
+          if (idTripResult.data) {
+            setIdTripData(idTripResult.data);
           } else {
             setError(new Error("Trip not found"));
           }
@@ -37,7 +37,7 @@ function useTripData(id) {
     fetchData();
   }, [id]);
 
-  return { allTrips, tripData, error };
+  return { allTrips, idTrip, error };
 }
 
 export default useTripData;

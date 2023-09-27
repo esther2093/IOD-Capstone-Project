@@ -14,6 +14,10 @@ router.post('/register', (req, res) => {
     Controllers.tripController.registerTrip(req, res)
 })
 
+router.get('/:id', (req, res) => {
+    Controllers.tripController.getTripById(req, res)
+})
+
 router.put('/:id', (req, res) => {
     Controllers.tripController.updateTrip(req, res)
 })

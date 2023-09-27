@@ -20,7 +20,7 @@ import bannerBg from "../assets/bannerImage.jpg";
 let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
 export default function DriveForm() {
-  const { currentUser, handleUpdateUser } = useUserContext();
+  const { currentUser } = useUserContext();
 
   const [errorMsg, setErrorMsg] = useState("");
   const [submitResult, setSubmitResult] = useState("");
@@ -62,12 +62,13 @@ export default function DriveForm() {
 
         setSubmitResult(result);
         if (trip) {
-          handleUpdateUser(currentUser);
+          // handleUpdateUser(currentUser);
           setErrorMsg("");
           // event.target.reset()
         }
       })
       .catch((errorMsg) => {
+        console.error(errorMsg);
         setErrorMsg(errorMsg.response.data.result);
       });
   };

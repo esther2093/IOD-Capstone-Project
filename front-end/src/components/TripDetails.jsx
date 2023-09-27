@@ -9,6 +9,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import EnquiryForm from "./EnquiriesForm";
 
 function formatDate(dateString) {
   const date = new Date(dateString);
@@ -24,10 +25,7 @@ export default function TripDetails({ tripId }) {
   const [userProfilePicture, setUserProfilePictures] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [showEnquireForm, setShowEnquireForm] = useState(false); // Control the visibility of the form
-  const [enquiry, setEnquiry] = useState({
-    itemToSend: "",
-    comments: "",
-  });
+
 
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
@@ -51,25 +49,6 @@ export default function TripDetails({ tripId }) {
   const handleShowEnquireForm = () => {
     setShowEnquireForm((prevShowEnquireForm) => !prevShowEnquireForm); // Toggle the visibility of the form
   };
-
-  const handleEnquiryChange = (e) => {
-    const { name, value } = e.target;
-    setEnquiry((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmitEnquiry = () => {
-    // Handle submission of the enquiry form, e.g., send data to the server
-    // You can access the form data using enquireFormData
-    // Reset the form or close the message box as needed
-    // For example, setEnquireFormData({ itemToSend: "", comments: "" });
-  };
-
-  if (!trip) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>
@@ -148,15 +127,7 @@ export default function TripDetails({ tripId }) {
 
                 
                 {showEnquireForm && (
-                  <Grid item sx={{ padding: "1em" }}>
-                    <form onSubmit={handleSubmitEnquiry}>
-                      <TextField name="itemToSend" label="Item to Send" fullWidth value={enquiry.itemToSend} onChange={handleEnquiryChange} margin="normal" variant="outlined" />
-                      <TextField name="comments" label="Comments" fullWidth multiline rows={4} value={enquiry.comments} onChange={handleEnquiryChange} margin="normal" variant="outlined" />
-                      <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
-                        Submit Enquiry
-                      </Button>
-                    </form>
-                  </Grid>
+                  <EnquiryForm />
                 )}
               
             </Grid>

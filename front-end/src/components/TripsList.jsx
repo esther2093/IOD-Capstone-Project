@@ -214,22 +214,10 @@ export default function TripsList() {
 
                   <Box display="flex" justifyContent="right">
                     <Link
-                      to={`/trip/${trip.id}`}
+                      to={`/trips/${trip.id}`}
                       style={{ textDecoration: "none" }}
                     >
-                      <Button
-                        variant="contained"
-                        sx={{
-                          backgroundColor: "#D2B356",
-                          margin: "0.5em",
-                          "   &:hover": {
-                            backgroundColor: "#fff",
-                            color: "#D2B356",
-                          },
-                        }}
-                      >
-                        More Details
-                      </Button>
+                      More Details
                     </Link>
                   </Box>
                 </Grid>

@@ -28,7 +28,7 @@ let toolTipText = `
 let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
 export default function DriveForm() {
-  const [error, setError] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const [submitResult, setSubmitResult] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
 
@@ -42,7 +42,7 @@ export default function DriveForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError("");
+    setErrorMsg("");
     setSubmitResult("");
 
     const data = new FormData(event.currentTarget);
@@ -57,12 +57,12 @@ export default function DriveForm() {
         setSubmitResult(result);
         if (trip) {
           handleUpdateUser(currentUser);
-          setError("");
+          setErrorMsg("");
           // event.target.reset()
         }
       })
-      .catch((error) => {
-        setError(error.response.data.result);
+      .catch((errorMsg) => {
+        setErrorMsg(errorMsg.response.data.result);
       });
   };
 
@@ -123,7 +123,7 @@ export default function DriveForm() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: "0.5em", mb: "2em" }}>
             <Box sx= {{ pb: "1em" }}>
               <Typography variant="body2" color="red" sx={{fontWeight: 600}}>
-                {error}
+                {errorMsg}
               </Typography>
               <Typography variant="body2" color="red">
                 {submitResult}

@@ -34,7 +34,7 @@ export default function MyAccount() {
               —
             </Typography>
             <Typography gutterBottom variant="h4" id="banner-main-header" sx={{ letterSpacing: -5 }}>
-              My Account
+              MY ACCOUNT
             </Typography>
             <Typography variant="subtitle1" id="banner-main-subtitle">
               All your details for you to see
@@ -128,7 +128,7 @@ export default function MyAccount() {
 
 
                           <Box display="flex" justifyContent="center">
-                            <Link to={`/trip/${trip.id}`} style={{ textDecoration: "none" }}>
+                            <Link to={`/trips/${trip.id}`} style={{ textDecoration: "none" }}>
                               <Button
                                 variant="contained"
                                 sx={{
@@ -179,7 +179,7 @@ export default function MyAccount() {
                           <Typography variant="body2">Arrival Date: {formatDate(trip.arrivalDate)}</Typography>
 
                           <Box display="flex" justifyContent="center">
-                            <Link to={`/trip/${trip.id}`} style={{ textDecoration: "none" }}>
+                            <Link to={`/trips/${trip.id}`} style={{ textDecoration: "none" }}>
                               <Button
                                 variant="contained"
                                 sx={{

@@ -16,7 +16,6 @@ import { FormControl, Popover } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import bannerBg from "../assets/bannerImage.jpg";
 
-
 let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
 export default function DriveForm() {
@@ -27,9 +26,8 @@ export default function DriveForm() {
   const [availableSpace, setAvailableSpace] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const popover = open ? 'simple-popover' : undefined;
+  const popover = open ? "simple-popover" : undefined;
 
- 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,8 +35,6 @@ export default function DriveForm() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-
 
   const handleChange = (event) => {
     setAvailableSpace(event.target.value);
@@ -52,7 +48,6 @@ export default function DriveForm() {
 
     const data = new FormData(event.currentTarget);
     data.append("userId", currentUser.id);
-
 
     axios
       .post("http://localhost:8000/api/trips/register", Object.fromEntries(data.entries()))
@@ -129,12 +124,16 @@ export default function DriveForm() {
 
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: "0.5em", mb: "2em" }}>
             <Box sx={{ pb: "1em" }}>
-              <Typography variant="body2" color="red" sx={{ fontWeight: 600 }}>
-                {errorMsg}
-              </Typography>
-              <Typography variant="body2" color="red">
-                {submitResult}
-              </Typography>
+              {errorMsg && (
+                <Typography variant="body2" color="red" >
+                  {errorMsg}
+                </Typography>
+              )}
+              {submitResult && (
+                <Typography variant="body2" color="green">
+                  {submitResult}
+                </Typography>
+              )}
             </Box>
 
             <Grid
@@ -199,14 +198,13 @@ export default function DriveForm() {
                     vertical: "bottom",
                     horizontal: "center",
                   }}
-                
                 >
-                  <Box sx={{ flexGrow: 1, p: "1em", }}>
-                  <Typography sx={{fontSize: "0.9em"}}>Size information:</Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Small = ≤ 30cm x 30cm</Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Medium = ≤ 60cm x 60cm</Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Large = ≤ 100cm x 100cm </Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Extra Large = over 100cm x 100cm</Typography>
+                  <Box sx={{ flexGrow: 1, p: "1em" }}>
+                    <Typography sx={{ fontSize: "0.9em" }}>Size information:</Typography>
+                    <Typography sx={{ fontSize: "0.8em" }}>Small = ≤ 30cm x 30cm</Typography>
+                    <Typography sx={{ fontSize: "0.8em" }}>Medium = ≤ 60cm x 60cm</Typography>
+                    <Typography sx={{ fontSize: "0.8em" }}>Large = ≤ 100cm x 100cm </Typography>
+                    <Typography sx={{ fontSize: "0.8em" }}>Extra Large = over 100cm x 100cm</Typography>
                   </Box>
                 </Popover>
               </Grid>

@@ -29,7 +29,7 @@ export default function TripDetails({ tripId }) {
   const { trip } = useTripData(tripId);
   const { users } = useUserData();
 
-  console.log(trip);
+  // console.log(trip);
 
   const [userFirstNames, setUserFirstNames] = useState([]);
   const [userProfilePicture, setUserProfilePictures] = useState([]);
@@ -38,13 +38,13 @@ export default function TripDetails({ tripId }) {
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-    console.log("First Names:", firstNamesArray);
+    //console.log("First Names:", firstNamesArray);
   }, [users]);
 
   useEffect(() => {
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
-    console.log("Profile Picture:", profilePictureArray);
+    //console.log("Profile Picture:", profilePictureArray);
   }, [users]);
 
   const handleClickOpen = () => {

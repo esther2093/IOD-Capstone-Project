@@ -41,7 +41,7 @@ Trip.init({
             type: DataTypes.STRING, allowNull: false, required: true
         },
         comments: {
-            type: DataTypes.STRING, allowNull: false, required: true
+            type: DataTypes.STRING, allowNull: true, required: false
         }
     },
     {

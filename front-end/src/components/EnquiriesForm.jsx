@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import { TextField, Button, Box, Grid } from "@mui/material";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 
-export default function EnquiryForm(tripId) {
-
+export default function EnquiryForm(props) {
+  const { currentUser, handleUpdateUser } = useUserContext();
+  const { tripId } = props;
 
   const [errorMsg, setErrorMsg] = useState("");
     const [submitResult, setSubmitResult] = useState("");
-    const [enquiry, setEnquiry] = useState({
-      comments: "",
-      tripId: tripId, // Include the tripId in the enquiry object
-      userId: tripId.userId
-    });
 
-  const { currentUser, handleUpdateUser } = useUserContext();
-
+  
   const handleSubmitEnquiry = (event) => {
     event.preventDefault();
     setErrorMsg("");
@@ -24,10 +18,14 @@ export default function EnquiryForm(tripId) {
 
     const data = new FormData(event.currentTarget);
     data.append("userId", currentUser.id);
+    console.log("curentuser id", currentUser.id);
     data.append("tripId", tripId);
+    console.log("current tripId", tripId);
+
+    console.log("Submitting data:", Object.fromEntries(data.entries()));
 
     axios
-      .post("http://localhost:8000/api/enquiries/register", enquiry) // Send the enquiry object
+      .post("http://localhost:8000/api/enquiries/register", Object.fromEntries(data.entries())) // Send the enquiry object
       .then((response) => {
         let result = response.data.result;
 

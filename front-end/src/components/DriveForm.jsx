@@ -6,14 +6,13 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
-import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import axios from "axios";
 import driveformpic from "../assets/driveformpic.jpeg";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import { FormControl, FormHelperText, InputAdornment, Popover, Tooltip } from "@mui/material";
+import { FormControl, Popover } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import bannerBg from "../assets/bannerImage.jpg";
 
@@ -21,13 +20,16 @@ import bannerBg from "../assets/bannerImage.jpg";
 let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
 export default function DriveForm() {
+  const { currentUser, handleUpdateUser } = useUserContext();
+
   const [errorMsg, setErrorMsg] = useState("");
   const [submitResult, setSubmitResult] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const popover = open ? 'simple-popover' : undefined;
 
-  const { currentUser, handleUpdateUser } = useUserContext();
-
+ 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -36,8 +38,7 @@ export default function DriveForm() {
     setAnchorEl(null);
   };
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'simple-popover' : undefined;
+
 
   const handleChange = (event) => {
     setAvailableSpace(event.target.value);
@@ -189,7 +190,7 @@ export default function DriveForm() {
               <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356" }}>
                 <InfoIcon onClick={handleClick} />
                 <Popover
-                  id={id}
+                  id={popover}
                   open={open}
                   anchorEl={anchorEl}
                   onClose={handleClose}

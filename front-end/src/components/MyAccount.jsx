@@ -10,8 +10,8 @@ import { Avatar, Button, Card, CardContent, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import UpdateProfile from "./UpdateProfile";
 import bannerBg from "../assets/bannerImage.jpg";
-import formatDate from "./formatDateLocale";
-import formatPNumber from "./formatPNumber";
+import formatDate from "./FormatDateLocale";
+import formatPNumber from "./FormatPNumber";
 
 export default function MyAccount() {
   const { currentUser } = useUserContext();

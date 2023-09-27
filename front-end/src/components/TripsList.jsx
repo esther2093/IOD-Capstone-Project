@@ -9,7 +9,7 @@ import { Button, ButtonBase, Paper, TextField, styled } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 import TripDetails from "./TripDetails";
 import bannerBg from "../assets/bannerImage.jpg";
-import formatDate from "./formatDateLocale";
+import formatDate from "./FormatDateLocale";
 
 const Img = styled("img")({
   margin: 'auto',

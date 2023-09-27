@@ -303,7 +303,7 @@ export default function LoginForm() {
                 </Grid>
                 <Grid item xs={12} sm={6} sx={{ textAlign: "center" }}>
                   <Link href="/signup" variant="body2">
-                    Don't have an account? Sign Up HERE!
+                    New to ParcelMe? Join HERE!
                   </Link>
                 </Grid>
               </Box>

@@ -23,28 +23,24 @@ const createEnquiry = (data, res) => {
 
 const registerEnquiry = async (req, res) => {
   try {
-    const { tripId, userId, comments } = req.body;
+    const { tripId, userId, comments, accepted } = req.body;
 
     if (!comments) {
       res.status(400).json({ result: "Please fill in your enquiry" });
       return;
     }
 
-    const EnquiryMetadata = await Models.Enquiry.create({
+    const enquiryMetadata = await Models.Enquiry.create({
       tripId,
       userId,
       comments,
       accepted: false,
     });
+    const enquiry = enquiryMetadata.get({ plain: true });
 
-    const Enquiry = EnquiryMetadata.get({ plain: true });
-
-    res.status(201).json({
-      result: "Your Enquiry has been successfully sent!",
-      data: Enquiry,
-    });
+    res.status(201).json({ result: "Your enquiry has been successfully sent!", data: enquiry });
   } catch (err) {
-    // console.error(err); 
+    console.log(err); 
     res.status(500).json({ result: err.message });
   }
 };
@@ -55,7 +51,7 @@ const getEnquiryById = (req, res) => {
       res.status(200).json({ result: "Enquiry data fetched successfully", data: Enquiry });
     })
     .catch((err) => {
-      res.status(500).json({ result: "Unable to find Enquiry" + err.message });
+      res.status(500).json({ result: "Unable to find enquiry" + err.message });
     });
 };
 

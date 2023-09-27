@@ -41,7 +41,7 @@ export default function HomeBanner() {
               sx={{
                 fontWeight: "bold",
                 border: 0,
-                fontSize: "1.3em",
+                fontSize: "1.2em",
               }}
               className="homepage-button"
               href="/trips"
@@ -52,7 +52,7 @@ export default function HomeBanner() {
               variant="outlined"
               sx={{
                 fontWeight: "bold",
-                fontSize: "1.3em",
+                fontSize: "1.2em",
                 border: 0,
               }}
               className="homepage-button"

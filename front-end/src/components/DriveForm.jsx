@@ -22,7 +22,7 @@ export default function DriveForm() {
   const { currentUser } = useUserContext();
 
   const [errorMsg, setErrorMsg] = useState("");
-  const [submitResult, setSubmitResult] = useState("");
+  const [submitTrip, setSubmitTrip] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -42,7 +42,7 @@ export default function DriveForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMsg("");
-    setSubmitResult("");
+    setSubmitTrip("");
 
     const data = new FormData(event.currentTarget);
     data.append("userId", currentUser.id);
@@ -53,11 +53,10 @@ export default function DriveForm() {
         const result = response.data.result;
         const trip = response.data.data;
 
-        setSubmitResult(result);
+        setSubmitTrip(result);
         if (trip) {
-          // handleUpdateUser(currentUser);
           setErrorMsg("");
-          // event.target.reset()
+          event.target.reset()
         }
       })
       .catch((errorMsg) => {
@@ -127,23 +126,14 @@ export default function DriveForm() {
                   {errorMsg}
                 </Typography>
               )}
-              {submitResult && (
+              {submitTrip && (
                 <Typography variant="body2" color="green">
-                  {submitResult}
+                  {submitTrip}
                 </Typography>
               )}
             </Box>
 
-            <Grid
-              container
-              spacing={0}
-              sx={{
-                fieldset: {
-                  borderColor: "#D2B356",
-                  "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
-                },
-              }}
-            >
+            <Grid container spacing={0}>
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField fullWidth id="suburbFrom" label="Suburb" name="suburbFrom" autoComplete="suburb" helperText="Where from?" />
               </Grid>
@@ -173,7 +163,7 @@ export default function DriveForm() {
               </Grid>
 
               <Grid item xs={11} sx={{ p: "0.25em" }}>
-                <FormControl fullWidth required>
+                <FormControl fullWidth required >
                   <InputLabel htmlFor="availableSpace">Avaliable Space</InputLabel>
                   <Select required id="availableSpace" label="Available Space" name="availableSpace" value={availableSpace} onChange={handleChange}>
                     {spaceSizes.map((spaceSize) => (

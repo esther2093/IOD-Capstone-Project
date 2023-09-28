@@ -12,19 +12,84 @@ export const mainTheme = createTheme({
   },
   components: {
     MuiCssBaseline: {
-      styleOverrides: `a { color: #ffffff; }`
+      styleOverrides: `a { color: #ffffff; }`,
     },
     MuiButton: {
+      defaultProps: { variant: "outlined" },
       styleOverrides: {
         root: {
+          border: 0,
           "&:hover": {
-            color: "#d2b356",
-            border: "none",
-            }
+            color: "#D2B356",
+            border: "#fff",
+          },
         },
       },
     },
-    MuiTextField: { defaultProps: { variant: "outlined" } },
+    MuiTextField: {
+      defaultProps: { variant: "outlined" },
+      styleOverrides: {
+        root: {
+          fieldset: {
+            borderColor: "#D2B356",
+            "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
+          },
+        },
+      },
+    },
+
+    MuiTabs: {
+      styleOverrides: {
+        indicator: {
+          backgroundColor: "#D2B356",
+        },
+      },
+    },
+
+    MuiTouchRipple: {
+      styleOverrides: {
+        root: {
+          color: "#D2B356",
+        },
+      },
+    },
+
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          fontSize: "0.9em",
+          fieldset: {
+            borderColor: "#D2B356",
+          },
+          input: {
+            height: "0.8em",
+          },
+        },
+      },
+    },
+
+    // MuiOutlinedInput: {
+    //   styleOverrides: {
+    //     notchedOutline: {
+    //       borderWidth: "1px"
+    //     }
+    //   }
+    // },
+
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontSize: "0.8em",
+        },
+      },
+    },
+
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+      },
+    },
   },
 });
-

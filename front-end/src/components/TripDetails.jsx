@@ -9,8 +9,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import EnquiryForm from "./EnquiriesForm";
-import formatDate from "./FormatDateLocale"
+import EnquiryForm from "./EnquiryForm";
+import formatDate from "./FormatDate"
 
 export default function TripDetails({ tripId }) {
   const { trip } = useTripData(tripId);
@@ -82,6 +82,7 @@ export default function TripDetails({ tripId }) {
         <DialogContent dividers>
           <Box sx={{ flexGrow: 1, display: "flex" }}>
             <Grid container spacing={0}>
+
               <Grid item xs={12} sm={4}>
               <Avatar
                   variant="square"
@@ -93,7 +94,7 @@ export default function TripDetails({ tripId }) {
                 >
                   <img src={"http://localhost:8000/" + userProfilePicture[trip.userId - 1]} width="100%" alt={"NO PROFILE PICTURE"} />
                 </Avatar>
-                <Typography variant="body2">Parceler: {userFirstNames[trip.userId - 1]}</Typography>
+                <Typography variant="body2" sx={{ textAlign: "center" }}>Parceler: {userFirstNames[trip.userId - 1]}</Typography>
               </Grid>
 
               <Grid item xs={12} sm={8}>
@@ -105,15 +106,14 @@ export default function TripDetails({ tripId }) {
                 </Typography>
                 <Typography variant="body2">Space: {trip.availableSpace}</Typography>
                 <Typography variant="body2">Comments: {trip.comments}</Typography>
+              </Grid>
 
-                <Box display="flex" justifyContent="center">
+                <Grid item xs={12} sx={{ justifyContent: "center", display:"flex"}}> 
                   <Button
                     variant="contained"
                     onClick={handleShowEnquireForm}
                     sx={{
                       backgroundColor: "#D2B356",
-                      margin: "1em",
-                      marginLeft: 0,
                       "   &:hover": {
                         backgroundColor: "#fff",
                         color: "#D2B356",
@@ -122,10 +122,7 @@ export default function TripDetails({ tripId }) {
                   >
                     PARCELME
                   </Button>
-                </Box>
                 </Grid>
-
-                
                 {showEnquireForm && (
                   <EnquiryForm tripId={trip.id}/>
                 )}

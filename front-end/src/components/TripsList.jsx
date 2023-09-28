@@ -9,7 +9,7 @@ import { Button, ButtonBase, Paper, TextField, styled } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 import TripDetails from "./TripDetails";
 import bannerBg from "../assets/bannerImage.jpg";
-import formatDate from "./FormatDateLocale";
+import formatDate from "./FormatDate";
 
 const Img = styled("img")({
   margin: 'auto',
@@ -145,7 +145,7 @@ export default function TripsList() {
                   backgroundColor: "#D2B356",
                   margin: "1em",
                   marginLeft: 0,
-                  "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
+                  // "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
                 }}
               >
                 SEARCH

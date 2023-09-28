@@ -6,24 +6,21 @@ import Typography from "@mui/material/Typography";
 import ProfilePictureDialog from "./ProfilePictureDialog";
 import { useUserContext } from "../context/UserContext";
 import useTripData from "../hooks/useTripData";
-import { Avatar, Button, Card, CardContent, Grid } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Avatar, Grid } from "@mui/material";
 import UpdateProfile from "./UpdateProfile";
 import bannerBg from "../assets/bannerImage.jpg";
-import formatDate from "./FormatDateLocale";
+import formatDate from "./FormatDate";
 import formatPNumber from "./FormatPNumber";
 import useEnquiryData from "../hooks/useEnquirydata";
+import TripsPanel from "./MyAccountTripsTabs";
+
 
 export default function MyAccount() {
   const { currentUser } = useUserContext();
-  const { allTrips } = useTripData();
-  const { enquiries } = useEnquiryData();
-  const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
-  const userEnquiries = enquiries.filter ((enquiry) => currentUser.id === enquiry.userId)
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
-      <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize:"cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
+      <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
             <Typography variant="h4" className="breakline">
@@ -46,7 +43,7 @@ export default function MyAccount() {
         <Grid container spacing={0} className="my-account-box">
           <Grid item className="my-acount-details" xs={12} sm={5} md={4} lg={3} xl={2.5}>
             <Paper square elevation={3} sx={{ m: "0.5em" }}>
-              <Grid item >
+              <Grid item>
                 <Avatar
                   variant="square"
                   sx={{
@@ -54,7 +51,7 @@ export default function MyAccount() {
                     height: "90%",
                     py: "1em",
                     backgroundColor: "white",
-                    m:"auto"
+                    m: "auto",
                   }}
                 >
                   <img src={"http://localhost:8000/" + currentUser.profilePicture} width="100%" alt={"NO PROFILE PICTURE"} />
@@ -86,119 +83,18 @@ export default function MyAccount() {
                     Phone number: {formatPNumber(currentUser.phoneNumber)}
                   </Typography>
                 </Box>
- 
+
                 <Box>
                   <UpdateProfile />
                 </Box>
-
               </Grid>
             </Paper>
           </Grid>
 
-          <Grid item className="my-active-trips" xs={12} sm={7} md={8} lg={9} xl={9.5}>
-            <Paper square elevation={3} sx={{ m: "0.5em" }}>
-              <Box sx={{ flexGrow: 1, padding: "1em 1em 0em 1em" }}>
-                <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
-                  ACTIVE TRIPS
-                </Typography>
-                <Typography variant="h4" className="section-title" sx={{ fontSize: "1.7em", fontWeight: 800 }}>
-                  Active Trips:
-                </Typography>
-              </Box>
-
-              <Grid container className="enquired-trip-card" sx={{ padding: "1em" }}>
-                {userTrips.length === 0 ? (
-                  <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-                    You haven't enquired on any trips yet :(
-                  </Typography>
-                ) : (
-                  userEnquiries.map((enquiry) => (
-                    <Grid item key={enquiry.id} xs={12} sm={12} md={6} lg={4} xl={3} sx={{ padding: "1em" }}>
-                      <Card>
-                        <CardContent>
-                          <Typography variant="h6">From: {trip.suburbFrom}, {trip.cityFrom}, {trip.stateFrom}</Typography>
-                          <Typography variant="h6">To: {trip.suburbTo}, {trip.cityTo}, {trip.stateTo}</Typography>
-                          <Typography variant="body2">Date: {formatDate(trip.departureDate)} - {formatDate(trip.arrivalDate)}</Typography>
-                          <Typography variant="body2">Your Comments: {enquiry.comments}</Typography>
-
-
-                          <Box display="flex" justifyContent="center">
-                            <Link to={`/trips/${trip.id}`} style={{ textDecoration: "none" }}>
-                              <Button
-                                variant="contained"
-                                sx={{
-                                  backgroundColor: "#D2B356",
-                                  margin: "1em",
-                                  marginLeft: 0,
-                                  "   &:hover": {
-                                    backgroundColor: "#fff",
-                                    color: "#D2B356",
-                                  },
-                                }}
-                              >
-                                Edit Details
-                              </Button>
-                            </Link>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  ))
-                )}
-              </Grid>
-            </Paper>
-
-            <Paper square elevation={3} sx={{ m: "0.5em " }}>
-              <Box sx={{ flexGrow: 1, padding: "1em 1em 0em 1em" }}>
-                <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
-                  YOUR TRIPS
-                </Typography>
-                <Typography variant="h4" className="section-title" sx={{ fontSize: "1.7em", fontWeight: 800 }}>
-                  Posted Trips:
-                </Typography>
-              </Box>
-
-              <Grid container className="trip-card" sx={{ padding: "1em" }}>
-                {userTrips.length === 0 ? (
-                  <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-                    You haven't posted any trips yet :(
-                  </Typography>
-                ) : (
-                  userTrips.map((trip) => (
-                    <Grid item key={trip.id} xs={12} sm={6} md={4} sx={{ padding: "1em" }}>
-                      <Card>
-                        <CardContent>
-                          <Typography variant="h6">From: {trip.cityFrom}</Typography>
-                          <Typography variant="h6">To: {trip.cityTo}</Typography>
-                          <Typography variant="body2">Departure Date: {formatDate(trip.depatureDate)}</Typography>
-                          <Typography variant="body2">Arrival Date: {formatDate(trip.arrivalDate)}</Typography>
-
-                          <Box display="flex" justifyContent="center">
-                            <Link to={`/trips/${trip.id}`} style={{ textDecoration: "none" }}>
-                              <Button
-                                variant="contained"
-                                sx={{
-                                  backgroundColor: "#D2B356",
-                                  margin: "1em",
-                                  marginLeft: 0,
-                                  "   &:hover": {
-                                    backgroundColor: "#fff",
-                                    color: "#D2B356",
-                                  },
-                                }}
-                              >
-                                More Details
-                              </Button>
-                            </Link>
-                          </Box>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  ))
-                )}
-              </Grid>
-            </Paper>
+          <Grid item className="my-active-trips" xs={12} sm={12} md={8} lg={9} xl={9.5}>
+            <TripsPanel />
           </Grid>
+
         </Grid>
       </Box>
     </Box>

@@ -34,7 +34,9 @@ export default function LoginForm() {
   const [lockedOut, setLockedOut] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {event.preventDefault()};
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const navigate = useNavigate();
 
@@ -44,19 +46,18 @@ export default function LoginForm() {
     };
   }, [lockoutTimer]);
 
-
   const handleLoginFailure = () => {
     let newAttempts = loginAttempts + 1;
 
     if (newAttempts === 5) {
-      setLockedOut(true); 
+      setLockedOut(true);
       setErrorMsg("Maximum login attempts exceeded. Please try again later.");
 
       const lockoutTimerId = setTimeout(() => {
         setLoginAttempts(0); // Reset login attempts after lockout duration
         setErrorMsg("");
         setLockedOut(false); // Reset lockout status
-      }, 5 * 60 * 100 );
+      }, 5 * 60 * 100);
 
       setLockoutTimer(lockoutTimerId);
     } else {
@@ -71,9 +72,9 @@ export default function LoginForm() {
     handleUpdateUser(loggedInUser);
     setLoggedIn(true);
 
-    setTimeout(() => {
-      navigate("/");
-    }, 4000);
+    // setTimeout(() => {
+    //   navigate("/");
+    // }, 4000);
   };
 
   const handleSubmit = async (event) => {
@@ -106,10 +107,9 @@ export default function LoginForm() {
     }
   };
 
-
   return (
     <Box sx={{ flexGrow: 1, marginTop: "-4em" }}>
-      <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize:"cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
+      <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
             <Typography variant="h4" className="breakline">
@@ -130,11 +130,7 @@ export default function LoginForm() {
 
       <Grid container component="main" sx={{ padding: "1em" }}>
         <CssBaseline />
-        <Grid
-          item
-          xs={12}
-          sm={5}
-          md={7}
+        <Grid item xs={12} sm={6} md={7}
           sx={{
             backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
             backgroundRepeat: "no-repeat",
@@ -145,10 +141,10 @@ export default function LoginForm() {
           }}
         />
 
-        <Grid item xs={12} sm={7} md={5}>
+        <Grid item xs={12} sm={6} md={5}>
           <Box
             sx={{
-              my: 8,
+              my: 10,
               mx: 4,
               display: "flex",
               flexDirection: "column",
@@ -159,39 +155,72 @@ export default function LoginForm() {
               <Icon icon="solar:box-bold-duotone" height="41" className="icon-parcel" />
               <img src={Logo} alt="Logo" className="login-logo" />
             </Box>
+
             {loggedIn ? (
-              <>
-                <Icon icon="emojione-monotone:ribbon" className="login-welcome-icon" />
-                <Typography
-                  component="h1"
-                  variant="h6"
-                  className="welcome-message-login"
+              <Box sx={{ textAlign: "center" }}>
+                <Box
                   sx={{
-                    fontFamily: "Qwitcher Grypen",
-                    fontSize: "4vw",
-                    borderTop: 2,
-                    borderBottom: 2,
-                    padding: "0.1em 0.5em 0em 0.5em",
-                    margin: "0em 0.5em 0.5em 0.5em",
+                    fontSize: "250%",
+                    marginTop: "1.5em",
+                    marginBottom: "-1.15em",
+                    zIndex: 2,
+                    color: "#D2B356",
                   }}
                 >
-                  Welcome back {currentUser.firstName}!
-                </Typography>
+                  <Icon icon="emojione-monotone:ribbon" className="login-welcome-icon" />
+                </Box>
+                <Box sx={{ textAlign: "center", justifyContent: "center", display: "flex", mb: "1em" }}>
+                  <Box sx={{ justifyContent: "center", display: "flex", width: "45%", whiteSpace: "nowrap", borderTop: "0.15em solid #D2B356", borderBottom: "0.15em solid #D2B356" }}>
+                    <Typography
+                      component="h1"
+                      variant="h6"
+                      className="welcome-message-login"
+                      sx={{
+                        fontFamily: "Qwitcher Grypen",
+                        fontSize: "350%",
+                      }}
+                    >
+                      Welcome back {currentUser.firstName}!
+                    </Typography>
+                  </Box>
+                </Box>
                 <Typography
                   variant="body2"
                   sx={{
                     fontWeight: 300,
-                    margin: "0em 1em 3em 1em",
+                    margin: "2em 1em 3em 1em",
                     textAlign: "center",
                   }}
                 >
                   You will be redirected back to the homepage in a moment...
                 </Typography>
-              </>
+
+                <Button
+                  onClick={() => {
+                    handleUpdateUser({});
+                    setLoggedIn(false);
+                  }}
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#D2B356",
+                    width: "50%",
+                    "   &:hover": {
+                      backgroundColor: "#fff",
+                      color: "#D2B356",
+                      border: "none",
+                    },
+                    mt: "1.5em",
+                    mb: "3em",
+                  }}
+                  className="logout-button"
+                >
+                  LOG OUT
+                </Button>
+              </Box>
             ) : null}
 
             {lockedOut ? (
-              <Box sx={{ textAlign: "center", padding: "4em"}}>
+              <Box sx={{ textAlign: "center", padding: "4em" }}>
                 <Typography variant="body2" color="error">
                   {errorMsg}
                 </Typography>
@@ -208,17 +237,12 @@ export default function LoginForm() {
                     {errorMsg}
                   </Typography>
                 </Box>
+
                 <Box
                   component="form"
-                  noValidate
                   onSubmit={handleSubmit}
                   sx={{
-                    mt: 1,
-                    marginBottom: "1em",
-                    fieldset: {
-                      borderColor: "#D2B356",
-                      "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
-                    },
+                    my: "1em",
                   }}
                 >
                   <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
@@ -242,71 +266,49 @@ export default function LoginForm() {
                     />
                   </FormControl>
 
-                  <Grid item xs={12} sx={{ textAlign: "left" }}>
-                    <FormControlLabel control={<Checkbox value="remember" color="primary" />} label={<Typography sx={{ fontSize: "0.7em", textAlign: "left" }}>Remember me</Typography>} />
+                  <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
+                    <FormControlLabel control={<Checkbox value="remember" color="primary" sx={{ color: "#D2B356" }} />} label={<Typography sx={{ fontSize: "0.7em" }}>Remember me</Typography>} />
                   </Grid>
 
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{
-                      mt: 3,
-                      mb: 2,
-                      backgroundColor: "#D2B356",
-                      margin: "1em",
-                      marginLeft: 0,
-                      "   &:hover": {
-                        backgroundColor: "#fff",
-                        color: "#D2B356",
-                        border: "none",
-                      },
-                    }}
-                  >
-                    LOG IN
-                  </Button>
+                  <Grid item xs={12} sx={{ justifyContent: "center", display: "flex" }}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      sx={{
+                        mt: 3,
+                        mb: 2,
+                        backgroundColor: "#D2B356",
+                        width: "50%",
+                        "   &:hover": {
+                          backgroundColor: "#fff",
+                          color: "#D2B356",
+                          border: "none",
+                        },
+                      }}
+                    >
+                      LOG IN
+                    </Button>
+                  </Grid>
                 </Box>
               </Box>
-            ) : (
-              loggedIn &&
-              loginAttempts < 5 && (
-                <Button
-                  onClick={() => {
-                    handleUpdateUser({});
-                    setLoggedIn(false);
-                  }}
-                  variant="outlined"
-                  sx={{
-                    fontWeight: "bold",
-                    border: 2,
-                    padding: "0.2em 1em",
-                    fontSize: "1em",
-                    marginTop: "2em",
-                    marginBottom: "4em",
-                    "&:hover": {
-                      color: "#d2b356",
-                      border: "2px #d2b356 solid",
-                    },
-                  }}
-                  className="logout-button"
-                >
-                  LOG OUT
-                </Button>
-              )
-            )}
+            ) : null}
+
             {!loggedIn ? (
-              <Box display="flex" justifyContent="center" sx={{ marginBottom: "4.7em" }}>
-                <Grid item xs={12} sm={6} sx={{ textAlign: "center" }}>
+              <Grid container sx={{ m: "0.5em", display: "flex", justifyContent: "center", textAlign: "center" }}>
+                <Grid item xs={6}>
                   <Link href="/forgot" variant="body2">
                     Forgot Password?
                   </Link>
                 </Grid>
-                <Grid item xs={12} sm={6} sx={{ textAlign: "center" }}>
+                <Grid item xs={6}>
+                  <Typography variant="body2" sx={{}}>
+                    New to ParcelMe?
+                  </Typography>
                   <Link href="/signup" variant="body2">
-                    New to ParcelMe? Join HERE!
+                    <Typography variant="body2">Join HERE!</Typography>
                   </Link>
                 </Grid>
-              </Box>
+              </Grid>
             ) : null}
           </Box>
         </Grid>

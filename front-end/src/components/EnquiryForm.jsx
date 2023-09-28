@@ -8,9 +8,8 @@ export default function EnquiryForm(props) {
   const { tripId } = props;
 
   const [errorMsg, setErrorMsg] = useState("");
-    const [submitResult, setSubmitResult] = useState("");
+  const [submitResult, setSubmitResult] = useState("");
 
-  
   const handleSubmitEnquiry = (event) => {
     event.preventDefault();
     setErrorMsg("");
@@ -18,9 +17,9 @@ export default function EnquiryForm(props) {
 
     const data = new FormData(event.currentTarget);
     data.append("userId", currentUser.id);
-    console.log("curentuser id", currentUser.id);
+    // console.log("curentuser id", currentUser.id);
     data.append("tripId", tripId);
-    console.log("current tripId", tripId);
+    // console.log("current tripId", tripId);
 
     console.log("Submitting data:", Object.fromEntries(data.entries()));
 
@@ -33,7 +32,7 @@ export default function EnquiryForm(props) {
         setSubmitResult(result);
         if (enquiry) {
           setErrorMsg("");
-          event.target.reset()
+          event.target.reset();
         }
       })
       .catch((errorMsg) => {
@@ -43,22 +42,33 @@ export default function EnquiryForm(props) {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmitEnquiry} sx={{ width: "100%" }}>
-      <Grid item xs={12}>
+    <Box component="form" onSubmit={handleSubmitEnquiry} sx={{ width: "100%", textAlign: "center", border: "1px #D2B356 dotted", p: "1em", my:"1em" }}>
+      {errorMsg && (
+        <Typography variant="body2" color="red">
+          {errorMsg}
+        </Typography>
+      )}
+      {submitResult && (
+        <Typography variant="body2" color="green">
+          {submitResult}
+        </Typography>
+      )}
+      <Grid item xs={12} sx={{ justifyContent: "center", alignItems: "center" }}>
         <TextField required name="comments" label="Comments" id="comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
-        <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
-          Submit Enquiry
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            backgroundColor: "#D2B356",
+            "   &:hover": {
+              backgroundColor: "#fff",
+              color: "#D2B356",
+            },
+            marginTop: "0.5em",
+          }}
+        >
+          SEND IT!
         </Button>
-        {errorMsg && (
-          <Typography variant="body2" color="red" >
-            {errorMsg}
-          </Typography>
-        )}
-        {submitResult && (
-          <Typography variant="body2" color="green">
-            {submitResult}
-          </Typography>
-        )}
       </Grid>
     </Box>
   );

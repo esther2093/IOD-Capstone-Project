@@ -170,17 +170,11 @@
 }
 
 .logo-container {
-  padding-top: 2em;
+  padding-top: 0.5em;
   padding-bottom: 0.5em;
 }
 
-.login-welcome-icon {
-  font-size: 3.5vw;
-  margin-top: 1em;
-  margin-bottom: -0.77em;
-  z-index: 2;
-  color: #D2B356;
-}
+
 
 
 /* SIGNUP PAGE */

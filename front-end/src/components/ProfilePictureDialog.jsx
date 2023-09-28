@@ -12,6 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 export default function ProfilePictureDialog() {
   const [image, setImage] = useState({ preview: "", data: "" });
   const [status, setStatus] = useState("");
+  const [errorMsg , setErrorMsg] = useState("");
   const { currentUser, handleUpdateUser } = useUserContext();
   const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
   const [open, setOpen] = React.useState(false);
@@ -40,8 +41,9 @@ export default function ProfilePictureDialog() {
       // console.log(response.data);
       setStatus(response.data.result);
       handleUpdateUser({ ...currentUser, ...response.data.data });
-    } catch (err) {
-      setStatus(err.message);
+      setErrorMsg("")
+    } catch (error) {
+      setErrorMsg("There was a problem uploading your picture. Please try again.");
     }
   };
 
@@ -90,26 +92,37 @@ export default function ProfilePictureDialog() {
             </Typography>
           </DialogTitle>
 
-          <Container component="main" sx={{ pl: 0 }}>
+          <Container component="main" sx={{ padding: 0}}>
             <Typography
               variant="body2"
               sx={{
                 fontWeight: 300,
                 textAlign: "center",
                 color: "green",
+                pb: "0.5em"
               }}
             >
               {status}
             </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 300,
+                textAlign: "center",
+                color: "red",
+                pb: "0.5em"
+              }}
+            >
+              {errorMsg}
+            </Typography>
             <Avatar
-              q
               variant="square"
               sx={{
                 m: 1,
                 width: "100%",
                 height: "100%",
-                margin: 0,
                 backgroundColor: "white",
+                margin: "auto"
               }}
             >
               <img src={"http://localhost:8000/" + currentUser.profilePicture} width="50%" alt={"NO PROFILE PICTURE"} />
@@ -130,7 +143,17 @@ export default function ProfilePictureDialog() {
               <Box sx={{ pl: "4.9em" }}>
                 <input name="photo" type="file" onChange={handleFileChange} />
               </Box>
-              <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
+              <Button type="submit" variant="filled" sx={{
+                color: "white",
+                  my: "2em",
+                  mx: "8em",
+                  backgroundColor: "#D2B356",
+                  "&:hover": {
+                    backgroundColor: "#fff",
+                    color: "#D2B356",
+                    border: "none",
+                  },
+                }}>
                 Submit
               </Button>
             </Box>

@@ -99,7 +99,8 @@ const registerTrip = async (req, res) => {
 const updateTrip = (req, res) => {
     Models.Trip.update(req.body, { where: { id: req.params.id }
     }).then(function (data) {
-        res.status(200).json({ result: 'Trip updated successfully', data: data })
+      console.log(req.body)
+        res.status(200).json({ result: 'Your trip was updated successfully', data: data })
     }).catch(err => {
         res.status(500).json({ result: err.message })
     })
@@ -108,7 +109,7 @@ const updateTrip = (req, res) => {
 const deleteTrip = (req, res) => {
     Models.Trip.destroy({ where: { id: req.params.id }
     }).then(function (data) {
-        res.status(200).json({ result: 'Trip deleted successfully', data: data })
+        res.status(200).json({ result: 'You trip was deleted successfully', data: data })
     }).catch(err => {
         res.status(500).json({ result: err.message })
     })

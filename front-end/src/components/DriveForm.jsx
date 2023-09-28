@@ -25,8 +25,6 @@ export default function DriveForm() {
   const [submitResult, setSubmitResult] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const popover = open ? "simple-popover" : undefined;
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -125,7 +123,7 @@ export default function DriveForm() {
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: "0.5em", mb: "2em" }}>
             <Box sx={{ pb: "1em" }}>
               {errorMsg && (
-                <Typography variant="body2" color="red" >
+                <Typography variant="body2" color="red">
                   {errorMsg}
                 </Typography>
               )}
@@ -190,21 +188,30 @@ export default function DriveForm() {
               <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356" }}>
                 <InfoIcon onClick={handleClick} />
                 <Popover
-                  id={popover}
-                  open={open}
+                  open={Boolean(anchorEl)}
                   anchorEl={anchorEl}
                   onClose={handleClose}
                   anchorOrigin={{
                     vertical: "bottom",
-                    horizontal: "center",
+                    horizontal: "right",
                   }}
                 >
-                  <Box sx={{ flexGrow: 1, p: "1em" }}>
-                    <Typography sx={{ fontSize: "0.9em" }}>Size information:</Typography>
-                    <Typography sx={{ fontSize: "0.8em" }}>Small = ≤ 30cm x 30cm</Typography>
-                    <Typography sx={{ fontSize: "0.8em" }}>Medium = ≤ 60cm x 60cm</Typography>
-                    <Typography sx={{ fontSize: "0.8em" }}>Large = ≤ 100cm x 100cm </Typography>
-                    <Typography sx={{ fontSize: "0.8em" }}>Extra Large = over 100cm x 100cm</Typography>
+                  <Box sx={{ flexGrow: 1, p: "0.5em" }}>
+                    <Typography sx={{ fontSize: "0.9em", fontWeight: 500, textDecoration: "underline" }}>Size information:</Typography>
+                    <ul className="size-list">
+                      <li>
+                        <Typography sx={{ fontSize: "0.8em" }}>Small = ≤ 30cm x 30cm</Typography>
+                      </li>
+                      <li>
+                        <Typography sx={{ fontSize: "0.8em" }}>Medium = ≤ 60cm x 60cm</Typography>
+                      </li>
+                      <li>
+                        <Typography sx={{ fontSize: "0.8em" }}>Large = ≤ 100cm x 100cm </Typography>
+                      </li>
+                      <li>
+                        <Typography sx={{ fontSize: "0.8em" }}>Extra Large = over 100cm x 100cm</Typography>
+                      </li>
+                    </ul>
                   </Box>
                 </Popover>
               </Grid>

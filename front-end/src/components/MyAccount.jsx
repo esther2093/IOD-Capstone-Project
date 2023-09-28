@@ -12,11 +12,14 @@ import UpdateProfile from "./UpdateProfile";
 import bannerBg from "../assets/bannerImage.jpg";
 import formatDate from "./FormatDateLocale";
 import formatPNumber from "./FormatPNumber";
+import useEnquiryData from "../hooks/useEnquirydata";
 
 export default function MyAccount() {
   const { currentUser } = useUserContext();
   const { allTrips } = useTripData();
+  const { enquiries } = useEnquiryData();
   const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
+  const userEnquiries = enquiries.filter ((enquiry) => currentUser.id === enquiry.userId)
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
@@ -103,7 +106,7 @@ export default function MyAccount() {
                 </Typography>
               </Box>
 
-              <Grid container className="trip-card" sx={{ padding: "1em" }}>
+              <Grid container className="enquired-trip-card" sx={{ padding: "1em" }}>
                 {userTrips.length === 0 ? (
                   <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
                     You haven't enquired on any trips yet :(

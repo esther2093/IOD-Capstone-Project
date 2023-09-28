@@ -12,11 +12,14 @@ import UpdateProfile from "./UpdateProfile";
 import bannerBg from "../assets/bannerImage.jpg";
 import formatDate from "./FormatDateLocale";
 import formatPNumber from "./FormatPNumber";
+import useEnquiryData from "../hooks/useEnquirydata";
 
 export default function MyAccount() {
   const { currentUser } = useUserContext();
   const { allTrips } = useTripData();
+  const { enquiries } = useEnquiryData();
   const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
+  const userEnquiries = enquiries.filter ((enquiry) => currentUser.id === enquiry.userId)
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
@@ -41,17 +44,17 @@ export default function MyAccount() {
 
       <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "center", alignItems: "center", p: "0.5em" }}>
         <Grid container spacing={0} className="my-account-box">
-          <Grid item className="my-acount-details" xs={12} sm={6} md={4} lg={3} xl={2.5}>
+          <Grid item className="my-acount-details" xs={12} sm={5} md={4} lg={3} xl={2.5}>
             <Paper square elevation={3} sx={{ m: "0.5em" }}>
-              <Grid item sx={{ ml: "1em" }}>
+              <Grid item >
                 <Avatar
                   variant="square"
                   sx={{
                     width: "90%",
                     height: "90%",
-                    pt: "1em",
-                    pb: "1em",
+                    py: "1em",
                     backgroundColor: "white",
+                    m:"auto"
                   }}
                 >
                   <img src={"http://localhost:8000/" + currentUser.profilePicture} width="100%" alt={"NO PROFILE PICTURE"} />
@@ -92,7 +95,7 @@ export default function MyAccount() {
             </Paper>
           </Grid>
 
-          <Grid item className="my-active-trips" xs={12} sm={6} md={8} lg={9} xl={9.5}>
+          <Grid item className="my-active-trips" xs={12} sm={7} md={8} lg={9} xl={9.5}>
             <Paper square elevation={3} sx={{ m: "0.5em" }}>
               <Box sx={{ flexGrow: 1, padding: "1em 1em 0em 1em" }}>
                 <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
@@ -103,7 +106,7 @@ export default function MyAccount() {
                 </Typography>
               </Box>
 
-              <Grid container className="trip-card" sx={{ padding: "1em" }}>
+              <Grid container className="enquired-trip-card" sx={{ padding: "1em" }}>
                 {userTrips.length === 0 ? (
                   <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
                     You haven't enquired on any trips yet :(

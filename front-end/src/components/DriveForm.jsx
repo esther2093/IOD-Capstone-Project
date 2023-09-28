@@ -16,7 +16,6 @@ import { FormControl, Popover } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import bannerBg from "../assets/bannerImage.jpg";
 
-
 let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
 export default function DriveForm() {
@@ -26,10 +25,7 @@ export default function DriveForm() {
   const [submitResult, setSubmitResult] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const popover = open ? 'simple-popover' : undefined;
 
- 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -37,8 +33,6 @@ export default function DriveForm() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-
 
   const handleChange = (event) => {
     setAvailableSpace(event.target.value);
@@ -52,7 +46,6 @@ export default function DriveForm() {
 
     const data = new FormData(event.currentTarget);
     data.append("userId", currentUser.id);
-
 
     axios
       .post("http://localhost:8000/api/trips/register", Object.fromEntries(data.entries()))
@@ -129,12 +122,16 @@ export default function DriveForm() {
 
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: "0.5em", mb: "2em" }}>
             <Box sx={{ pb: "1em" }}>
-              <Typography variant="body2" color="red" sx={{ fontWeight: 600 }}>
-                {errorMsg}
-              </Typography>
-              <Typography variant="body2" color="red">
-                {submitResult}
-              </Typography>
+              {errorMsg && (
+                <Typography variant="body2" color="red">
+                  {errorMsg}
+                </Typography>
+              )}
+              {submitResult && (
+                <Typography variant="body2" color="green">
+                  {submitResult}
+                </Typography>
+              )}
             </Box>
 
             <Grid
@@ -191,22 +188,30 @@ export default function DriveForm() {
               <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356" }}>
                 <InfoIcon onClick={handleClick} />
                 <Popover
-                  id={popover}
-                  open={open}
+                  open={Boolean(anchorEl)}
                   anchorEl={anchorEl}
                   onClose={handleClose}
                   anchorOrigin={{
                     vertical: "bottom",
-                    horizontal: "center",
+                    horizontal: "right",
                   }}
-                
                 >
-                  <Box sx={{ flexGrow: 1, p: "1em", }}>
-                  <Typography sx={{fontSize: "0.9em"}}>Size information:</Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Small = ≤ 30cm x 30cm</Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Medium = ≤ 60cm x 60cm</Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Large = ≤ 100cm x 100cm </Typography>
-                  <Typography sx={{fontSize: "0.8em"}}>Extra Large = over 100cm x 100cm</Typography>
+                  <Box sx={{ flexGrow: 1, p: "0.5em" }}>
+                    <Typography sx={{ fontSize: "0.9em", fontWeight: 500, textDecoration: "underline" }}>Size information:</Typography>
+                    <ul className="size-list">
+                      <li>
+                        <Typography sx={{ fontSize: "0.8em" }}>Small = ≤ 30cm x 30cm</Typography>
+                      </li>
+                      <li>
+                        <Typography sx={{ fontSize: "0.8em" }}>Medium = ≤ 60cm x 60cm</Typography>
+                      </li>
+                      <li>
+                        <Typography sx={{ fontSize: "0.8em" }}>Large = ≤ 100cm x 100cm </Typography>
+                      </li>
+                      <li>
+                        <Typography sx={{ fontSize: "0.8em" }}>Extra Large = over 100cm x 100cm</Typography>
+                      </li>
+                    </ul>
                   </Box>
                 </Popover>
               </Grid>

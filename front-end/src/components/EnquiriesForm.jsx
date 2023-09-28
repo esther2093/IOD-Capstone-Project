@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button, Box, Grid } from "@mui/material";
+import { TextField, Button, Box, Grid, Typography } from "@mui/material";
 import axios from "axios";
 import { useUserContext } from "../context/UserContext";
 
@@ -43,14 +43,22 @@ export default function EnquiryForm(props) {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmitEnquiry} sx={{width: "100%"}}>
-      <Grid item xs={12} >
-      <TextField required name="comments" label="Comments" id="comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
-      <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
-        Submit Enquiry
-      </Button>
-      {submitResult && <div>{submitResult}</div>}
-      {errorMsg && <div>{errorMsg}</div>}
+    <Box component="form" onSubmit={handleSubmitEnquiry} sx={{ width: "100%" }}>
+      <Grid item xs={12}>
+        <TextField required name="comments" label="Comments" id="comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
+        <Button type="submit" variant="contained" sx={{ backgroundColor: "#D2B356", marginTop: "1em" }}>
+          Submit Enquiry
+        </Button>
+        {errorMsg && (
+          <Typography variant="body2" color="red" >
+            {errorMsg}
+          </Typography>
+        )}
+        {submitResult && (
+          <Typography variant="body2" color="green">
+            {submitResult}
+          </Typography>
+        )}
       </Grid>
     </Box>
   );

@@ -112,15 +112,14 @@ export default function MyAccount() {
                     You haven't enquired on any trips yet :(
                   </Typography>
                 ) : (
-                  userTrips.map((trip) => (
-                    <Grid item key={trip.id} xs={12} sm={12} md={6} lg={4} xl={3} sx={{ padding: "1em" }}>
+                  userEnquiries.map((enquiry) => (
+                    <Grid item key={enquiry.id} xs={12} sm={12} md={6} lg={4} xl={3} sx={{ padding: "1em" }}>
                       <Card>
                         <CardContent>
                           <Typography variant="h6">From: {trip.suburbFrom}, {trip.cityFrom}, {trip.stateFrom}</Typography>
                           <Typography variant="h6">To: {trip.suburbTo}, {trip.cityTo}, {trip.stateTo}</Typography>
                           <Typography variant="body2">Date: {formatDate(trip.departureDate)} - {formatDate(trip.arrivalDate)}</Typography>
-                          <Typography variant="body2">Space: {trip.availableSpace}</Typography>
-                          <Typography variant="body2">Comments: {trip.comments}</Typography>
+                          <Typography variant="body2">Your Comments: {enquiry.comments}</Typography>
 
 
                           <Box display="flex" justifyContent="center">

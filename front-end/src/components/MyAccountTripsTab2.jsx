@@ -1,10 +1,6 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
+import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -14,29 +10,50 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useUserContext } from "../context/UserContext";
 import useTripData from "../hooks/useTripData";
+import useEnquiryData from "../hooks/useEnquiryData";
 import formatDate from "./FormatDate";
-import useEnquiryData from "../hooks/useEnquirydata";
-import { Link } from "react-router-dom";
+import { Icon } from "@iconify/react";
 
-export default function TripsTab1() {
+export default function TripsTab2() {
   const { currentUser } = useUserContext();
   const { allTrips } = useTripData();
   const { enquiries } = useEnquiryData();
 
-  const useTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
-  const useEnquiries = enquiries.filter((enquiry) => enquiry.userId === currentUser.id);
-
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const columns = [
-    { id: "from", label: "From", minWidth: 10 },
-    { id: "to", label: "To", minWidth: 10 },
-    { id: "dates", label: "Dates", minWidth: 10 },
-    { id: "enquiry", label: "Enquiry", minWidth: 10 },
-    { id: "editEnquiry", label: "Edit", minWidth: 10 },
-    { id: "deleteEnquiry", label: "Delete", minWidth: 10 },
+    { id: "from", label: "From", minWidth: 180 },
+    { id: "to", label: "To", minWidth: 180 },
+    { id: "dates", label: "Dates", minWidth: 150 },
+    { id: "enquiry", label: "Enquiry", minWidth: 70 },
+    { id: "enquiryDate", label: "Date Enquired", minWidth: 70 },
+    { id: "status", label: "Status", minWidth: 70 },
   ];
+  const userEnquiries = enquiries.filter((enquiry) => enquiry.userId === currentUser.id);
+
+  const rows = userEnquiries.map((enquiry) => {
+    let statusIcon;
+    if (enquiry.accepted === null) {
+      statusIcon = <Icon icon="eos-icons:three-dots-loading" width="30" />;
+    } else if (enquiry.accepted === true) {
+      statusIcon = <Icon icon="subway:tick" color="green" width="18" />;
+    } else if (enquiry.accepted === false) {
+      statusIcon = <Icon icon="foundation:x" color="red" width="20" />;
+    } else {
+      statusIcon = null;
+    }
+
+    const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
+    return {
+      from: `${trip.suburbFrom} ${trip.cityFrom}, ${trip.stateFrom}`,
+      to: `${trip.suburbTo} ${trip.cityTo}, ${trip.stateTo}`,
+      dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
+      enquiry: enquiry.comments,
+      enquiryDate: formatDate(enquiry.createdAt),
+      status: statusIcon,
+    };
+  });
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -51,10 +68,10 @@ export default function TripsTab1() {
     <Box>
       <Box sx={{ flexGrow: 1 }}>
         <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
-          YOUR TRIPS
+          ENQUIRIES
         </Typography>
         <Typography variant="h4" className="section-title" sx={{ fontSize: "1.7em", fontWeight: 800 }}>
-          Posted trips:
+          Enquiries Sent:
         </Typography>
       </Box>
 
@@ -94,7 +111,7 @@ export default function TripsTab1() {
         />
         {rows.length === 0 && (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-            You haven't enquired on any trips yet :(
+            You haven't received any enquiries yet :(
           </Typography>
         )}
       </Box>

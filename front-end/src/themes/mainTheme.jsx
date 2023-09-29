@@ -14,6 +14,7 @@ export const mainTheme = createTheme({
     MuiCssBaseline: {
       styleOverrides: `a { color: #ffffff; }`,
     },
+
     MuiButton: {
       defaultProps: { variant: "outlined" },
       styleOverrides: {
@@ -24,8 +25,18 @@ export const mainTheme = createTheme({
             border: "#fff",
           },
         },
+        filled: {
+          color: "white",
+            backgroundColor: "#D2B356",
+            "&:hover": {
+              backgroundColor: "#fff",
+              color: "#D2B356",
+              border: "none",
+            },
+        }
       },
     },
+
     MuiTextField: {
       defaultProps: { variant: "outlined" },
       styleOverrides: {
@@ -68,14 +79,6 @@ export const mainTheme = createTheme({
       },
     },
 
-    // MuiOutlinedInput: {
-    //   styleOverrides: {
-    //     notchedOutline: {
-    //       borderWidth: "1px"
-    //     }
-    //   }
-    // },
-
     MuiFormLabel: {
       styleOverrides: {
         root: {
@@ -91,5 +94,22 @@ export const mainTheme = createTheme({
         },
       },
     },
+
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          padding: "1em 0.5em 0em 1em"
+        }
+      }
+    },
+
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          marginTop: "1em",
+          paddingTop: "1em",
+        }
+      }
+    }
   },
 });

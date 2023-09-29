@@ -6,9 +6,8 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import TripsTab1 from "./MyAccountTripsTab1";
-import TripsTab2 from "./MyAccountTripsTab1";
-import TripsTab3 from "./MyAccountTripsTab1";
-
+import TripsTab2 from "./MyAccountTripsTab2";
+import TripsTab3 from "./MyAccountTripsTab3";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -50,7 +49,8 @@ export default function TripsPanel() {
           <Tabs value={value} onChange={handleChange}>
             <Tab label="Posted Trips " {...a11yProps(0)} />
             <Tab label="Enquired Trips" {...a11yProps(1)} />
-            <Tab label="Chat" {...a11yProps(2)} />
+            <Tab label="Enquries Recieved" {...a11yProps(2)} />
+            <Tab label="Chats" {...a11yProps(3)} />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>

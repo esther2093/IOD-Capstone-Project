@@ -13,6 +13,8 @@ import useTripData from "../hooks/useTripData";
 import useEnquiryData from "../hooks/useEnquiryData";
 import formatDate from "./FormatDate";
 import { Icon } from "@iconify/react";
+import EditEnquiryDialog from "./EditEnquiryDialog";
+import DeleteEnquiryDialog from "./DeleteEnquiryDialog";
 
 export default function TripsTab2() {
   const { currentUser } = useUserContext();
@@ -22,14 +24,50 @@ export default function TripsTab2() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedEnquiry, setSelectedEnquiry] = useState(null);
+
+  const handleEditDialogOpen = (enquiry) => {
+    setSelectedEnquiry(enquiry);
+    setEditDialogOpen(true);
+  };
+
+  const handleEditDialogClose = () => {
+    setSelectedEnquiry(null);
+    setEditDialogOpen(false);
+  };
+
+  const handleDeleteDialogOpen = (enquiry) => {
+    setSelectedEnquiry(enquiry);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteDialogClose = () => {
+    setSelectedEnquiry(null);
+    setSelesetDeleteDialogOpenctedEnquiry(false);
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   const columns = [
     { id: "from", label: "From", minWidth: 180 },
     { id: "to", label: "To", minWidth: 180 },
     { id: "dates", label: "Dates", minWidth: 150 },
     { id: "enquiry", label: "Enquiry", minWidth: 70 },
     { id: "enquiryDate", label: "Date Enquired", minWidth: 70 },
+    { id: "editEnquiry", label: "", minWidth: 20 },
+    { id: "deleteEnquiry", label: "", minWidth: 20 },
     { id: "status", label: "Status", minWidth: 70 },
   ];
+
   const userEnquiries = enquiries.filter((enquiry) => enquiry.userId === currentUser.id);
 
   const rows = userEnquiries.map((enquiry) => {
@@ -49,20 +87,23 @@ export default function TripsTab2() {
       from: `${trip.suburbFrom} ${trip.cityFrom}, ${trip.stateFrom}`,
       to: `${trip.suburbTo} ${trip.cityTo}, ${trip.stateTo}`,
       dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
-      enquiry: enquiry.comments,
+      enquiry: <Typography
+      sx={{
+        fontSize: "0.875rem",
+        maxWidth: 300,
+        overflow: "hidden",
+        whiteSpace: "nowrap",
+        textOverflow: "ellipsis",
+      }}
+    >
+      {enquiry.comments}
+    </Typography>,
       enquiryDate: formatDate(enquiry.createdAt),
       status: statusIcon,
+      editEnquiry: <Icon icon="material-symbols:edit-outline" onClick={() => handleEditDialogOpen(enquiry)} />,
+      deleteEnquiry: <Icon color="#c1121f" icon="ph:x-fill" onClick={() => handleDeleteDialogOpen(enquiry)} />
     };
   });
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
 
   return (
     <Box>
@@ -115,6 +156,8 @@ export default function TripsTab2() {
           </Typography>
         )}
       </Box>
+      <EditEnquiryDialog open={editDialogOpen} close={handleEditDialogClose} enquiry={selectedEnquiry} />
+      <DeleteEnquiryDialog open={deleteDialogOpen} close={handleDeleteDialogClose} enquiry={selectedEnquiry} />
     </Box>
   );
 }

@@ -30,7 +30,7 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
   };
 
   useEffect(() => {
-    const originalTrip = trip
+    const tripEdit = trip
       ? {
           suburbFrom: capitalizeFirstLetter(trip.suburbFrom),
           cityFrom: capitalizeFirstLetter(trip.cityFrom),
@@ -56,7 +56,7 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
           comments: "",
         };
 
-    setEditedTrip(originalTrip);
+    setEditedTrip(tripEdit);
   }, [trip]);
 
   const handleEditFormChange = (event) => {
@@ -91,7 +91,7 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
   };
 
   return (
-    <Dialog open={open} close={close}>
+    <Dialog fullWidth open={open} close={close}>
       <DialogTitle sx={{ borderBottom: "2px #D2B356 solid" }}>EDIT TRIP</DialogTitle>
       <DialogContent>
         <Box sx={{ textAlign: "center" }}>
@@ -108,7 +108,7 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
           <TextField sx={{ m: "0.5em" }} required fullWidth name="departureDate" label="Departure Date" value={editedTrip.departureDate} onChange={handleEditFormChange} />
           <TextField sx={{ m: "0.5em" }} required fullWidth name="arrivalDate" label="Arrival Date" value={editedTrip.arrivalDate} onChange={handleEditFormChange} />
           <TextField sx={{ m: "0.5em" }} required fullWidth name="availableSpace" label="Available Space" value={editedTrip.availableSpace} onChange={handleEditFormChange} />
-          <TextField sx={{ m: "0.5em" }} multiline maxRows={4} fullWidth name="comments" label="Comments" value={editedTrip.comments} onChange={handleEditFormChange} />
+          <TextField sx={{ m: "0.5em" }} multiline maxRows={10} fullWidth name="comments" label="Comments" value={editedTrip.comments} onChange={handleEditFormChange} />
         </Box>
       </DialogContent>
       <DialogActions>

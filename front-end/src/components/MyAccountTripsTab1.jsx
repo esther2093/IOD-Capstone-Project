@@ -61,7 +61,7 @@ export default function TripsTab1() {
 
   useEffect(() => {
     if (updateList) {
-      setUpdateList(false);
+      setUpdateList(true);
     }
   }, [updateList]);
 

@@ -34,7 +34,7 @@ const registerEnquiry = async (req, res) => {
       tripId,
       userId,
       comments,
-      accepted: false,
+      accepted: null,
     });
     const enquiry = enquiryMetadata.get({ plain: true });
 

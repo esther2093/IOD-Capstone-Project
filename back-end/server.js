@@ -15,10 +15,12 @@ app.use(cors());
 let userRoutes = require('./routes/userRoutes')
 let tripRoutes = require('./routes/tripRoutes')
 let enquiryRoutes = require('./routes/enquiryRoutes')
+let messageRoutes = require('./routes/messageRoutes')
 
 app.use('/api/users', userRoutes)
 app.use('/api/trips', tripRoutes)
 app.use('/api/enquiries', enquiryRoutes)
+app.use('/api/messages', messageRoutes)
 
 app.use("/", express.static("public"));
 

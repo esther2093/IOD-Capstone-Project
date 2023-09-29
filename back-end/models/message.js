@@ -2,31 +2,27 @@ const { DataTypes, Model } = require("sequelize");
 let dbConnect = require("../dbConnect");
 const sequelizeInstance = dbConnect.Sequelize;
 const User = require("./user");
-const Trip = require("./trip");
 
-class Enquiry extends Model { }
+class Message extends Model { }
 
-Enquiry.init({
+Message.init({
         id: {
             type: DataTypes.INTEGER, allowNull: false, autoIncrement: true, primaryKey: true
         },
-        userId: {
+        senderId: {
             type: DataTypes.INTEGER, references: { model: User, key: "id" }, allowNull: false, required: true
         },
-        tripId: {
-            type: DataTypes.INTEGER, references: { model: Trip, key: "id" }, allowNull: false, required: true
+        recieverId: {
+            type: DataTypes.INTEGER, references: { model: User, key: "id" }, allowNull: false, required: true
         },
-        comments: {
-            type: DataTypes.STRING, allowNull: true, required: false
+        content: {
+            type: DataTypes.STRING, allowNull: false, required: true
         },
-        accepted: {
-            type: DataTypes.BOOLEAN, allowNull: true, required: false
-        }
     },
     {
-        sequelize: sequelizeInstance, modelName: 'enquries',
+        sequelize: sequelizeInstance, modelName: 'messages',
         timestamps: true, freezeTableName: true
     }
-)
+) 
 
-module.exports = Enquiry;
+module.exports = Message;

@@ -10,9 +10,11 @@ function useEnquiryData() {
         // fetch all enquiries
         const enquiriesResponse = await fetch("http://localhost:8000/api/enquiries");
         const enquiriesResult = await enquiriesResponse.json();
+        console.log(enquiriesResult)
 
         if (enquiriesResult.data) {
             setEnquiries(enquiriesResult.data);
+
         } else {
           setError(new Error("No enquiries found"));
         }

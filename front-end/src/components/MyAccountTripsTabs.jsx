@@ -8,6 +8,7 @@ import Paper from "@mui/material/Paper";
 import TripsTab1 from "./MyAccountTripsTab1";
 import TripsTab2 from "./MyAccountTripsTab2";
 import TripsTab3 from "./MyAccountTripsTab3";
+import TripsTab4 from "./MyAccountTripsTab4";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
@@ -54,13 +55,18 @@ export default function TripsPanel() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
+          <Box>
           <TripsTab1 />
+          </Box>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <TripsTab2 />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <TripsTab3 />
+        </CustomTabPanel>
+        <CustomTabPanel value={value} index={3}>
+          <TripsTab4 />
         </CustomTabPanel>
       </Paper>
     </Box>

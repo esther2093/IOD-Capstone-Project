@@ -3,7 +3,7 @@ const router = express.Router();
 const Controllers = require("../controllers");
 
 router.get('/', (req, res) => {
-    Controllers.messageController.getEnquiries(res);
+    Controllers.messageController.getMessages(res);
 })
 
 router.post('/create', (req, res) => {

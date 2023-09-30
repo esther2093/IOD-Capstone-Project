@@ -12,7 +12,7 @@ Message.init({
         senderId: {
             type: DataTypes.INTEGER, references: { model: User, key: "id" }, allowNull: false, required: true
         },
-        recieverId: {
+        receiverId: {
             type: DataTypes.INTEGER, references: { model: User, key: "id" }, allowNull: false, required: true
         },
         content: {

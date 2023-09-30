@@ -23,7 +23,7 @@ const createMessage = (data, res) => {
 
 const registerMessage = async (req, res) => {
   try {
-    const { senderId, recieverId, content } = req.body;
+    const { senderId, receiverId, content } = req.body;
 
     if (!content) {
       res.status(400).json({ result: "Please fill in your message" });
@@ -32,7 +32,7 @@ const registerMessage = async (req, res) => {
 
     const messageMetadata = await Models.Message.create({
       senderId,
-      recieverId,
+      receiverId,
       message,
     });
     const message = messageMetadata.get({ plain: true });

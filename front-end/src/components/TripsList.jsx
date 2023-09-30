@@ -58,7 +58,7 @@ export default function TripsList() {
         trip.cityFrom.toLowerCase().includes(formattedSearchTerm) ||
         trip.cityTo.toLowerCase().includes(formattedSearchTerm) ||
         trip.availableSpace.toLowerCase().includes(formattedSearchTerm) ||
-        trip.otherComments.toLowerCase().includes(formattedSearchTerm)
+        trip.comments.toLowerCase().includes(formattedSearchTerm)
       );
     });
 
@@ -114,9 +114,7 @@ export default function TripsList() {
                 lineHeight: "1.2",
               }}
             >
-              Look through the trips below and find the one that best suits you!
-              <br />
-              You can also search if you need to.
+              Look through the trips below and find the one that will work for you!
             </Typography>
           </Grid>
 
@@ -125,27 +123,17 @@ export default function TripsList() {
               <TextField
                 sx={{
                   width: "80%",
-                  fieldset: {
-                    borderColor: "#D2B356",
-                    "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
-                  },
-                  margin: "1em",
-                  marginRight: "0.5em",
                 }}
                 label="🔍 SEARCH HERE "
-                size="small"
                 placeholder="Search by city, date or description"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
               <Button
                 onClick={handleSearch}
-                variant="contained"
+                variant="filled"
                 sx={{
-                  backgroundColor: "#D2B356",
-                  margin: "1em",
-                  marginLeft: 0,
-                  // "&:hover": { backgroundColor: "#fff", color: "#D2B356" },
+                  ml: "1em"
                 }}
               >
                 SEARCH
@@ -158,32 +146,34 @@ export default function TripsList() {
           {filteredTrips.map((trip) => (
             <Grid item key={trip.id} xs={12} sm={6} md={4} xl={3} sx={{ padding: "1em" }}>
               <Card>
-                <Grid container spacing={0} sx={{ }}>
-                  <Grid item xs={4}>
+                <Grid container spacing={0}>
+                  <Grid item xs={4}  sx={{padding: "0.5em"}}>
                     <Img alt="no-profile-picture" src={"http://localhost:8000/" + userProfilePicture[trip.userId - 1]} />
+                    
                   </Grid>
 
-                  <Grid item xs={8}>
-                    <Typography  variant="subtitle1">
-                      Posted by: {userFirstNames[trip.userId - 1]}
-                    </Typography>
+                  <Grid item xs={8} sx={{padding: "1.2em 0.5em 0.5em 0.5em"}}>
+                    
                     <Typography variant="body2"> From: {trip.cityFrom}</Typography>
                     <Typography  variant="body2">
                       {" "}
                       To: {trip.cityTo}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Departure Date:
+                    <Typography variant="body2" color="text.secondary" sx={{mt: "0.2em"}}>
+                      Departing:
                       {formatDate(trip.departureDate)}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Arrival Date:
+                    <Typography variant="body2" color="text.secondary" sx={{mb: "0.2em"}}>
+                      Arriving:
                       {formatDate(trip.arrivalDate)}
+                    </Typography>
+                    <Typography  variant="body2" sx={{ fontSize:"0.8em"}}>
+                      Parceler: {userFirstNames[trip.userId - 1]}
                     </Typography>
                   </Grid>
                 </Grid>
 
-                <Box display="flex" justifyContent="center">
+                <Box display="flex" sx={{margin: "0 0.5em 0.5em 0.5em"}}>
                     <TripDetails tripId={trip.id} />
                   </Box>
 

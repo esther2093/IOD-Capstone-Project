@@ -16,7 +16,7 @@ function CustomTabPanel(props) {
     <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`}>
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>
@@ -55,9 +55,7 @@ export default function TripsPanel() {
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>
-          <Box>
           <TripsTab1 />
-          </Box>
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <TripsTab2 />

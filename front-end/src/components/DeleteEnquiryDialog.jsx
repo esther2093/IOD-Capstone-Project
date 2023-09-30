@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Axios from "axios";
+import axios from "axios";
 
 export default function DeleteEnquiryDialog({ open, close, enquiry }) {
   const [submitResult, setSubmitResult] = React.useState("");
@@ -14,7 +14,7 @@ export default function DeleteEnquiryDialog({ open, close, enquiry }) {
   const handleConfirmDelete = () => {
     setError("");
 
-    Axios.delete(`http://localhost:8000/api/enquiries/${enquiry.id}`)
+    axios.delete(`http://localhost:8000/api/enquiries/${enquiry.id}`)
       .then((response) => {
         let result = response.data.result;
 

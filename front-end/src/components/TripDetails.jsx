@@ -51,17 +51,19 @@ export default function TripDetails({ tripId }) {
   }
 
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center" }}>
-      <Button variant="outlined" onClick={handleClickOpen}>
+    <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
+      <Box sx={{display: "flex", justifyContent: "right"}}>
+      <Button onClick={handleClickOpen} sx={{fontSize: "0.8em"}}>
         More Details
       </Button>
+      </Box>
 
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} sx={{display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Box>
           <Grid container spacing={0}>
             <Grid item xs={10}>
-              <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                Trip Details:
+              <DialogTitle sx={{ m: 0 }} id="customized-dialog-title">
+                TRIP DETAILS
               </DialogTitle>
             </Grid>
             <IconButton
@@ -70,7 +72,7 @@ export default function TripDetails({ tripId }) {
               sx={{
                 position: "absolute",
                 right: 8,
-                top: 8,
+                top: 14,
                 color: "#D2B356",
               }}
             >
@@ -79,9 +81,9 @@ export default function TripDetails({ tripId }) {
           </Grid>
         </Box>
 
-        <DialogContent dividers>
-          <Box sx={{ flexGrow: 1, display: "flex" }}>
-            <Grid container spacing={0}>
+        <DialogContent sx={{ borderTop: "1px #D2B356 solid",  borderBottom: "1px solid #D2B356" }}>
+          <Box sx={{ flexGrow: 1, display: "flex"}}>
+            <Grid container spacing={0} sx={{paddingTop: "0.5em"}}>
 
               <Grid item xs={12} sm={4}>
               <Avatar
@@ -99,25 +101,21 @@ export default function TripDetails({ tripId }) {
 
               <Grid item xs={12} sm={8}>
                 <Typography variant="h6">
-                  {trip.suburbFrom}, {trip.cityFrom}, {trip.stateFrom} - {trip.suburbTo}, {trip.cityTo}, {trip.stateTo}
+                  {trip.suburbFrom} {trip.cityFrom}, {trip.stateFrom} - {trip.suburbTo} {trip.cityTo}, {trip.stateTo}
                 </Typography>
                 <Typography variant="body2">
                   Date: {formatDate(trip.departureDate)} - {formatDate(trip.arrivalDate)}
                 </Typography>
-                <Typography variant="body2">Space: {trip.availableSpace}</Typography>
+                <Typography variant="body2">Available Space: {trip.availableSpace}</Typography>
                 <Typography variant="body2">Comments: {trip.comments}</Typography>
               </Grid>
 
                 <Grid item xs={12} sx={{ justifyContent: "center", display:"flex"}}> 
                   <Button
-                    variant="contained"
+                  variant="filled"
                     onClick={handleShowEnquireForm}
                     sx={{
-                      backgroundColor: "#D2B356",
-                      "   &:hover": {
-                        backgroundColor: "#fff",
-                        color: "#D2B356",
-                      },
+                      margin: "0.7em "
                     }}
                   >
                     PARCELME

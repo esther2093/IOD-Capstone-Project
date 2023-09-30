@@ -12,8 +12,6 @@ import formatDate from "./FormatDate"
 export default function UpdateProfileDialog() {
   const { currentUser, handleUpdateUser } = useUserContext();
   const [open, setOpen] = React.useState(false);
-
-
   
   const handleClickOpen = () => {
     setOpen(true);
@@ -46,16 +44,12 @@ export default function UpdateProfileDialog() {
       }}
     >
       <Button
-        variant="outlined"
+        variant="filled"
         onClick={handleClickOpen}
         sx={{
           border: 1,
           padding: "0.3em 1em",
           fontSize: "0.8em",
-          "&:hover": {
-            color: "#d2b356",
-            border: "1px #d2b356 solid",
-          },
         }}
       >
         Update Profile

@@ -73,8 +73,9 @@ export const mainTheme = createTheme({
             borderColor: "#D2B356",
           },
           input: {
-            height: "0.8em",
+            height: "0.9em",
           },
+
         },
       },
     },

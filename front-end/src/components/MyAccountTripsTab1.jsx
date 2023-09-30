@@ -105,10 +105,10 @@ export default function TripsTab1() {
   return (
     <Box>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
+        <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.9em" }}>
           YOUR TRIPS
         </Typography>
-        <Typography variant="h4" className="section-title" sx={{ fontSize: "1.7em", fontWeight: 800 }}>
+        <Typography variant="h4" className="section-title" sx={{ fontSize: "1.5em", fontWeight: 800 }}>
           Posted trips:
         </Typography>
       </Box>

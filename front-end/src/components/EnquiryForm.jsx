@@ -17,9 +17,9 @@ export default function EnquiryForm(props) {
 
     const data = new FormData(event.currentTarget);
     data.append("userId", currentUser.id);
-    // console.log("curentuser id", currentUser.id);
+    // console.log("currentUser id", currentUser.id);
     data.append("tripId", tripId);
-    // console.log("current tripId", tripId);
+    // console.log("currentTripId", tripId);
 
     console.log("Submitting data:", Object.fromEntries(data.entries()));
 
@@ -42,7 +42,7 @@ export default function EnquiryForm(props) {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmitEnquiry} sx={{ width: "100%", textAlign: "center", border: "1px #D2B356 dotted", p: "1em", my:"1em" }}>
+    <Box component="form" onSubmit={handleSubmitEnquiry} sx={{ width: "100%", textAlign: "center", p: "1em", my:"1em" }}>
       {errorMsg && (
         <Typography variant="body2" color="red">
           {errorMsg}
@@ -54,16 +54,13 @@ export default function EnquiryForm(props) {
         </Typography>
       )}
       <Grid item xs={12} sx={{ justifyContent: "center", alignItems: "center" }}>
+      <Typography variant="h6" sx={{textAlign: "left", borderBottom:"solid 1px #D2B356"}}>SEND AN ENQUIRY</Typography>
+        <Typography variant="body2" sx={{textAlign: "left", mt: "0.5em"}}>Let the parceler know what you want to send: </Typography>
         <TextField required name="comments" label="Comments" id="comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
         <Button
           type="submit"
-          variant="contained"
+          variant="filled"
           sx={{
-            backgroundColor: "#D2B356",
-            "   &:hover": {
-              backgroundColor: "#fff",
-              color: "#D2B356",
-            },
             marginTop: "0.5em",
           }}
         >

@@ -12,7 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 export default function ProfilePictureDialog() {
   const [image, setImage] = useState({ preview: "", data: "" });
   const [status, setStatus] = useState("");
-  const [errorMsg , setErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const { currentUser, handleUpdateUser } = useUserContext();
   const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
   const [open, setOpen] = React.useState(false);
@@ -41,7 +41,7 @@ export default function ProfilePictureDialog() {
       // console.log(response.data);
       setStatus(response.data.result);
       handleUpdateUser({ ...currentUser, ...response.data.data });
-      setErrorMsg("")
+      setErrorMsg("");
     } catch (error) {
       setErrorMsg("There was a problem uploading your picture. Please try again.");
     }
@@ -62,44 +62,39 @@ export default function ProfilePictureDialog() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        mb: "1em",
+        mb: "1.5em",
       }}
     >
       <Button
-        variant="outlined"
+        variant="filled"
         onClick={handleClickOpen}
         sx={{
-          border: 1,
           padding: "0.3em 1em",
           fontSize: "0.8em",
-          "&:hover": {
-            color: "#d2b356",
-            border: "1px #d2b356 solid",
-          },
         }}
       >
-        Update Profile Picture
+        CHANGE PICTURE
       </Button>
-      
-      <Dialog open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
-        <DialogContent>
-          <DialogTitle id="responsive-dialog-title">
-            <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
-              CHANGE YOUR PROFILE PICTURE
-            </Typography>
-            <Typography variant="h4" className="section-title" sx={{ fontSize: "1em", fontWeight: 800 }}>
-              Current picture
-            </Typography>
-          </DialogTitle>
 
-          <Container component="main" sx={{ padding: 0}}>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
+        <DialogTitle id="responsive-dialog-title">
+          <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
+            CHANGE YOUR PROFILE PICTURE
+          </Typography>
+          <Typography variant="h4" className="section-title" sx={{ fontSize: "1em", fontWeight: 800 }}>
+            Current picture
+          </Typography>
+        </DialogTitle>
+
+        <DialogContent>
+          <Container component="main" sx={{ padding: 0 }}>
             <Typography
               variant="body2"
               sx={{
                 fontWeight: 300,
                 textAlign: "center",
                 color: "green",
-                pb: "0.5em"
+                pb: "0.5em",
               }}
             >
               {status}
@@ -110,7 +105,7 @@ export default function ProfilePictureDialog() {
                 fontWeight: 300,
                 textAlign: "center",
                 color: "red",
-                pb: "0.5em"
+                pb: "0.5em",
               }}
             >
               {errorMsg}
@@ -122,10 +117,10 @@ export default function ProfilePictureDialog() {
                 width: "100%",
                 height: "100%",
                 backgroundColor: "white",
-                margin: "auto"
+                margin: "auto",
               }}
             >
-              <img src={"http://localhost:8000/" + currentUser.profilePicture} width="50%" alt={"NO PROFILE PICTURE"} />
+              <Img src={"http://localhost:8000/" + currentUser.profilePicture} width="50%" alt={"NO PROFILE PICTURE"} />
             </Avatar>
             <Box
               component="form"
@@ -143,8 +138,11 @@ export default function ProfilePictureDialog() {
               <Box sx={{ pl: "4.9em" }}>
                 <input name="photo" type="file" onChange={handleFileChange} />
               </Box>
-              <Button type="submit" variant="filled" sx={{
-                color: "white",
+              <Button
+                type="submit"
+                variant="filled"
+                sx={{
+                  color: "white",
                   my: "2em",
                   mx: "8em",
                   backgroundColor: "#D2B356",
@@ -153,7 +151,8 @@ export default function ProfilePictureDialog() {
                     color: "#D2B356",
                     border: "none",
                   },
-                }}>
+                }}
+              >
                 Submit
               </Button>
             </Box>

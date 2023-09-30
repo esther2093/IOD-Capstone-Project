@@ -92,10 +92,10 @@ export default function TripsTab3() {
   return (
     <Box>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
+        <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.9em" }}>
           ENQUIRES
         </Typography>
-        <Typography variant="h4" className="section-title" sx={{ fontSize: "1.7em", fontWeight: 800 }}>
+        <Typography variant="h4" className="section-title" sx={{ fontSize: "1.5em", fontWeight: 800 }}>
           Enquiries Received:
         </Typography>
       </Box>

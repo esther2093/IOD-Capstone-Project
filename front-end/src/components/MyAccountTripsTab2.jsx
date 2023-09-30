@@ -83,9 +83,13 @@ export default function TripsTab2() {
     }
 
     const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
+
+    const suburbFrom = trip.suburbFrom === null ? "" : trip.suburbFrom;
+    const suburbTo = trip.suburbTo === null ? "" : trip.suburbTo;
+
     return {
-      from: `${trip.suburbFrom} ${trip.cityFrom}, ${trip.stateFrom}`,
-      to: `${trip.suburbTo} ${trip.cityTo}, ${trip.stateTo}`,
+      from: `${suburbFrom} ${trip.cityFrom}, ${trip.stateFrom}`,
+      to: `${suburbTo} ${trip.cityTo}, ${trip.stateTo}`,
       dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
       enquiry: <Typography
       sx={{
@@ -108,10 +112,10 @@ export default function TripsTab2() {
   return (
     <Box>
       <Box sx={{ flexGrow: 1 }}>
-        <Typography variant="h6" className="section-subhead" sx={{ fontSize: "1em" }}>
+        <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.9em" }}>
           ENQUIRIES
         </Typography>
-        <Typography variant="h4" className="section-title" sx={{ fontSize: "1.7em", fontWeight: 800 }}>
+        <Typography variant="h4" className="section-title" sx={{ fontSize: "1.5em", fontWeight: 800 }}>
           Enquiries Sent:
         </Typography>
       </Box>

@@ -15,24 +15,17 @@ import InputLabel from "@mui/material/InputLabel";
 import { FormControl, Popover } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import bannerBg from "../assets/bannerImage.jpg";
+import SizeInfoList from "./sizeInfoList";
 
 let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
 export default function DriveForm() {
   const { currentUser } = useUserContext();
 
-  const [errorMsg, setErrorMsg] = useState("");
+  const [error, setError] = useState("");
   const [submitTrip, setSubmitTrip] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
-  const [anchorEl, setAnchorEl] = React.useState(null);
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleChange = (event) => {
     setAvailableSpace(event.target.value);
@@ -41,7 +34,7 @@ export default function DriveForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrorMsg("");
+    setError("");
     setSubmitTrip("");
 
     const data = new FormData(event.currentTarget);
@@ -55,13 +48,13 @@ export default function DriveForm() {
 
         setSubmitTrip(result);
         if (trip) {
-          setErrorMsg("");
+          setError("");
           event.target.reset()
         }
       })
-      .catch((errorMsg) => {
-        console.error(errorMsg);
-        setErrorMsg(errorMsg.response.data.result);
+      .catch((error) => {
+        console.error(error);
+        setError(error.response.data.result);
       });
   };
 
@@ -121,21 +114,20 @@ export default function DriveForm() {
 
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: "0.5em", mb: "2em" }}>
             <Box sx={{ pb: "1em" }}>
-              {errorMsg && (
                 <Typography variant="body2" color="red">
-                  {errorMsg}
+                  {error}
                 </Typography>
-              )}
-              {submitTrip && (
                 <Typography variant="body2" color="green">
                   {submitTrip}
                 </Typography>
-              )}
             </Box>
 
             <Grid container spacing={0}>
+              <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
+                <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Where from?</Typography>              
+                </Grid>
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
-                <TextField fullWidth id="suburbFrom" label="Suburb" name="suburbFrom" autoComplete="suburb" helperText="Where from?" />
+                <TextField fullWidth id="suburbFrom" label="Suburb" name="suburbFrom" autoComplete="suburb" />
               </Grid>
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth id="cityFrom" label="City" name="cityFrom" autoComplete="city" />
@@ -143,9 +135,11 @@ export default function DriveForm() {
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth id="stateFrom" label="State" name="stateFrom" autoComplete="state" />
               </Grid>
-
+              <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
+                <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Where to?</Typography>              
+                </Grid>
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
-                <TextField fullWidth id="suburbTo" label="Suburb" name="suburbTo" autoComplete="suburb" helperText="Where to?" />
+                <TextField fullWidth id="suburbTo" label="Suburb" name="suburbTo" autoComplete="suburb" />
               </Grid>
 
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
@@ -154,12 +148,14 @@ export default function DriveForm() {
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
                 <TextField required fullWidth id="stateTo" label="State" name="stateTo" autoComplete="state" />
               </Grid>
-
+              <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
+                <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Dates </Typography>              
+                </Grid>
               <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em" }}>
-                <TextField required fullWidth name="departureDate" label="DD-MM-YYYY" id="departureDate" format="DD-MM-YYYY" helperText="Departure Date" />
+                <TextField required fullWidth name="departureDate" label="DD-MM-YYYY" id="departureDate" format="DD-MM-YYYY" helperText="Departure" />
               </Grid>
               <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em" }}>
-                <TextField required fullWidth name="arrivalDate" label="DD-MM-YYYY" id="arrivalDate" format="DD-MM-YYYY" helperText="Arrival Date" />
+                <TextField required fullWidth name="arrivalDate" label="DD-MM-YYYY" id="arrivalDate" format="DD-MM-YYYY" helperText="Arrival" />
               </Grid>
 
               <Grid item xs={11} sx={{ p: "0.25em" }}>
@@ -176,34 +172,7 @@ export default function DriveForm() {
               </Grid>
 
               <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356" }}>
-                <InfoIcon onClick={handleClick} />
-                <Popover
-                  open={Boolean(anchorEl)}
-                  anchorEl={anchorEl}
-                  onClose={handleClose}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                >
-                  <Box sx={{ flexGrow: 1, p: "0.5em" }}>
-                    <Typography sx={{ fontSize: "0.9em", fontWeight: 500, textDecoration: "underline" }}>Size information:</Typography>
-                    <ul className="size-list">
-                      <li>
-                        <Typography sx={{ fontSize: "0.8em" }}>Small = ≤ 30cm x 30cm</Typography>
-                      </li>
-                      <li>
-                        <Typography sx={{ fontSize: "0.8em" }}>Medium = ≤ 60cm x 60cm</Typography>
-                      </li>
-                      <li>
-                        <Typography sx={{ fontSize: "0.8em" }}>Large = ≤ 100cm x 100cm </Typography>
-                      </li>
-                      <li>
-                        <Typography sx={{ fontSize: "0.8em" }}>Extra Large = over 100cm x 100cm</Typography>
-                      </li>
-                    </ul>
-                  </Box>
-                </Popover>
+               <SizeInfoList />
               </Grid>
 
               <Grid item xs={12} sx={{ p: "0.25em" }}>

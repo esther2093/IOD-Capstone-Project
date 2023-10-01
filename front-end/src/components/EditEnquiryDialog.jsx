@@ -5,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Axios from "axios";
+import axios from "axios";
 import { Box, TextField } from "@mui/material";
 import formatDateBackend from "./FormatDateBackend";
 
@@ -22,8 +22,12 @@ export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList 
   };
 
   useEffect(() => {
-    const newEnquiry = enquiry? {comments: capitalizeFirstLetter(enquiry.comments)} : {comments: ""};
-    setEditedEnquiry(newEnquiry);
+    if (enquiry) {
+      const originalEnquiry = {
+        comments: capitalizeFirstLetter(enquiry.comments)
+      };
+    setEditedEnquiry(originalEnquiry);
+      }
   }, [enquiry]);
 
   const handleEditFormChange = (event) => {
@@ -34,45 +38,52 @@ export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList 
     }));
   };
 
-  const handleEditFormSubmit = () => {
-    setError("");
-    setSubmitResult("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-    Axios.put(`http://localhost:8000/api/enquiry/${enquiry.id}`, editedEnquiry)
-      .then((response) => {
-        let result = response.data.result;
-        let enquiryResponse = response.data.data;
-
-        if (enquiryResponse) {
-          setError("");
-          setSubmitResult(result);
-          close();
-          console.log(enquiryResponse);
-          setUpdateList(true);
-        }
-      })
-      .catch((error) => {
+    try {
+      const response = await axios.put(`http://localhost:8000/api/enquiries/${enquiry.id}`, editedEnquiry)
+      setError("");
+      setSubmitResult(response.data.result);
+      setUpdateList(true)
+      close();
+    } catch (error) {
         console.error("An error occurred while updating the enquiry:", error.response.data.result);
         setError("An error occurred while updating the enquiry");
-      });
+      };
   };
 
   return (
     <Dialog fullWidth open={open} close={close}>
-      <DialogTitle sx={{ borderBottom: "2px #D2B356 solid" }}>EDIT ENQUIRY</DialogTitle>
+      <DialogTitle>
+      <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
+          EDIT DETAILS
+        </Typography>
+        <Typography variant="h4" className="section-title" sx={{ fontSize: "1em", fontWeight: 800 }}>
+          Edit your enquiry
+        </Typography>
+      </DialogTitle>
+
       <DialogContent>
         <Box sx={{ textAlign: "center" }}>
           <Typography variant="body2" color="error">{error}</Typography>
           <Typography variant="body2" color="green">{submitResult}</Typography>
         </Box>
-        <Box onSubmit={handleEditFormSubmit}>
+        
+        <Box component="form" onSubmit={handleSubmit}>
           <TextField sx={{ m: "0.5em" }} multiline maxRows={10} fullWidth name="comments" label="Comments" value={editedEnquiry.comments} onChange={handleEditFormChange} />
+          <Box sx={{ pt: "1em", textAlign: "center" }}>
+            <Button type="submit" variant="filled">
+              Save
+            </Button>
+          </Box>
         </Box>
+        
       </DialogContent>
+
       <DialogActions>
-        <Button onClick={handleEditFormSubmit}>Save Changes</Button>
         <Button variant="filled" onClick={close}>
-          Cancel
+          Close
         </Button>
       </DialogActions>
     </Dialog>

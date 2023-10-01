@@ -5,31 +5,23 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Axios from "axios";
+import axios from "axios";
 
 export default function DeleteTripDialog({ open, close, trip }) {
-  const [submitResult, setSubmitResult] = React.useState("");
-  const [error, setError] = React.useState("");
+  const [submitResult, setSubmitResult] = useState("");
+  const [error, setError] = useState("");
 
-  const handleConfirmDelete = () => {
-    setError("");
+  const handleDelete = async () => {
 
-    Axios.delete(`http://localhost:8000/api/trips/${trip.id}`)
-      .then((response) => {
-        let result = response.data.result;
-
-        if (response.status === 200) {
-          setSubmitResult(result);
-          setError("");
-          console.log(`Trip with ID ${trip.id} deleted successfully.`);
-          close(); // Close the dialog
-        } else {
-          console.error(`Failed to delete trip with ID ${trip.id}.`);
-        }
-      })
-      .catch((error) => {
-        console.error("An error occurred while deleting the trip:", error);
-      });
+    try {
+      const response = await axios.delete(`http://localhost:8000/api/trips/${trip.id}`)
+      setError("");    
+      setSubmitResult(response.data.result);
+      }
+      catch(error) {
+        console.error("An error occurred while deleting the trip:", error.response.data.result);
+        setError("An error occurred while deleting your trip");
+      };
   };
 
   return (
@@ -49,7 +41,7 @@ export default function DeleteTripDialog({ open, close, trip }) {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button variant="filled" onClick={handleConfirmDelete} color="primary">
+        <Button variant="filled" onClick={handleDelete} color="primary">
           Yes
         </Button>
         <Button onClick={close}>No</Button>

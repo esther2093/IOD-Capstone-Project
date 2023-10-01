@@ -8,28 +8,20 @@ import Typography from "@mui/material/Typography";
 import axios from "axios";
 
 export default function DeleteEnquiryDialog({ open, close, enquiry }) {
-  const [submitResult, setSubmitResult] = React.useState("");
-  const [error, setError] = React.useState("");
+  const [submitResult, setSubmitResult] = useState("");
+  const [error, setError] = useState("");
 
-  const handleConfirmDelete = () => {
-    setError("");
+  const handleDelete = async () => {
 
-    axios.delete(`http://localhost:8000/api/enquiries/${enquiry.id}`)
-      .then((response) => {
-        let result = response.data.result;
-
-        if (response.status === 200) {
-          setSubmitResult(result);
-          setError("");
-          console.log(`Enquiry with ID ${enquiry.id} deleted successfully.`);
-          close(); // Close the dialog
-        } else {
-          console.error(`Failed to delete enquiry with ID ${enquiry.id}.`);
-        }
-      })
-      .catch((error) => {
-        console.error("An error occurred while deleting the enquiry:", error);
-      });
+    try {
+      const response = await axios.delete(`http://localhost:8000/api/enquiries/${enquiry.id}`)
+      setError("");    
+      setSubmitResult(response.data.result);
+      }
+      catch(error) {
+        console.error("An error occurred while deleting the enquiry:", error.response.data.result);
+        setError("An error occurred while deleting your enquiry");
+      };
   };
 
   return (
@@ -49,7 +41,7 @@ export default function DeleteEnquiryDialog({ open, close, enquiry }) {
         </Typography>
       </DialogContent>
       <DialogActions>
-        <Button variant="filled" onClick={handleConfirmDelete} color="primary">
+        <Button variant="filled" onClick={handleDelete} color="primary">
           Yes
         </Button>
         <Button onClick={close}>No</Button>

@@ -27,6 +27,7 @@ export default function TripsTab2() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedEnquiry, setSelectedEnquiry] = useState(null);
+  const [enquiriesList, setEnquiriesList ] = useState([]);
 
   const handleEditDialogOpen = (enquiry) => {
     setSelectedEnquiry(enquiry);
@@ -45,7 +46,7 @@ export default function TripsTab2() {
 
   const handleDeleteDialogClose = () => {
     setSelectedEnquiry(null);
-    setSelesetDeleteDialogOpenctedEnquiry(false);
+    setDeleteDialogOpen(false);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -59,40 +60,43 @@ export default function TripsTab2() {
 
   const columns = [
     { id: "from", label: "From", minWidth: 180 },
-    { id: "to", label: "To", minWidth: 180 },
+    { id: "to", label: "To", minWidth: 150 },
     { id: "dates", label: "Dates", minWidth: 150 },
     { id: "enquiry", label: "Enquiry", minWidth: 70 },
     { id: "enquiryDate", label: "Date Enquired", minWidth: 70 },
     { id: "editEnquiry", label: "", minWidth: 20 },
     { id: "deleteEnquiry", label: "", minWidth: 20 },
-    { id: "status", label: "Status", minWidth: 70 },
+    { id: "status", label: "Status", minWidth: 20 },
   ];
 
-  const userEnquiries = enquiries.filter((enquiry) => enquiry.userId === currentUser.id);
+  useEffect (() => {
+    const userEnquiries = enquiries.filter((enquiry) => enquiry.userId === currentUser.id);
+    setEnquiriesList(userEnquiries);
+  }, [enquiries, currentUser, enquiriesList]);
 
-  const rows = userEnquiries.map((enquiry) => {
+  const rows = enquiriesList.map((enquiry) => {
+  
+    const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
+    const suburbFrom = trip.suburbFrom === null ? "" : trip.suburbFrom;
+    const suburbTo = trip.suburbTo === null ? "" : trip.suburbTo;
+
     let statusIcon;
     if (enquiry.accepted === null) {
-      statusIcon = <Icon icon="eos-icons:three-dots-loading" width="30" />;
+      statusIcon = <Box sx={{textAlign: "center"}}><Icon icon="eos-icons:three-dots-loading" width="16.4" /></Box>;
     } else if (enquiry.accepted === true) {
-      statusIcon = <Icon icon="subway:tick" color="green" width="18" />;
+      statusIcon = <Box sx={{textAlign: "center"}}><Icon icon="subway:tick" color="green" width="15" /></Box>;
     } else if (enquiry.accepted === false) {
-      statusIcon = <Icon icon="foundation:x" color="red" width="20" />;
+      statusIcon = <Box sx={{textAlign: "center"}}><Icon icon="foundation:x" color="red" width="15" /></Box>;
     } else {
       statusIcon = null;
     }
-
-    const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
-
-    const suburbFrom = trip.suburbFrom === null ? "" : trip.suburbFrom;
-    const suburbTo = trip.suburbTo === null ? "" : trip.suburbTo;
 
     return {
       from: `${suburbFrom} ${trip.cityFrom}, ${trip.stateFrom}`,
       to: `${suburbTo} ${trip.cityTo}, ${trip.stateTo}`,
       dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
-      enquiry: <Typography
-      sx={{
+      enquiry: 
+      <Typography sx={{
         fontSize: "0.875rem",
         maxWidth: 300,
         overflow: "hidden",
@@ -102,7 +106,7 @@ export default function TripsTab2() {
     >
       {enquiry.comments}
     </Typography>,
-      enquiryDate: formatDate(enquiry.createdAt),
+      enquiryDate: formatDate(enquiry.updatedAt),
       status: statusIcon,
       editEnquiry: <Icon icon="material-symbols:edit-outline" onClick={() => handleEditDialogOpen(enquiry)} />,
       deleteEnquiry: <Icon color="#c1121f" icon="ph:x-fill" onClick={() => handleDeleteDialogOpen(enquiry)} />
@@ -120,7 +124,7 @@ export default function TripsTab2() {
         </Typography>
       </Box>
 
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, p: "0.5em" }}>
         <TableContainer sx={{ minHeight: 150 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>

@@ -9,6 +9,7 @@ export default function EnquiryForm(props) {
 
   const [errorMsg, setErrorMsg] = useState("");
   const [submitResult, setSubmitResult] = useState("");
+  const [formVisible, setFormVisible] = useState(true);
 
   const handleSubmitEnquiry = (event) => {
     event.preventDefault();
@@ -32,7 +33,7 @@ export default function EnquiryForm(props) {
         setSubmitResult(result);
         if (enquiry) {
           setErrorMsg("");
-          event.target.reset();
+          setFormVisible(false);
         }
       })
       .catch((errorMsg) => {
@@ -42,31 +43,41 @@ export default function EnquiryForm(props) {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmitEnquiry} sx={{ width: "100%", textAlign: "center", p: "1em", my:"1em" }}>
-      {errorMsg && (
-        <Typography variant="body2" color="red">
-          {errorMsg}
-        </Typography>
-      )}
-      {submitResult && (
-        <Typography variant="body2" color="green">
+    <Box>
+      {formVisible ? ( 
+        <Box component="form" onSubmit={handleSubmitEnquiry} sx={{ textAlign: "center", mt: "1.5em" }}>
+          <Box>
+            <Typography variant="body2" color="red">
+              {errorMsg}
+            </Typography>
+            <Typography variant="body2" color="green">
+              {submitResult}
+            </Typography>
+          </Box>
+          <Grid item xs={12} sx={{ justifyContent: "center", alignItems: "center" }}>
+            <Typography variant="h6" className="section-subhead" sx={{ textAlign: "left", fontSize: "0.6em" }}>
+              ENQUIRE
+            </Typography>
+            <Typography variant="h4" className="section-title" sx={{ textAlign: "left", fontSize: "1em", fontWeight: 800 }}>
+              Let the parceler know what you want to send:
+            </Typography>
+            <TextField required name="comments" label="Comments" id="comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
+            <Button
+              type="submit"
+              variant="filled"
+              sx={{
+                marginTop: "0.5em",
+              }}
+            >
+              PARCEL IT
+            </Button>
+          </Grid>
+        </Box>
+      ) : (
+        <Typography variant="body2" color="green" sx={{ mt: "1em" }}>
           {submitResult}
         </Typography>
       )}
-      <Grid item xs={12} sx={{ justifyContent: "center", alignItems: "center" }}>
-      <Typography variant="h6" sx={{textAlign: "left", borderBottom:"solid 1px #D2B356"}}>SEND AN ENQUIRY</Typography>
-        <Typography variant="body2" sx={{textAlign: "left", mt: "0.5em"}}>Let the parceler know what you want to send: </Typography>
-        <TextField required name="comments" label="Comments" id="comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
-        <Button
-          type="submit"
-          variant="filled"
-          sx={{
-            marginTop: "0.5em",
-          }}
-        >
-          SEND IT!
-        </Button>
-      </Grid>
     </Box>
   );
 }

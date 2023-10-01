@@ -26,7 +26,6 @@ export default function TripsTab1() {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState(null);
-
   const [userTripsList, setUserTripsList] = useState([]);
   const [updateList, setUpdateList] = useState(false);
 
@@ -59,22 +58,18 @@ export default function TripsTab1() {
     setPage(0);
   };
 
-  useEffect(() => {
-    if (updateList) {
-      setUpdateList(true);
-    }
-  }, [updateList]);
-
+ //update the userTripsList
   useEffect(() => {
     const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
     setUserTripsList(userTrips);
+      console.log("proof of re-render")
   }, [allTrips, currentUser, updateList]); 
-  // console.log("User Trip List data: ", userTripsList)
+
 
   const columns = [
-    { id: "from", label: "From", minWidth: 100 },
-    { id: "to", label: "To", minWidth: 100 },
-    { id: "dates", label: "From - To", minWidth: 100 },
+    { id: "from", label: "From", minWidth: 180 },
+    { id: "to", label: "To", minWidth: 180 },
+    { id: "dates", label: "Dates", minWidth: 140 },
     { id: "comments", label: "Comments", minWidth: 300 },
     { id: "editTrip", label: "", minWidth: 30 },
     { id: "deleteTrip", label: "", minWidth: 20 },

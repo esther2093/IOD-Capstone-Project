@@ -10,18 +10,18 @@ import DialogActions from "@mui/material/DialogActions";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import EnquiryForm from "./EnquiryForm";
-import formatDate from "./FormatDate"
+import formatDate from "./FormatDate";
+import SizeInfoList from "./sizeInfoList";
 
 export default function TripDetails({ tripId }) {
   const { trip } = useTripData(tripId);
   const { users } = useUserData();
-    console.log(trip);
+  console.log(trip);
 
   const [userFirstNames, setUserFirstNames] = useState([]);
   const [userProfilePicture, setUserProfilePictures] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [showEnquireForm, setShowEnquireForm] = useState(false); // Control the visibility of the form
-
 
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
@@ -40,6 +40,7 @@ export default function TripDetails({ tripId }) {
   };
   const handleClose = () => {
     setOpen(false);
+    setShowEnquireForm(false);
   };
 
   const handleShowEnquireForm = () => {
@@ -52,41 +53,29 @@ export default function TripDetails({ tripId }) {
 
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
-      <Box sx={{display: "flex", justifyContent: "right"}}>
-      <Button onClick={handleClickOpen} sx={{fontSize: "0.8em"}}>
-        More Details
-      </Button>
+      <Box sx={{ display: "flex", justifyContent: "right" }}>
+        <Button onClick={handleClickOpen} sx={{ fontSize: "0.8em" }}>
+          More Details
+        </Button>
       </Box>
 
-      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} sx={{display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <Box>
-          <Grid container spacing={0}>
-            <Grid item xs={10}>
-              <DialogTitle sx={{ m: 0 }} id="customized-dialog-title">
-                TRIP DETAILS
-              </DialogTitle>
-            </Grid>
-            <IconButton
-              aria-label="close"
-              onClick={handleClose}
-              sx={{
-                position: "absolute",
-                right: 8,
-                top: 14,
-                color: "#D2B356",
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
-          </Grid>
+          <DialogTitle sx={{ m: 0 }} id="customized-dialog-title">
+            <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
+              MORE DETAILS
+            </Typography>
+            <Typography variant="h4" className="section-title" sx={{ fontSize: "1em", fontWeight: 800 }}>
+              Chosen trip details:
+            </Typography>
+          </DialogTitle>
         </Box>
 
-        <DialogContent sx={{ borderTop: "1px #D2B356 solid",  borderBottom: "1px solid #D2B356" }}>
-          <Box sx={{ flexGrow: 1, display: "flex"}}>
-            <Grid container spacing={0} sx={{paddingTop: "0.5em"}}>
-
+        <DialogContent>
+          <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={0}>
               <Grid item xs={12} sm={4}>
-              <Avatar
+                <Avatar
                   variant="square"
                   sx={{
                     width: "90%",
@@ -96,7 +85,9 @@ export default function TripDetails({ tripId }) {
                 >
                   <img src={"http://localhost:8000/" + userProfilePicture[trip.userId - 1]} width="100%" alt={"NO PROFILE PICTURE"} />
                 </Avatar>
-                <Typography variant="body2" sx={{ textAlign: "center" }}>Parceler: {userFirstNames[trip.userId - 1]}</Typography>
+                <Typography variant="body2" sx={{ textAlign: "center" }}>
+                  Parceler: {userFirstNames[trip.userId - 1]}
+                </Typography>
               </Grid>
 
               <Grid item xs={12} sm={8}>
@@ -106,25 +97,32 @@ export default function TripDetails({ tripId }) {
                 <Typography variant="body2">
                   Date: {formatDate(trip.departureDate)} - {formatDate(trip.arrivalDate)}
                 </Typography>
-                <Typography variant="body2">Available Space: {trip.availableSpace}</Typography>
-                <Typography variant="body2">Comments: {trip.comments}</Typography>
+                <Box sx={{ display: "flex",  mt: "0.3em"}}>
+                  <SizeInfoList />
+                  <Typography variant="body2" sx={{ ml: "0.5em", mt: "0.2em" }}>
+                    Available Space : {trip.availableSpace}
+                  </Typography>
+                </Box>
+                <Typography variant="body2">Comments: </Typography>
+                <Typography variant="body2">{trip.comments}</Typography>
               </Grid>
 
-                <Grid item xs={12} sx={{ justifyContent: "center", display:"flex"}}> 
-                  <Button
+              <Grid item xs={12} sx={{ justifyContent: "center", display: "flex" }}>
+                <Button
                   variant="filled"
-                    onClick={handleShowEnquireForm}
-                    sx={{
-                      margin: "0.7em "
-                    }}
-                  >
-                    PARCELME
-                  </Button>
-                </Grid>
-                {showEnquireForm && (
-                  <EnquiryForm tripId={trip.id}/>
-                )}
-              
+                  onClick={handleShowEnquireForm}
+                  sx={{
+                    mt: "1.3em ",
+                    mb: "0.5em"
+                  }}
+                >
+                  PARCELME
+                </Button>
+              </Grid>
+
+              <Grid item xs={12}>
+                {showEnquireForm && <EnquiryForm tripId={trip.id} />}
+              </Grid>
             </Grid>
           </Box>
         </DialogContent>

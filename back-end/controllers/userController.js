@@ -35,7 +35,7 @@ const loginUser = async (req, res) => {
 
     // Check if a user with the given email exists
     if (!emailAddress) {
-      return res.status(400).json({ result: "Email is not registered" });
+      return res.status(400).json({ result: "This email is not registered" });
     }
 
     // Validate if user exists in our database
@@ -55,7 +55,7 @@ const loginUser = async (req, res) => {
 
       // send back logged in user details including token
       res.status(200).json({ result: "User successfully logged in", data: user });
-    } else res.status(400).json({ result: "Invalid user credentials" });
+    } else res.status(400).json({ result: "Your email or password is invalid" });
   } catch (err) {
     console.log(err);
     res.status(500).json({ result: err.message });
@@ -96,6 +96,8 @@ const registerUser = async (req, res) => {
       res.status(400).json({ result: "You must input a valid phone number" });
     } else if (!/^[0-9]+$/.test(phoneNumber)) {
       res.status(400).json({ result: "Phone number must contain numbers only" });
+    } else if (!phoneNumber.startsWith("04")) {
+      res.status(400).json({ result: "Phone number must start with '04'" });
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       res.status(400).json({ result: "Invalid email address" });
     } else {
@@ -155,18 +157,41 @@ const createUser = (data, res) => {
     });
 };
 
-const updateUser = (req, res) => {
-  Models.User.update(req.body, {
-    where: {
-      id: req.params.id,
-    },
-  })
-    .then(function (data) {
-      res.status(200).json({ result: "User updated successfully", data: data });
-    })
-    .catch((err) => {
-      res.status(500).json({ result: err.message });
-    });
+const updateUser = async (req, res) => {
+
+  try {
+    const { firstName, lastName, email, phoneNumber, dateOfBirth } = req.body;
+
+    if (!(email && firstName && lastName && dateOfBirth && phoneNumber)) {
+      res.status(400).json({ result: "All input is required" });
+    } else if (!/^[A-Za-z]+$/i.test(firstName)) {
+      res.status(400).json({ result: "Invalid first name" });
+    } else if (!/^[A-Za-z]+$/i.test(lastName)) {
+      res.status(400).json({ result: "Invalid last name" });
+    } else if (age < 18) {
+      res.status(400).json({ result: "You must be over 18 years old to sign up" });
+    } else if (!/^\d{2}-\d{2}-\d{4}$/.test(dateOfBirth)) {
+      res.status(400).json({ result: "Date of Birth must be in the format DD-MM-YYYY" });
+    } else {
+
+      let capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      };
+
+      // Create user in our database
+      const userMetadata = await Models.User.put({
+        firstName: capitalizeFirstLetter(firstName),
+        lastName: capitalizeFirstLetter(lastName),
+        email: email.toLowerCase(),
+        dateOfBirth: FormatDateBackEnd(dateOfBirth),
+        phoneNumber,
+      });
+      res.status(200).json({ result: "User updated successfully" });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ result: err.message });
+  }
 };
 
 const deleteUser = (req, res) => {

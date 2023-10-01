@@ -1,4 +1,4 @@
-export default function formatDateBackend(date) {
+export default function FormatDateBackend(date) {
     const newDate = new Date(date);
 
     const year = newDate.getUTCFullYear();

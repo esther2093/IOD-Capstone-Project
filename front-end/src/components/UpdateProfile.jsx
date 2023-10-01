@@ -1,38 +1,76 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { Container, Box, Button, Grid } from "@mui/material";
+import { Container, Box, Button, Grid, TextField } from "@mui/material";
 import { useUserContext } from "../context/UserContext";
 import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import formatDate from "./FormatDate"
+import formatDate, { formatDateYYYY } from "./FormatDate";
+import FormatDateBackend from "./FormatDateBackend";
+import FormatPNumber from "./formatPNumber";
 
 export default function UpdateProfileDialog() {
-  const { currentUser, handleUpdateUser } = useUserContext();
-  const [open, setOpen] = React.useState(false);
   
-  const handleClickOpen = () => {
-    setOpen(true);
+  const { currentUser, handleUpdateUser } = useUserContext();
+  const [openDialog, setOpenDialog] = useState(false);
+
+  const [updatedUser, setUpdatedUser] = useState({
+    firstName: currentUser.firstName,
+    lastName: currentUser.lastName,
+    email: currentUser.email,
+    dateOfBirth: currentUser.dateOfBirth,
+    phoneNumber: currentUser.phoneNumber,
+  });
+  const [submitResult, setSubmitResult] = useState("");
+  const [error, setError] = useState("");
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
   };
 
-  const handleSubmit = async (e) => {
+  const handleDetailChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedUser((updatedUser) => ({
+      ...updatedUser,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = () => {
     e.preventDefault();
+    setError("");
+    setSubmitResult("");
+    let updatedUser = new FormData(e.currentTarget);
+    updatedUser.append("firstName", updatedUser.firstName);
+updatedUser.append("lastName", updatedUser.lastName);
+updatedUser.append("email", updatedUser.email);
+updatedUser.append("phoneNumber", updatedUser.phoneNumber);
+updatedUser.append("dateOfBirth", updatedUser.dateOfBirth);
 
-    try {
-      const response = await axios.put(`http://localhost:8000/api/users/${currentUser.id}`, updatedUser);
-      setStatus(response.data.result);
-      handleUpdateUser(response.data.data);
-    } catch (err) {
-      setStatus(err.message);
-    }
-  };
+    axios
+      .put(`http://localhost:8000/api/users/${currentUser.id}`, Object.fromEntries(updatedUser.entries()))
+      .then((response) => {
+        let result = response.data.result;
+        let updateResponse = response.data.data;
 
+        if (updateResponse) {
+          handleUpdateUser(update);
+          setError("");
+          handleCloseDialog();
+          setSubmitResult(result);
+        }
+      })
+      .catch ((error) => {
+        setError(error.response.data.result);
+      });
+    };
+  
   return (
     <Box
       sx={{
@@ -45,7 +83,7 @@ export default function UpdateProfileDialog() {
     >
       <Button
         variant="filled"
-        onClick={handleClickOpen}
+        onClick={handleOpenDialog}
         sx={{
           border: 1,
           padding: "0.3em 1em",
@@ -55,36 +93,18 @@ export default function UpdateProfileDialog() {
         Update Profile
       </Button>
 
-      <Dialog fullWidth open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
+      <Dialog fullWidth open={openDialog} onClose={handleCloseDialog} aria-labelledby="responsive-dialog-title">
         <DialogTitle id="responsive-dialog-title">
           <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
             UDPATE YOUR PROFILE
           </Typography>
           <Typography variant="h4" className="section-title" sx={{ fontSize: "1em", fontWeight: 800 }}>
-              Current details:
-            </Typography>
+            Current details:
+          </Typography>
         </DialogTitle>
 
         <DialogContent>
-          <Grid container spacing={0} >
-            <Grid item xs={6} sm={6} sx={{textAlign: "left"}}>
-            <Typography variant="body2"> Name: {currentUser.firstName} {currentUser.lastName}</Typography>
-              <Typography variant="body2"> Email: {currentUser.email}</Typography>
-              <Typography variant="body2"> Password: ****** </Typography>
-              <Typography variant="body2"> Date of Birth: {formatDate(currentUser.dateOfBirth)}</Typography>
-              <Typography variant="body2"> Phone Number: +61 {currentUser.phoneNumber}</Typography>
-            </Grid>
-            <Grid item xs={6} sm={6} sx={{textAlign: "right"}}>
-              <Typography variant="body2"> Change Name </Typography>
-              <Typography variant="body2"> Change Email</Typography>
-              <Typography variant="body2"> Change Password</Typography>
-              <Typography variant="body2"> Change D.O.B</Typography>
-              <Typography variant="body2"> Change Phone Number</Typography>
-            </Grid>
-          </Grid>
-
-          <Container component="main" sx={{ pl: 0 }}>
-            <Typography
+        <Typography
               variant="body2"
               sx={{
                 fontWeight: 300,
@@ -92,9 +112,29 @@ export default function UpdateProfileDialog() {
                 color: "green",
               }}
             >
-              {status}
+              {submitResult}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 300,
+                textAlign: "center",
+                color: "red",
+                mb: "0.5em"
+              }}
+            >
+              {error}
             </Typography>
 
+          <Box onSubmit={handleSubmit}>
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="firstName" label="First Name" name="firstName" value={updatedUser.firstName} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="lastName" label="Last Name" name="lastName" value={updatedUser.lastName} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="email" label="Email Address" name="email" value={updatedUser.email} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="dateOfBirth" label="DOB" name="dateOfBirth" value={FormatDateBackend(updatedUser.dateOfBirth)} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="phoneNumber" label="Phone Number" name="phoneNumber" value={"0" + updatedUser.phoneNumber} onChange={handleDetailChange} />
+          </Box>
+
+          <Container component="main" sx={{ pl: 0 }}>
             <Box
               component="form"
               onSubmit={handleSubmit}
@@ -114,7 +154,7 @@ export default function UpdateProfileDialog() {
           </Container>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleCloseDialog} autoFocus>
             DONE
           </Button>
         </DialogActions>

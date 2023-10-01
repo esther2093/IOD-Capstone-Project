@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import useTripData from "../hooks/useTripData";
 import Box from "@mui/system/Box";
-import { Button, ButtonBase, Paper, TextField, styled } from "@mui/material";
+import { Button, TextField, styled } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 import TripDetails from "./TripDetails";
 import bannerBg from "../assets/bannerImage.jpg";
@@ -25,36 +24,24 @@ export default function TripsList() {
 
   const [filteredTrips, setFilteredTrips] = useState(allTrips);
   const [searchTerm, setSearchTerm] = useState("");
-
   const [userFirstNames, setUserFirstNames] = useState([]);
-
   const [userProfilePicture, setUserProfilePictures] = useState([]);
 
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-    // console.log("First Names:", firstNamesArray);
-  }, [users]);
-
-  useEffect(() => {
+  
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
-    // console.log("Profile Picture:", profilePictureArray);
   }, [users]);
 
   const handleSearch = () => {
     const formattedSearchTerm = searchTerm.toLowerCase();
 
     const filtered = allTrips.filter((trip) => {
-      const tripDepartureDate = new Date(trip.departureDate);
-      const tripArrivalDate = new Date(trip.arrivalDate);
-
-      const formattedDepartureDate = tripDepartureDate.toLocaleString();
-      const formattedArrivalDate = tripArrivalDate.toLocaleString();
-
       return (
-        formattedDepartureDate.includes(formattedSearchTerm) ||
-        formattedArrivalDate.includes(formattedSearchTerm) ||
+        formatDate(trip.departureDate).includes(searchTerm) ||
+        formatDate(trip.departureDate).includes(searchTerm) ||
         trip.cityFrom.toLowerCase().includes(formattedSearchTerm) ||
         trip.cityTo.toLowerCase().includes(formattedSearchTerm) ||
         trip.availableSpace.toLowerCase().includes(formattedSearchTerm) ||
@@ -144,15 +131,14 @@ export default function TripsList() {
 
         <Grid container spacing={0} sx={{ backgroundColor: "white", padding: "1em" }}>
           {filteredTrips.map((trip) => (
-            <Grid item key={trip.id} xs={12} sm={6} md={4} xl={3} sx={{ padding: "1em" }}>
+            <Grid item key={trip.id} xs={12} sm={6} md={4} xl={4} sx={{ padding: "1em" }}>
               <Card>
-                <Grid container spacing={0}>
-                  <Grid item xs={4}  sx={{padding: "0.5em"}}>
+                <Grid container spacing={0} sx={{marginTop: '0.5em'}}>
+                  <Grid item xs={4}  sx={{padding: "0.5em", margin: "auto"}}>
                     <Img alt="no-profile-picture" src={"http://localhost:8000/" + userProfilePicture[trip.userId - 1]} />
-                    
                   </Grid>
 
-                  <Grid item xs={8} sx={{padding: "1.2em 0.5em 0.5em 0.5em"}}>
+                  <Grid item xs={8} sx={{padding: "0.5em"}}>
                     
                     <Typography variant="body2"> From: {trip.cityFrom}</Typography>
                     <Typography  variant="body2">

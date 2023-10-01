@@ -99,7 +99,7 @@ export const mainTheme = createTheme({
     MuiDialogTitle: {
       styleOverrides: {
         root: {
-          padding: "1em 0.5em 0em 1em"
+          padding: "1em 1em 0em 1em"
         }
       }
     },
@@ -109,6 +109,7 @@ export const mainTheme = createTheme({
         root: {
           marginTop: "1em",
           paddingTop: "1em",
+          paddingBottom: "1em"
         }
       }
     }

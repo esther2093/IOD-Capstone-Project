@@ -1,4 +1,4 @@
-export default function formatPNumber(phoneNumber) {
+export default function FormatPNumber(phoneNumber) {
     phoneNumber = phoneNumber.toString();
   
     if (phoneNumber.length < 10) {

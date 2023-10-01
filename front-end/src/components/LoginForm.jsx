@@ -39,76 +39,44 @@ export default function LoginForm() {
   };
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(lockoutTimer);
-    };
-  }, [lockoutTimer]);
-
-  const handleLoginFailure = () => {
-    let newAttempts = loginAttempts + 1;
-
-    if (newAttempts === 5) {
-      setLockedOut(true);
-      setErrorMsg("Maximum login attempts exceeded. Please try again later.");
-
-      const lockoutTimerId = setTimeout(() => {
-        setLoginAttempts(0); // Reset login attempts after lockout duration
-        setErrorMsg("");
-        setLockedOut(false); // Reset lockout status
-      }, 5 * 60 * 100);
-
-      setLockoutTimer(lockoutTimerId);
-    } else {
-      setErrorMsg("Unsuccessful login " + (5 - newAttempts) + " attempts remaining");
-    }
-    setLoginAttempts(newAttempts);
-    setLoggedIn(false);
-  };
+  
 
   const handleLoginSuccess = (loggedInUser) => {
     setErrorMsg("");
     handleUpdateUser(loggedInUser);
     setLoggedIn(true);
 
-    // setTimeout(() => {
-    //   navigate("/");
-    // }, 4000);
+    setTimeout(() => {
+      navigate("/myaccount");
+    }, 4000);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setErrorMsg("");
-
+  
     const data = new FormData(event.currentTarget);
-
+  
     let userEmail = data.get("email");
     let userPassword = data.get("password");
-
-    let loggedInUser = null;
-
+  
     try {
       let response = await axios.post("http://localhost:8000/api/users/login", {
         email: userEmail,
         password: userPassword,
       });
-      loggedInUser = response.data.data;
-      // console.log(loggedInUser);
+  
+      if (response.data.result === "User successfully logged in") {
+        handleLoginSuccess(response.data.data);
+      } 
     } catch (error) {
-      // console.log(error.message);
-      setErrorMsg("Please try again");
-    }
-
-    if (loggedInUser) {
-      handleLoginSuccess(loggedInUser);
-    } else {
-      handleLoginFailure();
+      setErrorMsg(error.response.data.result);
     }
   };
+  
 
   return (
-    <Box sx={{ flexGrow: 1, marginTop: "-4em" }}>
+    <Box sx={{ flexGrow: 1 }}>
       <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
         <Box className="banner-section-box">
           <Box className="banner-section-heading">
@@ -144,7 +112,7 @@ export default function LoginForm() {
         <Grid item xs={12} sm={6} md={5}>
           <Box
             sx={{
-              my: 10,
+              my: 13,
               mx: 4,
               display: "flex",
               flexDirection: "column",
@@ -177,7 +145,7 @@ export default function LoginForm() {
                       className="welcome-message-login"
                       sx={{
                         fontFamily: "Qwitcher Grypen",
-                        fontSize: "350%",
+                        fontSize: "300%",
                       }}
                     >
                       Welcome back {currentUser.firstName}!
@@ -192,7 +160,7 @@ export default function LoginForm() {
                     textAlign: "center",
                   }}
                 >
-                  You will be redirected back to the homepage in a moment...
+                  You will be redirected to your MyAccount page in a moment...
                 </Typography>
 
                 <Button
@@ -242,7 +210,7 @@ export default function LoginForm() {
                   component="form"
                   onSubmit={handleSubmit}
                   sx={{
-                    my: "1em",
+                    my: "2.95em",
                   }}
                 >
                   <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
@@ -266,24 +234,14 @@ export default function LoginForm() {
                     />
                   </FormControl>
 
-                  <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
-                    <FormControlLabel control={<Checkbox value="remember" color="primary" sx={{ color: "#D2B356" }} />} label={<Typography sx={{ fontSize: "0.7em" }}>Remember me</Typography>} />
-                  </Grid>
-
                   <Grid item xs={12} sx={{ justifyContent: "center", display: "flex" }}>
                     <Button
                       type="submit"
-                      variant="contained"
+                      variant="filled"
                       sx={{
                         mt: 3,
                         mb: 2,
-                        backgroundColor: "#D2B356",
-                        width: "50%",
-                        "   &:hover": {
-                          backgroundColor: "#fff",
-                          color: "#D2B356",
-                          border: "none",
-                        },
+                        width: "50%"
                       }}
                     >
                       LOG IN

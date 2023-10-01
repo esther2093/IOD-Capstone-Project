@@ -10,25 +10,33 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 
 export default function ProfilePictureDialog() {
-  const [image, setImage] = useState({ preview: "", data: "" });
-  const [status, setStatus] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
   const { currentUser, handleUpdateUser } = useUserContext();
-  const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
-  const [open, setOpen] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    resetForm();
-    setOpen(false);
-  };
+  const [image, setImage] = useState({ preview: "", data: "" });
+  const [submitResult, setSubmitResult] = useState("");
+  const [error, setError] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
 
   const resetForm = () => {
     setImage({ preview: "", data: "" });
-    setStatus("");
+    setSubmitResult("");
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    resetForm();
+    setOpenDialog(false);
+  };
+
+  const handleFileChange = (e) => {
+    const img = {
+      preview: URL.createObjectURL(e.target.files[0]),
+      data: e.target.files[0],
+    };
+    setImage(img);
   };
 
   const handleSubmit = async (e) => {
@@ -38,21 +46,12 @@ export default function ProfilePictureDialog() {
 
     try {
       const response = await axios.post(`http://localhost:8000/api/users/${currentUser.id}/image`, formData);
-      // console.log(response.data);
-      setStatus(response.data.result);
+      setSubmitResult(response.data.result);
       handleUpdateUser({ ...currentUser, ...response.data.data });
-      setErrorMsg("");
+      setError("");
     } catch (error) {
-      setErrorMsg("There was a problem uploading your picture. Please try again.");
+      setError("There was a problem uploading your picture. Please try again.");
     }
-  };
-
-  const handleFileChange = (e) => {
-    const img = {
-      preview: URL.createObjectURL(e.target.files[0]),
-      data: e.target.files[0],
-    };
-    setImage(img);
   };
 
   return (
@@ -67,7 +66,7 @@ export default function ProfilePictureDialog() {
     >
       <Button
         variant="filled"
-        onClick={handleClickOpen}
+        onClick={handleOpenDialog}
         sx={{
           padding: "0.3em 1em",
           fontSize: "0.8em",
@@ -76,7 +75,7 @@ export default function ProfilePictureDialog() {
         CHANGE PICTURE
       </Button>
 
-      <Dialog open={open} onClose={handleClose} aria-labelledby="responsive-dialog-title">
+      <Dialog open={openDialog} onClose={handleCloseDialog} aria-labelledby="responsive-dialog-title">
         <DialogTitle id="responsive-dialog-title">
           <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
             CHANGE YOUR PROFILE PICTURE
@@ -97,7 +96,7 @@ export default function ProfilePictureDialog() {
                 pb: "0.5em",
               }}
             >
-              {status}
+              {submitResult}
             </Typography>
             <Typography
               variant="body2"
@@ -108,7 +107,7 @@ export default function ProfilePictureDialog() {
                 pb: "0.5em",
               }}
             >
-              {errorMsg}
+              {error}
             </Typography>
             <Avatar
               variant="square"
@@ -120,7 +119,7 @@ export default function ProfilePictureDialog() {
                 margin: "auto",
               }}
             >
-              <Img src={"http://localhost:8000/" + currentUser.profilePicture} width="50%" alt={"NO PROFILE PICTURE"} />
+              <img src={"http://localhost:8000/" + currentUser.profilePicture} width="50%" alt={"NO PROFILE PICTURE"} />
             </Avatar>
             <Box
               component="form"
@@ -158,11 +157,13 @@ export default function ProfilePictureDialog() {
             </Box>
           </Container>
         </DialogContent>
+
         <DialogActions>
-          <Button onClick={handleClose} autoFocus>
+          <Button onClick={handleCloseDialog} autoFocus>
             DONE
           </Button>
         </DialogActions>
+
       </Dialog>
     </Box>
   );

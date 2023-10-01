@@ -9,13 +9,9 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Icon } from "@iconify/react";
 import Logo from "../assets/logo.png";
 import IconButton from "@mui/material/IconButton";
-import FilledInput from "@mui/material/FilledInput";
 import InputLabel from "@mui/material/InputLabel";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormControl from "@mui/material/FormControl";
@@ -28,15 +24,16 @@ import { OutlinedInput } from "@mui/material";
 import bannerBg from "../assets/bannerImage.jpg";
 
 export default function SignUpForm() {
-  const [error, setError] = useState("");
-  const [submitResult, setSubmitResult] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  const [result, setResult] = React.useState("");
   const { currentUser, handleUpdateUser } = useUserContext();
+
+  const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [submitResult, setSubmitResult] = useState("");
+
   const navigate = useNavigate();
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleShowPassword = () => setShowPassword((show) => !show);
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -48,20 +45,21 @@ export default function SignUpForm() {
     axios
       .post("http://localhost:8000/api/users/register", Object.fromEntries(data.entries()))
       .then((response) => {
-        let result = response.data.result;
         let user = response.data.data;
         //console.log(user);
 
-        setResult(result);
         if (user) {
           handleUpdateUser(user);
-          setSubmitResult("You've sucessfully signed up! You will be redirected to the homepage in a few seconds...");
-          navigate("/login");
+          setError("")
+          setSubmitResult("You have been successfully registered! We'll take you to your new MyAccount page");
+          setTimeout(() => {
+            navigate("/myaccount");
+          }, 2000);
         }
       })
       .catch((error) => {
-        //console.log(error);
-        setError(error.response.data.result);
+        setError (error.response.data.result);
+        //console.log(error );
       });
   };
 
@@ -77,7 +75,7 @@ export default function SignUpForm() {
               JOINING THE FAMILY?
             </Typography>
             <Typography variant="subtitle1" id="banner-main-subtitle">
-              Let's be friends!
+              Become a Parceler!
             </Typography>
             <Typography variant="h4" className="breakline">
               —
@@ -86,8 +84,8 @@ export default function SignUpForm() {
         </Box>
       </Box>
 
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Container component="main" maxWidth="sm" sx={{ paddingBottom: "10em" }}>
+     
+        <Container component="main" maxWidth="sm" sx={{ paddingBottom: "5em" }}>
           <CssBaseline />
           <Box
             sx={{
@@ -97,19 +95,19 @@ export default function SignUpForm() {
               alignItems: "center",
             }}
           >
-            <div className="logo-container">
+            <Box className="logo-container">
               <Icon icon="solar:box-bold-duotone" height="41" className="icon-parcel" />
               <img src={Logo} alt="Logo" className="login-logo" />
-            </div>
+            </Box>
             <Typography variant="body2" sx={{ fontWeight: 300, textAlign: "center" }}>
-              Please fill out your details below to join the party!
+              Please fill out your details below to join the ParcelMe party!
             </Typography>
 
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
               <Typography variant="body2" color="error" sx={{ textAlign: "center" }}>
                 {error}
               </Typography>
-              <Typography variant="body2" color="success" sx={{ textAlgin: "center" }}>
+              <Typography variant="body2" color="green" sx={{ textAlign: "center" }}>
                 {submitResult}
               </Typography>
               <br />
@@ -149,7 +147,7 @@ export default function SignUpForm() {
                       type={showPassword ? "text" : "password"}
                       endAdornment={
                         <InputAdornment position="end">
-                          <IconButton aria-label="toggle password visibility" onClick={handleClickShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
+                          <IconButton aria-label="toggle password visibility" onClick={handleShowPassword} onMouseDown={handleMouseDownPassword} edge="end">
                             {showPassword ? <VisibilityOff /> : <Visibility />}
                           </IconButton>
                         </InputAdornment>
@@ -166,41 +164,32 @@ export default function SignUpForm() {
                   <TextField required fullWidth id="phoneNumber" label="Phone Number" name="phoneNumber" autoComplete="phone-number" />
                 </Grid>
 
-                <Grid item xs={12} sx={{ textAlign: "left" }}>
-                  <FormControlLabel
-                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                    label={<Typography sx={{ fontSize: "0.7em" }}>I want to receive inspiration, marketing promotions and updates via email.</Typography>}
-                  />
-                </Grid>
+                <Grid item xs={12} sx={{ textAlign: "center" }}>
                 <Button
                   type="submit"
-                  fullWidth
-                  variant="contained"
+                  variant="filled"
                   sx={{
-                    margin: "3em 0.3em 3em 1.5em",
-                    backgroundColor: "#D2B356",
-                    "&:hover": {
-                      backgroundColor: "#fff",
-                      color: "#D2B356",
-                      border: "none",
-                    },
+                    width: "50%",
+                    my: "2em",
                   }}
                 >
                   Sign Up
                 </Button>
+                </Grid>
+                
               </Grid>
 
               <Box display="flex" justifyContent="center" sx={{ marginBottom: "4.7em" }}>
                 <Grid item xs={12} sm={6} sx={{ textAlign: "center" }}>
+                  <Typography variant="body2">Already have an account?</Typography>
                   <Link href="/login" variant="body2">
-                    Already have an account? Log in HERE!
+                    Log in HERE!
                   </Link>
                 </Grid>
               </Box>
             </Box>
           </Box>
         </Container>
-      </LocalizationProvider>
     </Box>
   );
 }

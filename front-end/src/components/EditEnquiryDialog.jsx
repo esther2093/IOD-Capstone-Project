@@ -7,11 +7,17 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
 import { Box, TextField } from "@mui/material";
-import formatDateBackend from "./FormatDateBackend";
+
 
 export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList }) {
   const [editedEnquiry, setEditedEnquiry] = useState({
-    comments: "",
+    id: "",
+        userId: "",
+        tripId: "",
+        comments: "",
+        accepted: "",
+        createdAt: "",
+        updatedAt: ""
   });
 
   const [submitResult, setSubmitResult] = useState("");
@@ -24,28 +30,41 @@ export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList 
   useEffect(() => {
     if (enquiry) {
       const originalEnquiry = {
-        comments: capitalizeFirstLetter(enquiry.comments)
+        id: enquiry.id,
+        userId: enquiry.userId,
+        tripId: enquiry.tripId,
+        comments: capitalizeFirstLetter(enquiry.comments),
+        accepted: enquiry.accepted,
+        createdAt: enquiry.createdAt,
+        updatedAt: enquiry.updatedAt
       };
     setEditedEnquiry(originalEnquiry);
       }
   }, [enquiry]);
 
-  const handleEditFormChange = (event) => {
-    const { name, value } = event.target;
-    setEditedEnquiry((prevEnquiry) => ({
-      ...prevEnquiry,
+  useEffect(() => {
+    if (!open) {
+      setSubmitResult("");
+    }
+  }, [open]);
+
+  const handleEditForm = (e) => {
+    const { name, value } = e.target;
+    setEditedEnquiry((originalEnquiry) => ({
+      ...originalEnquiry,
       [name]: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    editedEnquiry.accepted = null;
 
     try {
       const response = await axios.put(`http://localhost:8000/api/enquiries/${enquiry.id}`, editedEnquiry)
       setError("");
       setSubmitResult(response.data.result);
-      setUpdateList(true)
+      setUpdateList(editedEnquiry);
       close();
     } catch (error) {
         console.error("An error occurred while updating the enquiry:", error.response.data.result);
@@ -54,7 +73,7 @@ export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList 
   };
 
   return (
-    <Dialog fullWidth open={open} close={close}>
+    <Dialog fullWidth open={open}>
       <DialogTitle>
       <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
           EDIT DETAILS
@@ -71,7 +90,7 @@ export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList 
         </Box>
         
         <Box component="form" onSubmit={handleSubmit}>
-          <TextField sx={{ m: "0.5em" }} multiline maxRows={10} fullWidth name="comments" label="Comments" value={editedEnquiry.comments} onChange={handleEditFormChange} />
+          <TextField sx={{ m: "0.5em" }} multiline maxRows={10} fullWidth name="comments" label="Comments" value={editedEnquiry.comments} onChange={handleEditForm} />
           <Box sx={{ pt: "1em", textAlign: "center" }}>
             <Button type="submit" variant="filled">
               Save

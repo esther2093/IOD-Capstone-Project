@@ -11,6 +11,7 @@ import formatDateBackend from "./FormatDateBackend";
 
 export default function EditTripDialog({ open, close, trip, setUpdateList }) {
   const [editedTrip, setEditedTrip] = useState({
+    id: "",
     suburbFrom: "",
     cityFrom: "",
     stateFrom: "",
@@ -32,6 +33,7 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
   useEffect(() => {
     if (trip) {
       const originalTrip = {
+        id: trip.id,
         suburbFrom: capitalizeFirstLetter(trip.suburbFrom),
         cityFrom: capitalizeFirstLetter(trip.cityFrom),
         stateFrom: capitalizeFirstLetter(trip.stateFrom),
@@ -47,10 +49,16 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
     }
   }, [trip]);
 
-  const handleEditFormChange = (e) => {
+  useEffect(() => {
+    if (!open) {
+      setSubmitResult("");
+    }
+  }, [open]);
+
+  const handleEditForm = (e) => {
     const { name, value } = e.target;
-    setEditedTrip((prevTrip) => ({
-      ...prevTrip,
+    setEditedTrip((originalTrip) => ({
+      ...originalTrip,
       [name]: value,
     }));
   };
@@ -62,7 +70,7 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
       const response = await axios.put(`http://localhost:8000/api/trips/${trip.id}`, editedTrip);
       setError("");
       setSubmitResult(response.data.result);
-      setUpdateList(true); //re-render
+      setUpdateList(editedTrip);
       close();
     } catch (error) {
       console.error("An error occurred while updating the trip:", error.response.data.result);
@@ -71,7 +79,7 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
   };
 
   return (
-    <Dialog fullWidth open={open} close={close}>
+    <Dialog fullWidth open={open}>
       <DialogTitle>
         <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.6em" }}>
           EDIT DETAILS
@@ -92,21 +100,21 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
         </Box>
         <Box component="form" onSubmit={handleSubmit} sx={{ pr: "1em" }}>
           <Box sx={{ display: "flex" }}>
-            <TextField sx={{ m: "0.5em" }} fullWidth name="suburbFrom" label="From Suburb" value={editedTrip.suburbFrom} onChange={handleEditFormChange} />
-            <TextField sx={{ m: "0.5em" }} required fullWidth name="cityFrom" label="From City" value={editedTrip.cityFrom} onChange={handleEditFormChange} />
-            <TextField sx={{ m: "0.5em" }} required fullWidth name="stateFrom" label="From State" value={editedTrip.stateFrom} onChange={handleEditFormChange} />
+            <TextField sx={{ m: "0.5em" }} fullWidth name="suburbFrom" label="From Suburb" value={editedTrip.suburbFrom} onChange={handleEditForm} />
+            <TextField sx={{ m: "0.5em" }} required fullWidth name="cityFrom" label="From City" value={editedTrip.cityFrom} onChange={handleEditForm} />
+            <TextField sx={{ m: "0.5em" }} required fullWidth name="stateFrom" label="From State" value={editedTrip.stateFrom} onChange={handleEditForm} />
           </Box>
           <Box sx={{ display: "flex" }}>
-            <TextField sx={{ m: "0.5em" }} fullWidth name="suburbTo" label="To Suburb" value={editedTrip.suburbTo} onChange={handleEditFormChange} />
-            <TextField sx={{ m: "0.5em" }} required fullWidth name="cityTo" label="To City" value={editedTrip.cityTo} onChange={handleEditFormChange} />
-            <TextField sx={{ m: "0.5em" }} required fullWidth name="stateTo" label="To State" value={editedTrip.stateTo} onChange={handleEditFormChange} />
+            <TextField sx={{ m: "0.5em" }} fullWidth name="suburbTo" label="To Suburb" value={editedTrip.suburbTo} onChange={handleEditForm} />
+            <TextField sx={{ m: "0.5em" }} required fullWidth name="cityTo" label="To City" value={editedTrip.cityTo} onChange={handleEditForm} />
+            <TextField sx={{ m: "0.5em" }} required fullWidth name="stateTo" label="To State" value={editedTrip.stateTo} onChange={handleEditForm} />
           </Box>
           <Box sx={{ display: "flex" }}>
-            <TextField sx={{ m: "0.5em" }} required fullWidth name="departureDate" label="Departure Date" value={editedTrip.departureDate} onChange={handleEditFormChange} />
-            <TextField sx={{ m: "0.5em" }} required fullWidth name="arrivalDate" label="Arrival Date" value={editedTrip.arrivalDate} onChange={handleEditFormChange} />
+            <TextField sx={{ m: "0.5em" }} required fullWidth name="departureDate" label="Departure Date" value={editedTrip.departureDate} onChange={handleEditForm} />
+            <TextField sx={{ m: "0.5em" }} required fullWidth name="arrivalDate" label="Arrival Date" value={editedTrip.arrivalDate} onChange={handleEditForm} />
           </Box>
-          <TextField sx={{ m: "0.5em" }} required fullWidth name="availableSpace" label="Available Space" value={editedTrip.availableSpace} onChange={handleEditFormChange} />
-          <TextField sx={{ m: "0.5em" }} multiline maxRows={10} fullWidth name="comments" label="Comments" value={editedTrip.comments} onChange={handleEditFormChange} />
+          <TextField sx={{ m: "0.5em" }} required fullWidth name="availableSpace" label="Available Space" value={editedTrip.availableSpace} onChange={handleEditForm} />
+          <TextField sx={{ m: "0.5em" }} multiline maxRows={10} fullWidth name="comments" label="Comments" value={editedTrip.comments} onChange={handleEditForm} />
           <Box sx={{ pt: "1em", textAlign: "center" }}>
             <Button type="submit" variant="filled">
               Save

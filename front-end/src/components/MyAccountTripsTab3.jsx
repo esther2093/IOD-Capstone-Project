@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -14,7 +14,7 @@ import useEnquiryData from "../hooks/useEnquiryData";
 import formatDate from "./FormatDate";
 import { Icon } from "@iconify/react";
 import { Button } from "@mui/material";
-import EnquiryDetailsDialog from "./EnquiryDetailDialog";
+import EnquiryDetailsReceived from "./EnquiryDetailsReceived";
 
 export default function TripsTab3() {
   const { currentUser } = useUserContext();
@@ -25,24 +25,33 @@ export default function TripsTab3() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [enquiryDialogOpen, setEnquiryDialogOpen] = useState(false);
-  const [selectedEnquiry, setSelectedEnquiry] = useState(null);
 
-  const handleEnquiryDialogOpen = (enquiry) => {
+  const [selectedEnquiry, setSelectedEnquiry] = useState(null);
+  const [selectedTrip, setSelectedTrip] = useState(null);
+  const [receivedEnquiriesList, setReceivedEnquiriesList] = useState([]);
+
+  const handleEnquiryDialogOpen = (trip, enquiry) => {
     setSelectedEnquiry(enquiry);
+    setSelectedTrip(trip);
     setEnquiryDialogOpen(true);
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleEnquiryDialogClose = () => {
+    setSelectedEnquiry(null);
+    setEnquiryDialogOpen(false);
+  };
+
+  const handleEnquiryStatus = (editedEnquiry) => {
+    setReceivedEnquiriesList(userEnquiriesList.map((enquiry) => (enquiry.id === editedEnquiry.id ? editedEnquiry : enquiry)));
+  };
+  const handleChangePage = (e, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+  const handleChangeRowsPerPage = (e) => {
+    setRowsPerPage(+e.target.value);
     setPage(0);
   };
-
-  const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
-  const userEnquiries = enquiries.filter((enquiry) => userTrips.some((trip) => trip.id === enquiry.tripId));
 
   const columns = [
     { id: "trip", label: "Trip", minWidth: 70 },
@@ -53,19 +62,41 @@ export default function TripsTab3() {
     { id: "enquiryStatus", label: "Status", minWidth: 30 },
   ];
 
-  const rows = userEnquiries.map((enquiry) => {
+  useEffect (() => {
+    const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
+    const receivedEnquiries = enquiries.filter((enquiry) =>
+    userTrips.some((trip) => trip.id === enquiry.tripId)
+  );
+    setReceivedEnquiriesList(receivedEnquiries);
+  }, [enquiries, allTrips, currentUser])
+
+  const rows = receivedEnquiriesList.map((enquiry) => {
+    const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
+    // console.log("trip", trip);
+
     let statusIcon;
     if (enquiry.accepted === null) {
-      statusIcon = <Icon icon="fluent:question-24-filled" width="20" />;
+      statusIcon = (
+        <Box sx={{ textAlign: "center" }}>
+          <Icon icon="eos-icons:three-dots-loading" width="16.4" />
+        </Box>
+      );
     } else if (enquiry.accepted === true) {
-      statusIcon = <Icon icon="subway:tick" color="green" width="20" />;
+      statusIcon = (
+        <Box sx={{ textAlign: "center" }}>
+          <Icon icon="subway:tick" color="green" width="15" />
+        </Box>
+      );
     } else if (enquiry.accepted === false) {
-      statusIcon = <Icon icon="foundation:x" color="red" width="20" />;
+      statusIcon = (
+        <Box sx={{ textAlign: "center" }}>
+          <Icon icon="foundation:x" color="red" width="15" />
+        </Box>
+      );
     } else {
       statusIcon = null;
     }
 
-    const trip = userTrips.find((trip) => trip.id === enquiry.tripId);
     return {
       trip: `${trip.cityFrom} - ${trip.cityTo}`,
       dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
@@ -83,7 +114,7 @@ export default function TripsTab3() {
           {enquiry.comments}{" "}
         </Typography>
       ),
-      seeMore: <button onClick={() => handleEnquiryDialogOpen(enquiry)}>See More</button>,
+      seeMore: <button onClick={() => handleEnquiryDialogOpen(trip, enquiry)}>See More</button>,
       enquiryDate: formatDate(enquiry.createdAt),
       enquiryStatus: statusIcon,
     };
@@ -100,7 +131,7 @@ export default function TripsTab3() {
         </Typography>
       </Box>
 
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, p: "0.5em"  }}>
         <TableContainer sx={{ minHeight: 150 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
@@ -122,7 +153,7 @@ export default function TripsTab3() {
                   ))}
                 </TableRow>
               ))}
-              {userEnquiries.length === 0 && (
+              {receivedEnquiriesList.length === 0 && (
                 <TableCell variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
                   You haven't received any enquiries yet :(
                 </TableCell>
@@ -133,7 +164,7 @@ export default function TripsTab3() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 15]}
           component="div"
-          count={userEnquiries.length}
+          count={receivedEnquiriesList.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
@@ -141,7 +172,7 @@ export default function TripsTab3() {
         />
       </Box>
 
-      <EnquiryDetailsDialog open={enquiryDialogOpen} onClose={() => setEnquiryDialogOpen(false)} selectedEnquiry={selectedEnquiry} />
+      <EnquiryDetailsReceived open={enquiryDialogOpen} close={handleEnquiryDialogClose} enquiry={selectedEnquiry} trip={selectedTrip} setUpdateList={handleEnquiryStatus}/>
     </Box>
   );
 }

@@ -18,16 +18,16 @@ import DeleteTripDialog from "./DeleteTripDialog";
 export default function TripsTab1() {
   const { currentUser } = useUserContext();
   const { allTrips } = useTripData();
-  // console.log("All Trips Data:", allTrips)
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [userTripsList, setUserTripsList] = useState([]);
-  const [updateList, setUpdateList] = useState(false);
+  
 
   const handleEditDialogOpen = (trip) => {
     setSelectedTrip(trip);
@@ -49,35 +49,43 @@ export default function TripsTab1() {
     setSelectedTrip(null);
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleEditTrip = (editedTrip) => {
+    // console.log(editedTrip);
+    setUserTripsList(userTripsList.map((trip) =>
+      trip.id === editedTrip.id ? editedTrip : trip))
+  }
+
+const handleDeleteTrip = (deletedTrip) => {
+  setUserTripsList((prevTripsList) =>
+  prevTripsList.filter((trip) => trip.id !== deletedTrip.id)
+);
+};
+
+  const handleChangePage = (e, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
+  const handleChangeRowsPerPage = (e) => {
+    setRowsPerPage(+e.target.value);
     setPage(0);
   };
 
- //update the userTripsList
-  useEffect(() => {
-    const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
-    setUserTripsList(userTrips);
-      console.log("proof of re-render")
-  }, [allTrips, currentUser, updateList]); 
-
-
   const columns = [
-    { id: "from", label: "From", minWidth: 180 },
-    { id: "to", label: "To", minWidth: 180 },
-    { id: "dates", label: "Dates", minWidth: 140 },
-    { id: "comments", label: "Comments", minWidth: 300 },
+    { id: "trip", label: "Trip", minWidth: 150 },
+    { id: "dates", label: "Dates", minWidth: 150 },
+    { id: "comments", label: "Comments", minWidth: 250 },
     { id: "editTrip", label: "", minWidth: 30 },
     { id: "deleteTrip", label: "", minWidth: 20 },
   ];
 
+   useEffect(() => {
+    const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
+    setUserTripsList(userTrips);
+  }, [allTrips, currentUser]); 
+  // console.log("User Trip List data: ", userTripsList)
+
   const rows = userTripsList.map((trip) => ({
-    from: `${trip.suburbFrom} ${trip.cityFrom}, ${trip.stateFrom}`,
-    to: `${trip.suburbTo} ${trip.cityTo}, ${trip.stateTo}`,
+    trip: ` ${trip.cityFrom} - ${trip.cityTo}`,
     dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
     availableSpace: trip.availableSpace,
     editTrip: <Icon icon="material-symbols:edit-outline" onClick={() => handleEditDialogOpen(trip)} />,
@@ -86,7 +94,7 @@ export default function TripsTab1() {
       <Typography
         sx={{
           fontSize: "0.875rem",
-          maxWidth: 300,
+          maxWidth: 250,
           overflow: "hidden",
           whiteSpace: "nowrap",
           textOverflow: "ellipsis",
@@ -148,8 +156,8 @@ export default function TripsTab1() {
           </Typography>
         )}
       </Box>
-      <EditTripDialog open={editDialogOpen} close={handleEditDialogClose} trip={selectedTrip} setUpdateList={setUpdateList}/>
-      <DeleteTripDialog open={deleteDialogOpen} close={handleDeleteDialogClose} trip={selectedTrip} setUpdateList={setUpdateList}/>
+      <EditTripDialog open={editDialogOpen} close={handleEditDialogClose} trip={selectedTrip} setUpdateList={handleEditTrip}/>
+      <DeleteTripDialog open={deleteDialogOpen} close={handleDeleteDialogClose} trip={selectedTrip} setUpdateList={handleDeleteTrip}/>
     </Box>
   );
 }

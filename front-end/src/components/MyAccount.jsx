@@ -1,18 +1,15 @@
 import React from "react";
-import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import ProfilePictureDialog from "./ProfilePictureDialog";
 import { useUserContext } from "../context/UserContext";
-import useTripData from "../hooks/useTripData";
 import { Avatar, Grid } from "@mui/material";
 import UpdateProfile from "./UpdateProfile";
 import bannerBg from "../assets/bannerImage.jpg";
-import formatDate from "./FormatDate";
-import formatPNumber from "./FormatPNumber";
-import useEnquiryData from "../hooks/useEnquirydata";
 import TripsPanel from "./MyAccountTripsTabs";
+import FormatDate from "./FormatDate";
+import FormatPNumber from "./formatPNumber";
 
 
 export default function MyAccount() {
@@ -71,17 +68,17 @@ export default function MyAccount() {
                 </Typography>
 
                 <Box sx={{ px: "1em", py: "1em" }}>
-                  <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
+                  <Typography variant="body1" sx={{ fontSize: "1em" }}>
                     Name: {currentUser.firstName} {currentUser.lastName}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
-                    Date of Birth: {formatDate(currentUser.dateOfBirth)}
+                  <Typography variant="body1" sx={{ fontSize: "1em" }}>
+                    Date of Birth: {FormatDate(currentUser.dateOfBirth)}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
+                  <Typography variant="body1" sx={{ fontSize: "1em" }}>
                     Email: {currentUser.email}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "0.9em" }}>
-                    Phone number: {formatPNumber(currentUser.phoneNumber)}
+                  <Typography variant="body1" sx={{ fontSize: "1em" }}>
+                    Phone number: {FormatPNumber(currentUser.phoneNumber)}
                   </Typography>
                 </Box>
 

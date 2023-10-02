@@ -20,7 +20,7 @@ export default function TripsTab1() {
   const { allTrips } = useTripData();
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -117,7 +117,7 @@ const handleDeleteTrip = (deletedTrip) => {
       </Box>
 
       <Box sx={{ flexGrow: 1, p: "0.5em" }}>
-        <TableContainer sx={{ minHeight: 150 }}>
+        <TableContainer sx={{ height: 200 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>

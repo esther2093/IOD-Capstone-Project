@@ -22,7 +22,7 @@ export default function TripsTab3() {
   const { enquiries } = useEnquiryData();
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [enquiryDialogOpen, setEnquiryDialogOpen] = useState(false);
 
@@ -42,8 +42,10 @@ export default function TripsTab3() {
   };
 
   const handleEnquiryStatus = (editedEnquiry) => {
-    setReceivedEnquiriesList(userEnquiriesList.map((enquiry) => (enquiry.id === editedEnquiry.id ? editedEnquiry : enquiry)));
+    console.log("ee:", editedEnquiry)
+    setReceivedEnquiriesList(receivedEnquiriesList.map((enquiry) => (enquiry.id === editedEnquiry.id ? editedEnquiry : enquiry)));
   };
+
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
   };
@@ -54,9 +56,9 @@ export default function TripsTab3() {
   };
 
   const columns = [
-    { id: "trip", label: "Trip", minWidth: 70 },
-    { id: "dates", label: "Dates", minWidth: 70 },
-    { id: "enquiry", label: "Enquiry", minWidth: 70 },
+    { id: "trip", label: "Trip", minWidth: 140 },
+    { id: "dates", label: "Dates", minWidth: 150 },
+    { id: "enquiry", label: "Enquiry", minWidth: 250 },
     { id: "enquiryDate", label: "Date Enquired", minWidth: 60 },
     { id: "seeMore", label: "", minWidth: 80 },
     { id: "enquiryStatus", label: "Status", minWidth: 30 },
@@ -132,7 +134,7 @@ export default function TripsTab3() {
       </Box>
 
       <Box sx={{ flexGrow: 1, p: "0.5em"  }}>
-        <TableContainer sx={{ minHeight: 150 }}>
+        <TableContainer sx={{ minHeight: 200 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow>
@@ -172,7 +174,7 @@ export default function TripsTab3() {
         />
       </Box>
 
-      <EnquiryDetailsReceived open={enquiryDialogOpen} close={handleEnquiryDialogClose} enquiry={selectedEnquiry} trip={selectedTrip} setUpdateList={handleEnquiryStatus}/>
+      <EnquiryDetailsReceived open={enquiryDialogOpen} close={handleEnquiryDialogClose} enquiry={selectedEnquiry} trip={selectedTrip} setUpdateList={handleEnquiryStatus} currentUser={currentUser}/>
     </Box>
   );
 }

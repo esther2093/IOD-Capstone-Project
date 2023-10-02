@@ -40,7 +40,7 @@ export default function SignUpForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
+    let data = new FormData(event.currentTarget);
 
     axios
       .post("http://localhost:8000/api/users/register", Object.fromEntries(data.entries()))

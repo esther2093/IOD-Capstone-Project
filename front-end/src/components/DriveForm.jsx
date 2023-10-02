@@ -12,8 +12,7 @@ import driveformpic from "../assets/driveformpic.jpeg";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import { FormControl, Popover } from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
+import { FormControl } from "@mui/material";
 import bannerBg from "../assets/bannerImage.jpg";
 import SizeInfoList from "./sizeInfoList";
 
@@ -26,18 +25,17 @@ export default function DriveForm() {
   const [submitTrip, setSubmitTrip] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
 
-
-  const handleChange = (event) => {
-    setAvailableSpace(event.target.value);
+  const handleChange = (e) => {
+    setAvailableSpace(e.target.value);
     // console.log(availableSpace);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError("");
     setSubmitTrip("");
 
-    const data = new FormData(event.currentTarget);
+    const data = new FormData(e.currentTarget);
     data.append("userId", currentUser.id);
 
     axios
@@ -49,7 +47,7 @@ export default function DriveForm() {
         setSubmitTrip(result);
         if (trip) {
           setError("");
-          event.target.reset()
+          e.target.reset()
         }
       })
       .catch((error) => {

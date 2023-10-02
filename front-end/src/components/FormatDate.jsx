@@ -1,4 +1,4 @@
-export default function formatDate(dateString) {
+export default function FormatDate(dateString) {
   const date = new Date(dateString);
 
   const day = String(date.getDate()).padStart(2, '0');
@@ -8,7 +8,7 @@ export default function formatDate(dateString) {
   return `${day}/${month}/${year}`;
 }
 
-export function formatDateYYYY(dateString) {
+export function FormatDateYYYY(dateString) {
   const date = new Date(dateString);
 
   const day = String(date.getDate()).padStart(2, '0');

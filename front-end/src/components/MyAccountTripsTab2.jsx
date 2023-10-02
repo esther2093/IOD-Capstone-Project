@@ -23,7 +23,7 @@ export default function TripsTab2() {
   const { enquiries } = useEnquiryData();
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -164,7 +164,7 @@ export default function TripsTab2() {
 
       <Box sx={{ flexGrow: 1, p: "0.5em" }}>
         {rows.length > 0 ? (
-          <TableContainer sx={{ minHeight: 150 }}>
+          <TableContainer sx={{ minHeight: 200 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>

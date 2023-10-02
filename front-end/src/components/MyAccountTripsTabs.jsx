@@ -9,16 +9,14 @@ import TripsTab1 from "./MyAccountTripsTab1";
 import TripsTab2 from "./MyAccountTripsTab2";
 import TripsTab3 from "./MyAccountTripsTab3";
 import TripsTab4 from "./MyAccountTripsTab4";
+import { Icon } from "@iconify/react";
+import { Badge } from "@mui/material";
 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
   return (
     <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`}>
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -47,11 +45,23 @@ export default function TripsPanel() {
     <Box sx={{ width: "100%" }}>
       <Paper square elevation={3} sx={{ m: "0.5em" }}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={value} onChange={handleChange}>
+          <Tabs value={value} onChange={handleChange} variant="scrollable" scrollButtons allowScrollButtonsMobile>
             <Tab label="Posted Trips " {...a11yProps(0)} />
             <Tab label="Enquired Trips" {...a11yProps(1)} />
             <Tab label="Enquries Recieved" {...a11yProps(2)} />
-            <Tab label="Chats" {...a11yProps(3)} />
+            <Tab
+              label={
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  Chats
+                  <Box sx={{ pl: "0.5em" }}>
+                    <Badge badgeContent={0} showZero color="primary" max={99}>
+                      <Icon icon="bx:chat" width="20" />
+                    </Badge>
+                  </Box>
+                </Box>
+              }
+              {...a11yProps(3)}
+            />
           </Tabs>
         </Box>
         <CustomTabPanel value={value} index={0}>

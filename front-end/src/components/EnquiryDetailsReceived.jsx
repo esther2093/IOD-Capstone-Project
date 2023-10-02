@@ -11,49 +11,38 @@ import formatDate from "./FormatDate";
 import { Box } from "@mui/material";
 import SizeInfoList from "./sizeInfoList";
 
-export default function EnquiryDetailsReceived({ open, close, enquiry, trip, setUpdateList}) {
-  const [accept, setAccept] = useState(false);
-  const [decline, setDecline] = useState(false);
+export default function EnquiryDetailsReceived({ open, close, enquiry, trip, setUpdateList, currentUser}) {
 
-  useEffect(() => {
-    if (!open) {
-      setAccept(false);
-      setDecline(false);
+  const sendApprovalMessage = async () => {
+    console.log("tdd:", trip.departureDate)
+    try {
+      await axios.post("http://localhost:8000/api/messages/create", {
+        senderId: currentUser.id, 
+        receiverId: enquiry.userId, 
+        content: "Your trip enquiry has been approved for " + trip.cityFrom + " to " + trip.cityTo + " on " + formatDate(trip.departureDate) + " - " + formatDate(trip.arrivalDate),
+      });
+    } catch (error) {
+      console.error("Error sending approval message:", error);
     }
-  }, [open]);
+  };
 
-
-  const handleAccept = async () => {
+  const handleAccept = async (status) => {
     try {
       const response = await axios.put(`http://localhost:8000/api/enquiries/${enquiry.id}`, {
-        accepted: true,
+        accepted: status,
       });
-      console.log("Enquiry updated to approved:", response.data);
-      setAccept(true);
+      console.log("Enquiry updated to approved:", response.data.data);
+      enquiry.accepted = status;
       setUpdateList(enquiry);
+      sendApprovalMessage();
       close();
     } catch (error) {
       console.error("Error updating enquiry:", error);
     }
   };
   
-  const handleDecline = async () => {
-    try {
-      const response = await axios.put(`http://localhost:8000/api/enquiries/${enquiry.id}`, {
-        accepted: false,
-      });
-      console.log("Enquiry updated to declined:", response.data);
-      setDecline(true);
-      setUpdateList(enquiry);
-      close();
-    } catch (error) {
-      console.error("Error updating enquiry:", error);
-    }
-  };
-  
-
   if (!trip || !enquiry) {
-    return null; // or render a loading indicator
+    return null;
   }
 
   return (
@@ -96,8 +85,8 @@ export default function EnquiryDetailsReceived({ open, close, enquiry, trip, set
             )}
             <Button
             variant="filled"
-              onClick={handleAccept}
-              disabled={decline}
+              onClick={() => handleAccept(true)}
+          
               sx={{
                 "&:hover": {
                   backgroundColor: "green",
@@ -107,7 +96,7 @@ export default function EnquiryDetailsReceived({ open, close, enquiry, trip, set
             >
               Accept
             </Button>
-            <Button variant="filled" onClick={handleDecline} disabled={accept} sx={{
+            <Button variant="filled" onClick={() => handleAccept(false)} sx={{
                 "&:hover": {
                   backgroundColor: "red",
                   color: "white"

@@ -69,9 +69,10 @@ const registerUser = async (req, res) => {
   console.log(reverseDate);
   let datedDOB = new Date(reverseDate);
   console.log(datedDOB);
-  const age = new Date().getFullYear() - datedDOB.getFullYear() - (new Date().getMonth() < datedDOB.getMonth() || 
-  (new Date().getMonth() === datedDOB.getMonth() && new Date().getDate() < datedDOB.getDate()) ? 1 : 0);
-
+  const age =
+    new Date().getFullYear() -
+    datedDOB.getFullYear() -
+    (new Date().getMonth() < datedDOB.getMonth() || (new Date().getMonth() === datedDOB.getMonth() && new Date().getDate() < datedDOB.getDate()) ? 1 : 0);
 
   try {
     const { firstName, lastName, email, password, phoneNumber, dateOfBirth } = req.body;
@@ -82,11 +83,11 @@ const registerUser = async (req, res) => {
       res.status(400).json({ result: "Password must be at least 6 characters long" });
     } else if (password === email) {
       res.status(400).json({ result: "Password cannot be the same as your email address" });
-    // } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(password)) {
-    //   res.status(400).json({ result: "Password must include a capital letter and a number." });
-    } else if (!/^[A-Za-z]+$/i.test(firstName)) {
+      // } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(password)) {
+      //   res.status(400).json({ result: "Password must include a capital letter and a number." });
+    } else if (!/^[A-Za-z\s\-]+$/i.test(firstName)) {
       res.status(400).json({ result: "Invalid first name" });
-    } else if (!/^[A-Za-z]+$/i.test(lastName)) {
+    } else if (!/^[A-Za-z\s\-]+$/i.test(lastName)) {
       res.status(400).json({ result: "Invalid last name" });
     } else if (!/^\d{2}-\d{2}-\d{4}$/.test(dateOfBirth)) {
       res.status(400).json({ result: "Date of Birth must be in the format DD-MM-YYYY" });
@@ -158,35 +159,30 @@ const createUser = (data, res) => {
 };
 
 const updateUser = async (req, res) => {
-
   try {
     const { firstName, lastName, email, phoneNumber, dateOfBirth } = req.body;
 
     if (!(email && firstName && lastName && dateOfBirth && phoneNumber)) {
       res.status(400).json({ result: "All input is required" });
-    } else if (!/^[A-Za-z]+$/i.test(firstName)) {
+    } else if (!/^[A-Za-z\s\-]+$/i.test(firstName)) {
       res.status(400).json({ result: "Invalid first name" });
-    } else if (!/^[A-Za-z]+$/i.test(lastName)) {
+    } else if (!/^[A-Za-z\s\-]+$/i.test(lastName)) {
       res.status(400).json({ result: "Invalid last name" });
-    } else if (age < 18) {
-      res.status(400).json({ result: "You must be over 18 years old to sign up" });
-    } else if (!/^\d{2}-\d{2}-\d{4}$/.test(dateOfBirth)) {
-      res.status(400).json({ result: "Date of Birth must be in the format DD-MM-YYYY" });
+    } else if (phoneNumber.length > 10) {
+      res.status(400).json({ result: "You must input a valid phone number" });
+    } else if (!/^[0-9]+$/.test(phoneNumber)) {
+      res.status(400).json({ result: "Phone number must contain numbers only" });
+    } else if (!phoneNumber.startsWith("04")) {
+      res.status(400).json({ result: "Phone number must start with '04'" });
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
+      res.status(400).json({ result: "Invalid email address" });
     } else {
-
-      let capitalizeFirstLetter = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-      };
-
-      // Create user in our database
-      const userMetadata = await Models.User.put({
-        firstName: capitalizeFirstLetter(firstName),
-        lastName: capitalizeFirstLetter(lastName),
-        email: email.toLowerCase(),
-        dateOfBirth: FormatDateBackEnd(dateOfBirth),
-        phoneNumber,
+      Models.User.update(req.body, {
+        where: {
+          id: req.params.id,
+        },
       });
-      res.status(200).json({ result: "User updated successfully" });
+      res.status(200).json({ result: "User updated successfully", data: req.body});
     }
   } catch (err) {
     console.log(err);

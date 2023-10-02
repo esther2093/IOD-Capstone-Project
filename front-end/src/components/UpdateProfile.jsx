@@ -7,22 +7,24 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import formatDate, { formatDateYYYY } from "./FormatDate";
 import FormatDateBackend from "./FormatDateBackend";
 import FormatPNumber from "./formatPNumber";
+import FormatDate from "./FormatDate";
 
 export default function UpdateProfileDialog() {
-  
   const { currentUser, handleUpdateUser } = useUserContext();
   const [openDialog, setOpenDialog] = useState(false);
 
-  const [updatedUser, setUpdatedUser] = useState({
+  const [updateUser, setUpdateUser] = useState({
     firstName: currentUser.firstName,
     lastName: currentUser.lastName,
     email: currentUser.email,
-    dateOfBirth: currentUser.dateOfBirth,
+    dateOfBirth: (currentUser.dateOfBirth),
     phoneNumber: currentUser.phoneNumber,
   });
+
+  console.log("updateUser:", updateUser)
+
   const [submitResult, setSubmitResult] = useState("");
   const [error, setError] = useState("");
 
@@ -32,45 +34,43 @@ export default function UpdateProfileDialog() {
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
+    setUpdateUser(updateUser);
+    setSubmitResult("");
+    setError("")
   };
 
   const handleDetailChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedUser((updatedUser) => ({
-      ...updatedUser,
+    setUpdateUser((updateUser) => ({
+      ...updateUser,
       [name]: value,
     }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setError("");
-    setSubmitResult("");
-    let updatedUser = new FormData(e.currentTarget);
-    updatedUser.append("firstName", updatedUser.firstName);
-updatedUser.append("lastName", updatedUser.lastName);
-updatedUser.append("email", updatedUser.email);
-updatedUser.append("phoneNumber", updatedUser.phoneNumber);
-updatedUser.append("dateOfBirth", updatedUser.dateOfBirth);
+
+    let data = new FormData(e.currentTarget);
+    data.append("dateOfBirth", currentUser.dateOfBirth)
 
     axios
-      .put(`http://localhost:8000/api/users/${currentUser.id}`, Object.fromEntries(updatedUser.entries()))
+      .put(`http://localhost:8000/api/users/${currentUser.id}`, Object.fromEntries(data.entries()))
       .then((response) => {
         let result = response.data.result;
-        let updateResponse = response.data.data;
-
-        if (updateResponse) {
-          handleUpdateUser(update);
+        let userUpdate = response.data.data;
+        
+        if (userUpdate) {
+          setSubmitResult("Your profile has been successfully updated");
           setError("");
           handleCloseDialog();
-          setSubmitResult(result);
         }
       })
-      .catch ((error) => {
-        setError(error.response.data.result);
+      .catch((error) => {
+        console.error(error.response.data.result);
+        setError(error.response.data.result)
       });
-    };
-  
+  };
+
   return (
     <Box
       sx={{
@@ -104,41 +104,36 @@ updatedUser.append("dateOfBirth", updatedUser.dateOfBirth);
         </DialogTitle>
 
         <DialogContent>
-        <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 300,
-                textAlign: "center",
-                color: "green",
-              }}
-            >
-              {submitResult}
-            </Typography>
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 300,
-                textAlign: "center",
-                color: "red",
-                mb: "0.5em"
-              }}
-            >
-              {error}
-            </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 300,
+              textAlign: "center",
+              color: "green",
+            }}
+          >
+            {submitResult}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 300,
+              textAlign: "center",
+              color: "red",
+              mb: "0.5em",
+            }}
+          >
+            {error}
+          </Typography>
 
-          <Box onSubmit={handleSubmit}>
-            <TextField required sx={{ m: "0.5em" }} fullWidth id="firstName" label="First Name" name="firstName" value={updatedUser.firstName} onChange={handleDetailChange} />
-            <TextField required sx={{ m: "0.5em" }} fullWidth id="lastName" label="Last Name" name="lastName" value={updatedUser.lastName} onChange={handleDetailChange} />
-            <TextField required sx={{ m: "0.5em" }} fullWidth id="email" label="Email Address" name="email" value={updatedUser.email} onChange={handleDetailChange} />
-            <TextField required sx={{ m: "0.5em" }} fullWidth id="dateOfBirth" label="DOB" name="dateOfBirth" value={FormatDateBackend(updatedUser.dateOfBirth)} onChange={handleDetailChange} />
-            <TextField required sx={{ m: "0.5em" }} fullWidth id="phoneNumber" label="Phone Number" name="phoneNumber" value={"0" + updatedUser.phoneNumber} onChange={handleDetailChange} />
-          </Box>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{pr: "1em"}}>
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="firstName" label="First Name" name="firstName" value={updateUser.firstName} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="lastName" label="Last Name" name="lastName" value={updateUser.lastName} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="email" label="Email Address" name="email" value={updateUser.email} onChange={handleDetailChange} />
+            <TextField disabled sx={{ m: "0.5em" }} fullWidth id="dateOfBirth" label="DOB" name="dateOfBirth" value={FormatDate(updateUser.dateOfBirth)} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="phoneNumber" label="Phone Number" name="phoneNumber" value={"0" + updateUser.phoneNumber} onChange={handleDetailChange} />
 
-          <Container component="main" sx={{ pl: 0 }}>
             <Box
-              component="form"
-              onSubmit={handleSubmit}
-              noValidate
               sx={{
                 marginTop: 2,
                 display: "flex",
@@ -147,11 +142,11 @@ updatedUser.append("dateOfBirth", updatedUser.dateOfBirth);
                 justifyContent: "center",
               }}
             >
-              <Button type="submit" variant="filled" sx={{ mt: 3, mb: 2 }}>
+              <Button type="submit" variant="filled" sx={{ mt: 2, mb: 2 }}>
                 Submit
               </Button>
             </Box>
-          </Container>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} autoFocus>

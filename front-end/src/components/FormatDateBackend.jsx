@@ -8,3 +8,18 @@ export default function FormatDateBackend(date) {
     const formattedDate = `${year}-${month}-${day}`;
     return formattedDate;
   }
+
+  export function FormatDateBackendReverse(dateString) {
+    const dateObj = new Date(dateString);
+    const day = String(dateObj.getUTCDate()).padStart(2, '0');
+    const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const year = dateObj.getUTCFullYear();
+  
+    const formattedDate = `${day}-${month}-${year}`;
+    return formattedDate;
+
+    
+  }
+  
+  
+  

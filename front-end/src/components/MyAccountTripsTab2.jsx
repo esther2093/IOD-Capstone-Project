@@ -102,7 +102,7 @@ export default function TripsTab2() {
 
   const rows = userEnquiriesList.map((enquiry) => {
     const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
-    // console.log("trip", trip);
+   
 
     let statusIcon;
     if (enquiry.accepted === null) {
@@ -190,7 +190,7 @@ export default function TripsTab2() {
           </TableContainer>
         ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-            You haven't received any enquiries yet :(
+            You haven't enquired on any trips yet.
           </Typography>
         )}
       </Box>

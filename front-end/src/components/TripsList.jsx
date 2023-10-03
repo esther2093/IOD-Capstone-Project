@@ -49,6 +49,7 @@ export default function TripsList() {
       );
     });
 
+    filtered.sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate));
     setFilteredTrips(filtered);
   };
 
@@ -146,12 +147,10 @@ export default function TripsList() {
                       To: {trip.cityTo}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{mt: "0.2em"}}>
-                      Departing:
-                      {formatDate(trip.departureDate)}
+                      Departing: {formatDate(trip.departureDate)}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" sx={{mb: "0.2em"}}>
-                      Arriving:
-                      {formatDate(trip.arrivalDate)}
+                      Arriving: {formatDate(trip.arrivalDate)}
                     </Typography>
                     <Typography  variant="body2" sx={{ fontSize:"0.8em"}}>
                       Parceler: {userFirstNames[trip.userId - 1]}

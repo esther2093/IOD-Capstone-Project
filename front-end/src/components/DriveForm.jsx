@@ -22,40 +22,36 @@ export default function DriveForm() {
   const { currentUser } = useUserContext();
 
   const [error, setError] = useState("");
-  const [submitTrip, setSubmitTrip] = useState("");
+  const [submitResult, setSubmitResult] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
 
   const handleChange = (e) => {
     setAvailableSpace(e.target.value);
-    // console.log(availableSpace);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    setSubmitTrip("");
-
+    setSubmitResult("");
+  
     const data = new FormData(e.currentTarget);
     data.append("userId", currentUser.id);
-
-    axios
-      .post("http://localhost:8000/api/trips/register", Object.fromEntries(data.entries()))
-      .then((response) => {
-        const result = response.data.result;
-        const trip = response.data.data;
-
-        setSubmitTrip(result);
-        if (trip) {
-          setError("");
-          e.target.reset()
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-        setError(error.response.data.result);
-      });
+  
+    try {
+      const response = await axios.post("http://localhost:8000/api/trips/register", Object.fromEntries(data.entries()));
+      const result = response.data.result;
+      const trip = response.data.data;
+  
+      if (trip) {
+        setError("");
+        setSubmitResult(result);
+        e.target.reset();
+      }
+    } catch (error) {
+      console.error(error);
+      setError(error.response.data.result);
+    }
   };
-
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
@@ -116,7 +112,7 @@ export default function DriveForm() {
                   {error}
                 </Typography>
                 <Typography variant="body2" color="green">
-                  {submitTrip}
+                  {submitResult}
                 </Typography>
             </Box>
 

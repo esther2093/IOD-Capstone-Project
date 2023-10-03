@@ -44,7 +44,8 @@ export default function TripsTab4() {
 
     setUserMessageGroups(groups);
     setMessageTabLabels(Object.keys(groups));
-  }, [currentUser.id, messages]);
+
+  }, [currentUser.id, messages ]);
 
   const otherUserDetails = {};
 
@@ -63,16 +64,23 @@ export default function TripsTab4() {
   });
 
   const handleNewMessage = (newMessage) => {
-    console.log("newMessageTab:", newMessage)
+    //convert strings to numbers MOST IMPORTANT 
+    const numberMessage = {
+      id: newMessage.id,
+      senderId: parseInt(newMessage.senderId),
+      receiverId: parseInt(newMessage.receiverId),
+      content: newMessage.content,
+    }
     setUserMessageGroups((prevGroups) => {
       const updatedGroups = { ...prevGroups };
   
-      const otherUserId = newMessage.senderId === currentUser.id ? newMessage.receiverId : newMessage.senderId;
-      updatedGroups[otherUserId].push(newMessage);
-  
+      const otherUserId = numberMessage.senderId === currentUser.id ? numberMessage.receiverId : numberMessage.senderId;
+      if (!updatedGroups[otherUserId]) {
+        updatedGroups[otherUserId] = [];
+      }
+      updatedGroups[otherUserId].push(numberMessage);
       return updatedGroups;
     });
-    console.log("UMG:", userMessageGroups)
   };
 
   return (
@@ -85,32 +93,40 @@ export default function TripsTab4() {
           Your Chats:
         </Typography>
       </Box>
-
-      <Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", border: "0.13em rgba(0, 0, 0, 0.05) solid", height: 370 }}>
-        <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleTabChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: "divider" }}>
-          {messageTabLabels.map((otherUserId, index) => {
-            const otherUser = users.find((user) => user.id === parseInt(otherUserId, 10));
-            return (
-              <Tab
-                key={index}
-                label={
-                  <Box sx={{ display: "flex", alignItems: "left", padding: "0.5em", mr: "1em" }}>
-                    <Avatar src={"http://localhost:8000/" + otherUser.profilePicture} sx={{ width: 20, height: 20 }} />
-                    <Typography variant="body2" sx={{ width: "100%", ml: "0.5em" }}>
-                      {otherUser.firstName}
-                    </Typography>
-                  </Box>
-                }
-                {...a11yProps(index)}
-              />
-            );
-          })}
-        </Tabs>
-        {messageTabLabels.map((otherUserId, index) => (
-          <ChatMessages key={index} value={value} index={index} userMessageGroups={userMessageGroups} 
-          currentUser={currentUser} users={users} setUpdateList={handleNewMessage}/>
-        ))}
+  
+      <Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", border: "0.13em rgba(0, 0, 0, 0.05) solid", maxHeight: 370 }}>
+        {messageTabLabels.length > 0 ? (
+          <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleTabChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: "divider" }}>
+            {messageTabLabels.map((otherUserId, index) => {
+              const otherUser = users.find((user) => user.id === parseInt(otherUserId, 10));
+              return (
+                <Tab
+                  key={index}
+                  label={
+                    <Box sx={{ display: "flex", alignItems: "left", padding: "0.5em", mr: "1em" }}>
+                      <Avatar src={"http://localhost:8000/" + otherUser.profilePicture} sx={{ width: 20, height: 20 }} />
+                      <Typography variant="body2" sx={{ width: "100%", ml: "0.5em" }}>
+                        {otherUser.firstName}
+                      </Typography>
+                    </Box>
+                  }
+                  {...a11yProps(index)}
+                />
+              );
+            })}
+          </Tabs>
+        ) : (
+          <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
+            You do not have any active chats at the moment.
+          </Typography>
+        )}
+        {messageTabLabels.length > 0 &&
+          messageTabLabels.map((otherUserId, index) => (
+            <ChatMessages key={index} value={value} index={index} otherUserId={otherUserId} userMessageGroups={userMessageGroups} 
+            currentUser={currentUser} users={users} setUpdateList={handleNewMessage}/>
+          ))}
       </Box>
     </Box>
   );
+  
 }

@@ -42,7 +42,7 @@ export default function TripsTab3() {
   };
 
   const handleEnquiryStatus = (editedEnquiry) => {
-    console.log("ee:", editedEnquiry)
+    console.log("ee:", editedEnquiry);
     setReceivedEnquiriesList(receivedEnquiriesList.map((enquiry) => (enquiry.id === editedEnquiry.id ? editedEnquiry : enquiry)));
   };
 
@@ -64,13 +64,11 @@ export default function TripsTab3() {
     { id: "enquiryStatus", label: "Status", minWidth: 30 },
   ];
 
-  useEffect (() => {
+  useEffect(() => {
     const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
-    const receivedEnquiries = enquiries.filter((enquiry) =>
-    userTrips.some((trip) => trip.id === enquiry.tripId)
-  );
+    const receivedEnquiries = enquiries.filter((enquiry) => userTrips.some((trip) => trip.id === enquiry.tripId));
     setReceivedEnquiriesList(receivedEnquiries);
-  }, [enquiries, allTrips, currentUser])
+  }, [enquiries, allTrips, currentUser]);
 
   const rows = receivedEnquiriesList.map((enquiry) => {
     const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
@@ -126,55 +124,58 @@ export default function TripsTab3() {
     <Box>
       <Box sx={{ flexGrow: 1 }}>
         <Typography variant="h6" className="section-subhead" sx={{ fontSize: "0.9em" }}>
-          ENQUIRES
+          ENQUIRIES
         </Typography>
         <Typography variant="h4" className="section-title" sx={{ fontSize: "1.5em", fontWeight: 800 }}>
           Enquiries Received:
         </Typography>
       </Box>
 
-      <Box sx={{ flexGrow: 1, p: "0.5em"  }}>
-        <TableContainer sx={{ minHeight: 200 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={column.id} align="left" style={{ minWidth: column.minWidth }}>
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                <TableRow key={index}>
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align="left">
-                      {row[column.id]}
-                    </TableCell>
+      <Box sx={{ flexGrow: 1, p: "0.5em" }}>
+        {receivedEnquiriesList.length > 0 ? (
+          <div>
+            <TableContainer sx={{ minHeight: 200 }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map((column) => (
+                      <TableCell key={column.id} align="left" style={{ minWidth: column.minWidth }}>
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                    <TableRow key={index}>
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align="left">
+                          {row[column.id]}
+                        </TableCell>
+                      ))}
+                    </TableRow>
                   ))}
-                </TableRow>
-              ))}
-              {receivedEnquiriesList.length === 0 && (
-                <TableCell variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-                  You haven't received any enquiries yet :(
-                </TableCell>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={receivedEnquiriesList.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 15]}
+              component="div"
+              count={receivedEnquiriesList.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </div>
+        ) : (
+          <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
+            You haven't received any enquiries on your trips.
+          </Typography>
+        )}
       </Box>
 
-      <EnquiryDetailsReceived open={enquiryDialogOpen} close={handleEnquiryDialogClose} enquiry={selectedEnquiry} trip={selectedTrip} setUpdateList={handleEnquiryStatus} currentUser={currentUser}/>
+      <EnquiryDetailsReceived open={enquiryDialogOpen} close={handleEnquiryDialogClose} enquiry={selectedEnquiry} trip={selectedTrip} setUpdateList={handleEnquiryStatus} currentUser={currentUser} />
     </Box>
   );
 }

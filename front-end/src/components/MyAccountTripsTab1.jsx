@@ -27,7 +27,6 @@ export default function TripsTab1() {
 
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [userTripsList, setUserTripsList] = useState([]);
-  
 
   const handleEditDialogOpen = (trip) => {
     setSelectedTrip(trip);
@@ -51,15 +50,12 @@ export default function TripsTab1() {
 
   const handleEditTrip = (editedTrip) => {
     // console.log(editedTrip);
-    setUserTripsList(userTripsList.map((trip) =>
-      trip.id === editedTrip.id ? editedTrip : trip))
-  }
+    setUserTripsList(userTripsList.map((trip) => (trip.id === editedTrip.id ? editedTrip : trip)));
+  };
 
-const handleDeleteTrip = (deletedTrip) => {
-  setUserTripsList((prevTripsList) =>
-  prevTripsList.filter((trip) => trip.id !== deletedTrip.id)
-);
-};
+  const handleDeleteTrip = (deletedTrip) => {
+    setUserTripsList((prevTripsList) => prevTripsList.filter((trip) => trip.id !== deletedTrip.id));
+  };
 
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
@@ -78,10 +74,10 @@ const handleDeleteTrip = (deletedTrip) => {
     { id: "deleteTrip", label: "", minWidth: 20 },
   ];
 
-   useEffect(() => {
+  useEffect(() => {
     const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
     setUserTripsList(userTrips);
-  }, [allTrips, currentUser]); 
+  }, [allTrips, currentUser]);
   // console.log("User Trip List data: ", userTripsList)
 
   const rows = userTripsList.map((trip) => ({
@@ -117,47 +113,39 @@ const handleDeleteTrip = (deletedTrip) => {
       </Box>
 
       <Box sx={{ flexGrow: 1, p: "0.5em" }}>
-        <TableContainer sx={{ height: 200 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell key={column.id} align="left" style={{ minWidth: column.minWidth }}>
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                <TableRow key={index}>
+        {rows.length > 0 ? (
+          <TableContainer sx={{ minHeight: 200 }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow>
                   {columns.map((column) => (
-                    <TableCell key={column.id} align="left">
-                      {row[column.id]}
+                    <TableCell key={column.id} align="left" style={{ minWidth: column.minWidth }}>
+                      {column.label}
                     </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-        {rows.length === 0 && (
+              </TableHead>
+              <TableBody>
+                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                  <TableRow key={index}>
+                    {columns.map((column) => (
+                      <TableCell key={column.id} align="left">
+                        {row[column.id]}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-            You haven't enquired on any trips yet :(
+            You haven't posted any trips - if you would like to please navigate to the DRIVE form at the top.
           </Typography>
         )}
       </Box>
-      <EditTripDialog open={editDialogOpen} close={handleEditDialogClose} trip={selectedTrip} setUpdateList={handleEditTrip}/>
-      <DeleteTripDialog open={deleteDialogOpen} close={handleDeleteDialogClose} trip={selectedTrip} setUpdateList={handleDeleteTrip}/>
+      <EditTripDialog open={editDialogOpen} close={handleEditDialogClose} trip={selectedTrip} setUpdateList={handleEditTrip} />
+      <DeleteTripDialog open={deleteDialogOpen} close={handleDeleteDialogClose} trip={selectedTrip} setUpdateList={handleDeleteTrip} />
     </Box>
   );
 }

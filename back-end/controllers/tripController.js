@@ -63,6 +63,8 @@ const registerTrip = async (req, res) => {
         res.status(400).json({ result: "Departure date is in the past, I would also like to go to the past" });
       } else if (convertedArrD <= currentDate) {
         res.status(400).json({ result: "Arrival date is in the past, unfortunately, this is not possible unless you time travel" });
+      } else if (convertedDepD >= convertedArrD) {
+        res.status(400).json({ result: "Departure date must be before the arrival date - you can't go backwards in time"});
       } else {
         const tripMetadata = await Models.Trip.create({
           userId,

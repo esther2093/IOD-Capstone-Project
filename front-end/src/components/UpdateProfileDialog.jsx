@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Container, Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { useUserContext } from "../context/UserContext";
 import Typography from "@mui/material/Typography";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import FormatDateBackend from "./FormatDateBackend";
-import FormatPNumber from "./formatPNumber";
-import FormatDate from "./FormatDate";
+import FormatDateBackend from "./FormatDateBackend"
 
 export default function UpdateProfileDialog() {
   const { currentUser, handleUpdateUser } = useUserContext();
@@ -19,11 +17,9 @@ export default function UpdateProfileDialog() {
     firstName: currentUser.firstName,
     lastName: currentUser.lastName,
     email: currentUser.email,
-    dateOfBirth: (currentUser.dateOfBirth),
-    phoneNumber: currentUser.phoneNumber,
+    dateOfBirth: FormatDateBackend(currentUser.dateOfBirth),
+    phoneNumber: '0' + currentUser.phoneNumber,
   });
-
-  console.log("updateUser:", updateUser)
 
   const [submitResult, setSubmitResult] = useState("");
   const [error, setError] = useState("");
@@ -47,29 +43,27 @@ export default function UpdateProfileDialog() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+  
+    try {
+      const data = new FormData(e.currentTarget);
 
-    let data = new FormData(e.currentTarget);
-    data.append("dateOfBirth", currentUser.dateOfBirth)
-
-    axios
-      .put(`http://localhost:8000/api/users/${currentUser.id}`, Object.fromEntries(data.entries()))
-      .then((response) => {
-        let result = response.data.result;
-        let userUpdate = response.data.data;
-        
-        if (userUpdate) {
-          setSubmitResult("Your profile has been successfully updated");
-          setError("");
-          handleCloseDialog();
-        }
-      })
-      .catch((error) => {
-        console.error(error.response.data.result);
-        setError(error.response.data.result)
-      });
+      const response = await axios.put(`http://localhost:8000/api/users/${currentUser.id}`, Object.fromEntries(data.entries()));
+      const userUpdate = response.data.data;
+  
+      if (userUpdate) {
+        setError("");
+        setSubmitResult("Your profile has been successfully updated");
+        handleUpdateUser({ ...currentUser, ...response.data.data });
+        handleCloseDialog();
+      }
+    } catch (error) {
+      console.error(error.response.data.result);
+      setError(error.response.data.result);
+    }
   };
+  
 
   return (
     <Box
@@ -130,8 +124,8 @@ export default function UpdateProfileDialog() {
             <TextField required sx={{ m: "0.5em" }} fullWidth id="firstName" label="First Name" name="firstName" value={updateUser.firstName} onChange={handleDetailChange} />
             <TextField required sx={{ m: "0.5em" }} fullWidth id="lastName" label="Last Name" name="lastName" value={updateUser.lastName} onChange={handleDetailChange} />
             <TextField required sx={{ m: "0.5em" }} fullWidth id="email" label="Email Address" name="email" value={updateUser.email} onChange={handleDetailChange} />
-            <TextField disabled sx={{ m: "0.5em" }} fullWidth id="dateOfBirth" label="DOB" name="dateOfBirth" value={FormatDate(updateUser.dateOfBirth)} onChange={handleDetailChange} />
-            <TextField required sx={{ m: "0.5em" }} fullWidth id="phoneNumber" label="Phone Number" name="phoneNumber" value={"0" + updateUser.phoneNumber} onChange={handleDetailChange} />
+            <TextField sx={{ m: "0.5em" }} fullWidth id="dateOfBirth" label="DOB" name="dateOfBirth" value={updateUser.dateOfBirth} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="phoneNumber" label="Phone Number" name="phoneNumber" value={updateUser.phoneNumber} onChange={handleDetailChange} />
 
             <Box
               sx={{

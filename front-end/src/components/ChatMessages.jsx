@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
@@ -7,10 +7,8 @@ import Button from "@mui/material/Button";
 import axios from "axios";
 
 export default function ChatMessages({ value, index, currentUser, users, userMessageGroups, setUpdateList }) {
- 
-  console.log("currentUser:", currentUser);
-  console.log("users:", users);
-  console.log("userMessageGroups:", userMessageGroups);
+  const [messageText, setMessageText] = useState("");
+  const messageContainerRef = useRef(null);
 
   const otherUserId = Object.keys(userMessageGroups)[value];
   const otherUser = users.find((user) => user.id === parseInt(otherUserId, 10));
@@ -24,11 +22,11 @@ export default function ChatMessages({ value, index, currentUser, users, userMes
 
     try {
       const response = await axios.post("http://localhost:8000/api/messages/create", Object.fromEntries(data.entries()));
-      let newMessage = response.data.data
+      let newMessage = response.data.data;
 
       if (newMessage) {
         setUpdateList(newMessage);
-        console.log("newMessage:", newMessage)
+        setMessageText("");
       } else {
         console.error("Failed to send message");
       }
@@ -37,11 +35,17 @@ export default function ChatMessages({ value, index, currentUser, users, userMes
     }
   };
 
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+    }
+  }, [userMessageGroups]);
+
   return (
     <Box role="tabpanel" hidden={value !== index} id={`vertical-tabpanel-${index}`} aria-labelledby={`vertical-tab-${index}`} sx={{ width: "100%" }}>
       <Box sx={{ pl: "1em", pr: "1em", pt: "1em" }}>
         {value === index && (
-          <Box sx={{ height: 260, overflow: "auto" }}>
+          <Box sx={{ height: 260, overflow: "auto" }} ref={messageContainerRef}>
             {messagesForTab.map((message, messageIndex) => (
               <Box
                 key={messageIndex}
@@ -67,7 +71,17 @@ export default function ChatMessages({ value, index, currentUser, users, userMes
         )}
       </Box>
       <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", alignItems: "center", padding: "0.5em" }}>
-        <TextField required fullWidth autoFocus id="content" helperText="*Please do not share credit card details through chat" name="content" variant="outlined" />
+        <TextField
+          required
+          fullWidth
+          autoFocus
+          id="content"
+          helperText="*Please do not share credit card details through chat"
+          name="content"
+          variant="outlined"
+          value={messageText}
+          onChange={(e) => setMessageText(e.target.value)}
+        />
 
         <Button type="submit" variant="filled" sx={{ margin: "1em 0em 2.6em 1em" }}>
           Send

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import ProfilePictureDialog from "./ProfilePictureDialog";
 import { useUserContext } from "../context/UserContext";
 import { Avatar, Grid } from "@mui/material";
-import UpdateProfile from "./UpdateProfile";
+import UpdateProfile from "./UpdateProfileDialog";
 import bannerBg from "../assets/bannerImage.jpg";
 import TripsPanel from "./MyAccountTripsTabs";
 import FormatDate from "./FormatDate";
@@ -68,16 +68,16 @@ export default function MyAccount() {
                 </Typography>
 
                 <Box sx={{ px: "1em", py: "1em" }}>
-                  <Typography variant="body1" sx={{ fontSize: "1em" }}>
+                  <Typography variant="body1" sx={{ fontSize: "1em", pb: "0.5em" }}>
                     Name: {currentUser.firstName} {currentUser.lastName}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "1em" }}>
+                  <Typography variant="body1" sx={{ fontSize: "1em", pb: "0.5em"  }}>
                     Date of Birth: {FormatDate(currentUser.dateOfBirth)}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "1em" }}>
+                  <Typography variant="body1" sx={{ fontSize: "1em", pb: "0.5em"  }}>
                     Email: {currentUser.email}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "1em" }}>
+                  <Typography variant="body1" sx={{ fontSize: "1em", pb: "0.5em"  }}>
                     Phone number: {FormatPNumber(currentUser.phoneNumber)}
                   </Typography>
                 </Box>

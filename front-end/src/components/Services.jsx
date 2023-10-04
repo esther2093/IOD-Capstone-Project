@@ -3,6 +3,7 @@ import { Box, Typography, Grid, Paper } from "@mui/material";
 import Parcels from "../assets/parcels.jpg";
 
 export default function Services() {
+  
   return (
     <Paper square elevation={0} className="services-section" id="services-top">
       <Box className="services-container">

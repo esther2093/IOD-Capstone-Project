@@ -34,55 +34,57 @@ export default function TripsTab2() {
 
   const [seeMoreDialogOpen, setSeeMoreDialogOpen] = useState(false);
 
+  //functions to control open and close of edit dialog
   const handleEditDialogOpen = (enquiry) => {
     setSelectedEnquiry(enquiry);
     setEditDialogOpen(true);
   };
-
   const handleEditDialogClose = () => {
     setSelectedEnquiry(null);
     setEditDialogOpen(false);
   };
 
+  //functions to control open and close of trip dialog
   const handleDeleteDialogOpen = (enquiry) => {
     setSelectedEnquiry(enquiry);
     setDeleteDialogOpen(true);
   };
-
   const handleDeleteDialogClose = () => {
     setSelectedEnquiry(null);
     setDeleteDialogOpen(false);
   };
 
+  //handle to control open and close of seemore dialog
   const handleSeeMoreDialogOpen = (trip, enquiry) => {
     setSelectedEnquiry(enquiry);
     setSelectedTrip(trip);
     setSeeMoreDialogOpen(true);
   };
-
   const handleSeeMoreDialogClose = () => {
     setSelectedEnquiry(null);
     setSelectedTrip(null);
     setSeeMoreDialogOpen(false);
   };
 
+  //handle to re-render userEnquiriesList when a enquiry is edited
   const handleEditEnquiry = (editedEnquiry) => {
     setUserEnquiriesList(userEnquiriesList.map((enquiry) => (enquiry.id === editedEnquiry.id ? editedEnquiry : enquiry)));
   };
-
+  //handle to re-render userEnquiriesList when a enquiry is deleted
   const handleDeleteEnquiry = (deletedEnquiry) => {
     setUserEnquiriesList((prevEnquiriesList) => prevEnquiriesList.filter((enquiry) => enquiry.id !== deletedEnquiry.id));
   };
 
+  //handles for pagination
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (e) => {
     setRowsPerPage(+e.target.value);
     setPage(0);
   };
 
+  //defining colums for table
   const columns = [
     { id: "trip", label: "Trip", minWidth: 140 },
     { id: "dates", label: "Dates", minWidth: 150 },
@@ -94,14 +96,19 @@ export default function TripsTab2() {
     { id: "status", label: "Status", minWidth: 20 },
   ];
 
+  //filter and update userEnquiriesList
   useEffect(() => {
+    //filter enquiries for currentUser and set it into list
     const userEnquiries = enquiries.filter((enquiry) => enquiry.userId === currentUser.id);
     setUserEnquiriesList(userEnquiries);
   }, [enquiries, currentUser]);
 
+  //defining row content for table
   const rows = userEnquiriesList.map((enquiry) => {
+    //finding the corresponding trip for selected enquiry
     const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
 
+    //setting statusIcon depending on status state
     let statusIcon;
     if (enquiry.accepted === null) {
       statusIcon = (
@@ -163,40 +170,40 @@ export default function TripsTab2() {
       <Box sx={{ flexGrow: 1, p: "0.5em" }}>
         {rows.length > 0 ? (
           <Box>
-          <TableContainer sx={{ minHeight: 200 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align="left" style={{ minWidth: column.minWidth }}>
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                  <TableRow key={index}>
+            <TableContainer sx={{ minHeight: 200 }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
                     {columns.map((column) => (
-                      <TableCell key={column.id} align="left">
-                        {row[column.id]}
+                      <TableCell key={column.id} align="left" style={{ minWidth: column.minWidth }}>
+                        {column.label}
                       </TableCell>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-           <TablePagination
-           rowsPerPageOptions={[5, 10, 15]}
-           component="div"
-           count={rows.length}
-           rowsPerPage={rowsPerPage}
-           page={page}
-           onPageChange={handleChangePage}
-           onRowsPerPageChange={handleChangeRowsPerPage}
-         />
-         </Box>
+                </TableHead>
+                <TableBody>
+                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                    <TableRow key={index}>
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align="left">
+                          {row[column.id]}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 15]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Box>
         ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
             You haven't enquired on any trips yet.

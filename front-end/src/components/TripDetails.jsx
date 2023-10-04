@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import useTripData from "../hooks/useTripData";
-import { Typography, Button, Box, Grid, Avatar } from "@mui/material";
+import { Typography, Button, Box, Grid, Avatar, CircularProgress } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -16,20 +16,19 @@ export default function TripDetails({ tripId }) {
 
   const [userFirstNames, setUserFirstNames] = useState([]);
   const [userProfilePicture, setUserProfilePictures] = useState([]);
-  const [open, setOpen] = React.useState(false);
-  const [showEnquireForm, setShowEnquireForm] = useState(false); // Control the visibility of the form
+  const [open, setOpen] = useState(false);
+  const [showEnquireForm, setShowEnquireForm] = useState(false);
 
+  //extract first names and profile pictures and store it into arrays
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-  }, [users]);
-
-  useEffect(() => {
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
   }, [users]);
 
-  const handleClickOpen = () => {
+  //handle to open and close dialog
+  const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
@@ -37,14 +36,16 @@ export default function TripDetails({ tripId }) {
     setShowEnquireForm(false);
   };
 
+  //handle to show enquiry form
   const handleShowEnquireForm = () => {
     setShowEnquireForm((prevShowEnquireForm) => !prevShowEnquireForm);
   };
 
+  //loading circle if trip data not loaded
   if (!trip) {
     return (
-      <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "right" }}>
-        <Typography sx={{ textAlign: "right" }}>Loading...</Typography>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "right" }}>
+        <CircularProgress color="primary" />
       </Box>
     );
   }
@@ -52,7 +53,7 @@ export default function TripDetails({ tripId }) {
   return (
     <Box sx={{ flexGrow: 1, backgroundColor: "white" }}>
       <Box sx={{ display: "flex", justifyContent: "right" }}>
-        <Button onClick={handleClickOpen} sx={{ fontSize: "0.8em" }}>
+        <Button onClick={handleOpen} sx={{ fontSize: "0.8em" }}>
           More Details
         </Button>
       </Box>
@@ -95,10 +96,10 @@ export default function TripDetails({ tripId }) {
                 <Typography variant="body2">
                   Date: {formatDate(trip.departureDate)} - {formatDate(trip.arrivalDate)}
                 </Typography>
-                <Typography variant="body2" sx={{py: "0.2em"}}>
+                <Typography variant="body2" sx={{ py: "0.2em" }}>
                   Starting price from: ${trip.startingPrice}
                 </Typography>
-                <Box sx={{ display: "flex",  mt: "0.3em"}}>
+                <Box sx={{ display: "flex", mt: "0.3em" }}>
                   <SizeInfoList />
                   <Typography variant="body2" sx={{ ml: "0.5em", mt: "0.2em" }}>
                     Available Space : {trip.availableSpace}
@@ -114,7 +115,7 @@ export default function TripDetails({ tripId }) {
                   onClick={handleShowEnquireForm}
                   sx={{
                     mt: "1.3em ",
-                    mb: "0.5em"
+                    mb: "0.5em",
                   }}
                 >
                   REQUEST

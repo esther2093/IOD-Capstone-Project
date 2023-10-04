@@ -10,6 +10,8 @@ import { Box, CircularProgress } from "@mui/material";
 import SizeInfoList from "./sizeInfoList";
 
 export default function SeeMoreTripDialog({ open, close, trip }) {
+  
+  //loading circle if trip data not loaded 
   if (!trip) {
     return (
       <Dialog fullWidth open={open}>

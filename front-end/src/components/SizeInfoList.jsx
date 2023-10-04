@@ -5,16 +5,17 @@ import { Popover } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 
 export default function SizeInfoList() {
+  const [anchorEl, setAnchorEl] = useState(null);
 
-    const [anchorEl, setAnchorEl] = useState(null);
+  //handle clicking on icon to open popover 
+  const handleClick = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
 
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-  
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
+  //handle to close the popover 
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Box>

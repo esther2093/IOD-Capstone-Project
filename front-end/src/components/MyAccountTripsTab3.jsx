@@ -29,31 +29,32 @@ export default function TripsTab3() {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [receivedEnquiriesList, setReceivedEnquiriesList] = useState([]);
 
+  //functions to control open and close of edit dialog
   const handleEnquiryDialogOpen = (trip, enquiry) => {
     setSelectedEnquiry(enquiry);
     setSelectedTrip(trip);
     setEnquiryDialogOpen(true);
   };
-
   const handleEnquiryDialogClose = () => {
     setSelectedEnquiry(null);
     setEnquiryDialogOpen(false);
   };
 
+  //handle to re-render receivedEnquiriesList when an enquiry status is changed
   const handleEnquiryStatus = (editedEnquiry) => {
-    console.log("ee:", editedEnquiry);
     setReceivedEnquiriesList(receivedEnquiriesList.map((enquiry) => (enquiry.id === editedEnquiry.id ? editedEnquiry : enquiry)));
   };
 
+  //handles for pagination
   const handleChangePage = (e, newPage) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (e) => {
     setRowsPerPage(+e.target.value);
     setPage(0);
   };
 
+  //defining colums for table
   const columns = [
     { id: "trip", label: "Trip", minWidth: 140 },
     { id: "dates", label: "Dates", minWidth: 150 },
@@ -63,15 +64,24 @@ export default function TripsTab3() {
     { id: "enquiryStatus", label: "Status", minWidth: 30 },
   ];
 
+  //filter and update receivedEnquiriesList
   useEffect(() => {
+    // filter trips for currentUser
     const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
-    const receivedEnquiries = enquiries.filter((enquiry) => userTrips.some((trip) => trip.id === enquiry.tripId));
+    // extract id of all the trips into array
+    const tripIds = userTrips.map((trip) => trip.id);
+    // filter enquries that have any of the tripIds from array
+    const receivedEnquiries = enquiries.filter((enquiry) => tripIds.includes(enquiry.tripId));
+    //set recieveredEnquiriesList with the list of enquiries filtered
     setReceivedEnquiriesList(receivedEnquiries);
   }, [enquiries, allTrips, currentUser]);
 
+  //defining row content for table
   const rows = receivedEnquiriesList.map((enquiry) => {
+    //finding the corresponding trip for selected enquiry
     const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
 
+    //setting statusIcon depending on status state
     let statusIcon;
     if (enquiry.accepted === null) {
       statusIcon = (

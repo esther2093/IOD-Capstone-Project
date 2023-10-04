@@ -12,7 +12,9 @@ import FormatDateBackend from "./FormatDateBackend"
 export default function UpdateProfileDialog() {
   const { currentUser, handleUpdateUser } = useUserContext();
   const [openDialog, setOpenDialog] = useState(false);
-
+  const [submitResult, setSubmitResult] = useState("");
+  const [error, setError] = useState("");
+    //define intial state of edited user 
   const [updateUser, setUpdateUser] = useState({
     firstName: currentUser.firstName,
     lastName: currentUser.lastName,
@@ -21,13 +23,10 @@ export default function UpdateProfileDialog() {
     phoneNumber: '0' + currentUser.phoneNumber,
   });
 
-  const [submitResult, setSubmitResult] = useState("");
-  const [error, setError] = useState("");
-
+//handle to open and close dialog 
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
-
   const handleCloseDialog = () => {
     setOpenDialog(false);
     setUpdateUser(updateUser);
@@ -35,6 +34,7 @@ export default function UpdateProfileDialog() {
     setError("")
   };
 
+   //handle to track form input changes and update editedUser 
   const handleDetailChange = (e) => {
     const { name, value } = e.target;
     setUpdateUser((updateUser) => ({
@@ -43,27 +43,29 @@ export default function UpdateProfileDialog() {
     }));
   };
 
+  //handle to submit the edited user
   const handleSubmit = async (e) => {
     e.preventDefault();
   
     try {
+      //getting input data from form 
       const data = new FormData(e.currentTarget);
-
+      //updating user details 
       const response = await axios.put(`/api/users/${currentUser.id}`, Object.fromEntries(data.entries()));
       const userUpdate = response.data.data;
   
       if (userUpdate) {
         setError("");
         setSubmitResult("Your profile has been successfully updated");
+         //update edited user data in context
         handleUpdateUser({ ...currentUser, ...response.data.data });
+        //close dialog
         handleCloseDialog();
       }
     } catch (error) {
-      console.error(error.response.data.result);
       setError(error.response.data.result);
     }
   };
-  
 
   return (
     <Box

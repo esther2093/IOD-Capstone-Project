@@ -9,6 +9,7 @@ import useUserData from "../hooks/useUserData";
 import { Avatar } from "@mui/material";
 import ChatMessages from "./ChatMessages";
 
+//function to create accessibility props for tabs from Mui component
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
@@ -25,62 +26,78 @@ export default function TripsTab4() {
   const [userMessageGroups, setUserMessageGroups] = useState({});
   const [messageTabLabels, setMessageTabLabels] = useState([]);
 
+  //handle tab changing
   const handleTabChange = (e, newValue) => {
     setValue(newValue);
   };
 
-
-
+  //populates userMessageGroups and messageTabLabels
   useEffect(() => {
+    //filter messages that include the currentUser either receiver or sender
     const userMessages = messages.filter((message) => message.senderId === currentUser.id || message.receiverId === currentUser.id);
+    //initialise empty object to group messages
     const groups = {};
 
+    //groups messages based on the other user's id
     userMessages.forEach((message) => {
       const otherUserId = message.senderId === currentUser.id ? message.receiverId : message.senderId;
 
+      //if group doesn't exist for other user id then create a new array
       if (!groups[otherUserId]) {
         groups[otherUserId] = [];
       }
       groups[otherUserId].push(message);
     });
 
+    //groups set
     setUserMessageGroups(groups);
+    //messagetablabels are set with the key of groups which is the otherUserId
     setMessageTabLabels(Object.keys(groups));
 
-  }, [currentUser.id, messages ]);
+    //initialise an object to store other user's details
+    const otherUserDetails = {};
 
-  const otherUserDetails = {};
+    //filter using otherUserId to get their details
+    messageTabLabels.forEach((otherUserId) => {
+      //first get other user by searching for them by id
+      const otherUser = users.find((user) => user.id === otherUserId);
 
-  messageTabLabels.forEach((otherUserId) => {
-    const otherUser = users.find((user) => user.id === otherUserId);
+      //setting otherUser details
+      if (otherUser) {
+        otherUserDetails[otherUserId] = {
+          firstName: otherUser.firstName,
+          lastName: otherUser.lastName,
+          profilePicture: otherUser.profilePicture,
+        };
+      } else {
+        otherUserDetails[otherUserId] = null;
+      }
+    });
+  }, [currentUser.id, messages, messageTabLabels, users]);
 
-    if (otherUser) {
-      otherUserDetails[otherUserId] = {
-        firstName: otherUser.firstName,
-        lastName: otherUser.lastName,
-        profilePicture: otherUser.profilePicture,
-      };
-    } else {
-      otherUserDetails[otherUserId] = null;
-    }
-  });
-
+  //handle to update appropriate group with new message
   const handleNewMessage = (newMessage) => {
-    //convert strings to numbers
+    //convert ids from strings to numbers
     const numberMessage = {
       id: newMessage.id,
       senderId: parseInt(newMessage.senderId),
       receiverId: parseInt(newMessage.receiverId),
       content: newMessage.content,
-    }
+    };
+
     setUserMessageGroups((prevGroups) => {
+      //create copy of previous groups
       const updatedGroups = { ...prevGroups };
-  
+
+      //find the id of the other user in the group
       const otherUserId = numberMessage.senderId === currentUser.id ? numberMessage.receiverId : numberMessage.senderId;
+      //if group doesn't exist for other user id then create a new array
       if (!updatedGroups[otherUserId]) {
         updatedGroups[otherUserId] = [];
       }
+      //push the new message into the group with the otherUserId
       updatedGroups[otherUserId].push(numberMessage);
+      //updated state returned
       return updatedGroups;
     });
   };
@@ -95,7 +112,7 @@ export default function TripsTab4() {
           Your Chats:
         </Typography>
       </Box>
-  
+
       <Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", border: "0.13em rgba(0, 0, 0, 0.05) solid", maxHeight: 370 }}>
         {messageTabLabels.length > 0 ? (
           <Tabs orientation="vertical" variant="scrollable" value={value} onChange={handleTabChange} aria-label="Vertical tabs example" sx={{ borderRight: 1, borderColor: "divider" }}>
@@ -124,11 +141,18 @@ export default function TripsTab4() {
         )}
         {messageTabLabels.length > 0 &&
           messageTabLabels.map((otherUserId, index) => (
-            <ChatMessages key={index} value={value} index={index} otherUserId={otherUserId} userMessageGroups={userMessageGroups} 
-            currentUser={currentUser} users={users} setUpdateList={handleNewMessage}/>
+            <ChatMessages
+              key={index}
+              value={value}
+              index={index}
+              otherUserId={otherUserId}
+              userMessageGroups={userMessageGroups}
+              currentUser={currentUser}
+              users={users}
+              setUpdateList={handleNewMessage}
+            />
           ))}
       </Box>
     </Box>
   );
-  
 }

@@ -37,6 +37,7 @@ export default function DriveForm() {
     e.preventDefault();
     setSubmitResult("");
   
+    //getting input data from form 
     const data = new FormData(e.currentTarget);
     data.append("userId", currentUser.id);
   

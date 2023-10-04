@@ -17,20 +17,22 @@ export default function ProfilePictureDialog() {
   const [error, setError] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
 
+  //reset form fields after submit 
   const resetForm = () => {
     setImage({ preview: "", data: "" });
     setSubmitResult("");
   };
 
+  //handle to open and close dialog 
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
-
   const handleCloseDialog = () => {
     resetForm();
     setOpenDialog(false);
   };
 
+  //handle to show preview of selected image 
   const handleFileChange = (e) => {
     const img = {
       preview: URL.createObjectURL(e.target.files[0]),
@@ -39,14 +41,18 @@ export default function ProfilePictureDialog() {
     setImage(img);
   };
 
+  //handle the upload of new image
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let formData = new FormData();
-    formData.append("file", image.data);
+    //create new data 
+    let data = new FormData();
+    data.append("file", image.data);
 
     try {
-      const response = await axios.post(`/api/users/${currentUser.id}/image`, formData);
+      //post new image to database
+      const response = await axios.post(`/api/users/${currentUser.id}/image`, data);
       setSubmitResult(response.data.result);
+      //update currentUser with new profile image  
       handleUpdateUser({ ...currentUser, ...response.data.data });
       setError("");
     } catch (error) {

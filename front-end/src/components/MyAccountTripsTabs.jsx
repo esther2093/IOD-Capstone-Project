@@ -12,6 +12,7 @@ import TripsTab4 from "./MyAccountTripsTab4";
 import { Icon } from "@iconify/react";
 import { Badge } from "@mui/material";
 
+//MUI functions for tabs 
 function CustomTabPanel(props) {
   const { children, value, index } = props;
   return (
@@ -37,7 +38,8 @@ function a11yProps(index) {
 export default function TripsPanel() {
   const [value, setValue] = useState(0);
 
-  const handleChange = (event, newValue) => {
+  //handle to change tabs 
+  const handleChange = (e, newValue) => {
     setValue(newValue);
   };
 

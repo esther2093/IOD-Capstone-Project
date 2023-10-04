@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
@@ -23,44 +23,44 @@ import bannerBg from "../assets/bannerImage.jpg";
 
 export default function SignUpForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
-
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [submitResult, setSubmitResult] = useState("");
-
   const navigate = useNavigate();
 
+  //handle to toggle show password or not 
   const handleShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+//handle to prevent refresh of page on show password button press
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    let data = new FormData(event.currentTarget);
-
-    axios
-      .post("/api/users/register", Object.fromEntries(data.entries()))
-      .then((response) => {
-        let user = response.data.data;
-        //console.log(user);
-
-        if (user) {
-          handleUpdateUser(user);
-          setError("")
-          setSubmitResult("You have been successfully registered! We'll take you to your new MyAccount page");
-          setTimeout(() => {
-            navigate("/myaccount");
-          }, 2000);
-        }
-      })
-      .catch((error) => {
-        setError (error.response.data.result);
-        //console.log(error );
-      });
+  //handle to register new user 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+     //getting input data from form 
+    let data = new FormData(e.currentTarget);
+  
+    try {
+      //posting new user details to database
+      const response = await axios.post("/api/users/register", Object.fromEntries(data.entries()));
+      const user = response.data.data;
+  
+      if (user) {
+        //update user data in context
+        handleUpdateUser(user);
+        setError("");
+        setSubmitResult("You have been successfully registered! We'll take you to your new MyAccount page");
+        //redirect to myaccount page once sucesfully registered 
+        setTimeout(() => {
+          navigate("/myaccount");
+        }, 3000);
+      }
+    } catch (error) {
+      setError(error.response.data.result);
+    }
   };
-
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize:"cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>

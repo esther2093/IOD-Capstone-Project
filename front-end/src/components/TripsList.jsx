@@ -28,17 +28,20 @@ export default function TripsList() {
   const [userFirstNames, setUserFirstNames] = useState([]);
   const [userProfilePicture, setUserProfilePictures] = useState([]);
 
+   //extract first names and profile pictures and store it into arrays
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
   }, [users]);
 
+  //filter trips based on search terms and update the list shown 
   useEffect(() => {
+    //making search case-insensitive 
     const formattedSearchTerm = searchTerm.toLowerCase();
 
+    //filtering map based on search criterias 
     const filtered = allTrips.filter((trip) => {
       return (
         FormatDate(trip.departureDate).includes(formattedSearchTerm) ||
@@ -46,10 +49,12 @@ export default function TripsList() {
         trip.cityFrom.toLowerCase().includes(formattedSearchTerm) ||
         trip.cityTo.toLowerCase().includes(formattedSearchTerm) ||
         trip.availableSpace.toLowerCase().includes(formattedSearchTerm) ||
+        trip.price.includes(formattedSearchTerm)||
         trip.comments.toLowerCase().includes(formattedSearchTerm)
       );
     });
 
+    //sort filtered trips by closest depature date first 
     filtered.sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate));
     setFilteredTrips(filtered);
   }, [allTrips, searchTerm]);

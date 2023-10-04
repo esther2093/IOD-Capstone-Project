@@ -22,44 +22,53 @@ import bannerBg from "../assets/bannerImage.jpg";
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
+  const navigate = useNavigate();
 
   const [loggedIn, setLoggedIn] = useState(currentUser.email);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  //handle to toggle show password or not 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  //handle to prevent refresh of page on show password button press
+  const handleMouseDownPassword = (e) => {
+    e.preventDefault();
   };
 
-  const navigate = useNavigate();
-
+  //handle when logged in sucessfully 
   const handleLoginSuccess = (loggedInUser) => {
     setError("");
+    //update userContext with loggedInUser
     handleUpdateUser(loggedInUser);
+    //set login state to true
     setLoggedIn(true);
 
+    //set redirect to myaccount page after 3 seconds 
     setTimeout(() => {
       navigate("/myaccount");
     }, 3000);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  //hanle to submit of login details 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     setError("");
 
-    const data = new FormData(event.currentTarget);
-
+    //getting input data from form 
+    const data = new FormData(e.currentTarget);
     let userEmail = data.get("email");
     let userPassword = data.get("password");
 
     try {
+      //posting login request to database
       let response = await axios.post("/api/users/login", {
         email: userEmail,
         password: userPassword,
       });
 
-      if (response.data.result === "User successfully logged in") {
+      let login = response.data.result;
+
+      if (login) {
         handleLoginSuccess(response.data.data);
       }
     } catch (error) {

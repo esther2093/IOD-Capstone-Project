@@ -8,12 +8,10 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
 import { NavLink } from "react-router-dom";
 import { Icon } from "@iconify/react";
 import Box from "@mui/material/Box";
 import { HashLink } from "react-router-hash-link";
-import { useUserContext } from "../context/UserContext"; 
 
 const sections = [
   { link: "/#banner-top", label: "HOME" },
@@ -32,8 +30,6 @@ const settings = [
 ];
 
 export default function NavBar() {
-  const { currentUser } = useUserContext();
-
   const [isSticky, setIsSticky] = useState(false);
   const [isTransparent, setIsTransparent] = useState(true);
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -52,6 +48,14 @@ export default function NavBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  //sets the navClass depending on the variables  
+  const className = isSticky //check if isSticky is true 
+    ? "navbar-slide-down" //if isSticky is true is assigned this value 
+    : isTransparent //check if isTransparent is true  
+    ? "navbar-transparent" //if isSticky is true and isTransparent is falsey then assigned this value 
+    : "navbar"; //if both false then assigned this value 
+
 
   //handle to update sticky and transparency of navbar 
   const handleScroll = () => {
@@ -72,24 +76,6 @@ useEffect(() => {
     };
   }, []);
 
-//sets the navClass depending on the variables  
-  const className = isSticky //check if isSticky is true 
-    ? "navbar navbar-slide-down" //if isSticky is true is assigned this value 
-    : isTransparent //check if isTransparent is true  
-    ? "navbar-transparent" //if isSticky is true and isTransparent is falsey then assigned this value 
-    : "navbar"; //if both false then assigned this value 
-
-//runs when isSticky state changes 
-useEffect(() => {
-    if (isSticky) { //check if isSticky true 
-      //assigning .navbar with the className "navbar"
-      const navbar = document.querySelector(".navbar");
-      //setting the animation properties 
-      navbar.style.transition = "transform 0.5s ease-in-out";
-      // resetting the vertical positon to the top
-      navbar.style.transform = "translateY(0)";
-    }
-  }, [isSticky]);
 
   return (
     <AppBar

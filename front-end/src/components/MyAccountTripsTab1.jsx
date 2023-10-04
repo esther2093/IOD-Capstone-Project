@@ -30,68 +30,73 @@ export default function TripsTab1() {
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [userTripsList, setUserTripsList] = useState([]);
 
+  //functions to control open and close of edit dialog
   const handleEditDialogOpen = (trip) => {
     setSelectedTrip(trip);
     setEditDialogOpen(true);
   };
-
   const handleEditDialogClose = () => {
     setSelectedTrip(null);
     setEditDialogOpen(false);
   };
 
+  //functions to control open and close of trip dialog
   const handleDeleteDialogOpen = (trip) => {
     setSelectedTrip(trip);
     setDeleteDialogOpen(true);
   };
-
   const handleDeleteDialogClose = () => {
     setDeleteDialogOpen(false);
     setSelectedTrip(null);
   };
 
-  const handleEditTrip = (editedTrip) => {
-    setUserTripsList(userTripsList.map((trip) => (trip.id === editedTrip.id ? editedTrip : trip)));
-  };
-
-  const handleDeleteTrip = (deletedTrip) => {
-    setUserTripsList((prevTripsList) => prevTripsList.filter((trip) => trip.id !== deletedTrip.id));
-  };
-
-  const handleChangePage = (e, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (e) => {
-    setRowsPerPage(+e.target.value);
-    setPage(0);
-  };
-
+  //handle to control open and close of seemore dialog
   const handleSeeMoreDialogOpen = (trip) => {
     setSelectedTrip(trip);
     setSeeMoreDialogOpen(true);
   };
-
   const handleSeeMoreDialogClose = () => {
     setSelectedTrip(null);
     setSeeMoreDialogOpen(false);
   };
 
+  //handle to re-render userTripsList when a trip is edited
+  const handleEditTrip = (editedTrip) => {
+    setUserTripsList(userTripsList.map((trip) => (trip.id === editedTrip.id ? editedTrip : trip)));
+  };
+  //handle to re-render userTripsList when a trip is deleted
+  const handleDeleteTrip = (deletedTrip) => {
+    setUserTripsList((prevTripsList) => prevTripsList.filter((trip) => trip.id !== deletedTrip.id));
+  };
+
+  //handles for pagination
+  const handleChangePage = (e, newPage) => {
+    setPage(newPage);
+  };
+  const handleChangeRowsPerPage = (e) => {
+    setRowsPerPage(+e.target.value);
+    setPage(0);
+  };
+
+  //defining colums for table
   const columns = [
     { id: "trip", label: "Trip", minWidth: 130 },
     { id: "dates", label: "Dates", minWidth: 150 },
     { id: "price", label: "Price", minWidth: 50 },
-    { id: "comments", label: "Comments", minWidth: 40 },    
+    { id: "comments", label: "Comments", minWidth: 40 },
     { id: "seeMore", label: "", minWidth: 80 },
     { id: "editTrip", label: "", minWidth: 30 },
     { id: "deleteTrip", label: "", minWidth: 20 },
   ];
 
+  //filter and update userTripsList
   useEffect(() => {
+    //filter trips for currentUser and set it into list
     const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
     setUserTripsList(userTrips);
   }, [allTrips, currentUser]);
 
+  //defining row content for table
   const rows = userTripsList.map((trip) => ({
     trip: ` ${trip.cityFrom} - ${trip.cityTo}`,
     dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
@@ -107,7 +112,7 @@ export default function TripsTab1() {
           overflow: "hidden",
           whiteSpace: "nowrap",
           textOverflow: "ellipsis",
-          textAlign:"center"
+          textAlign: "center",
         }}
       >
         {trip.comments ? "Y" : "N"}

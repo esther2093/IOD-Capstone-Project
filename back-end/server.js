@@ -4,10 +4,9 @@ const express = require("express");
 const app = express();
 const cors = require('cors')
 
-const dbConnect = require("./dbConnect");
-
 const dotenv = require("dotenv");
 dotenv.config({ path: `./.env.${process.env.NODE_ENV || "local"}` });
+const dbConnect = require("./dbConnect");
 
 app.use(express.json());
 app.use(cors());

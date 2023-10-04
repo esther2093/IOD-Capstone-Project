@@ -1,3 +1,4 @@
+//function to change the date format to be viewed DD/MM/YY
 export default function FormatDate(dateString) {
   const date = new Date(dateString);
 
@@ -8,6 +9,7 @@ export default function FormatDate(dateString) {
   return `${day}/${month}/${year}`;
 }
 
+//function to change the date format to be viewed DD/MM/YYYY
 export function FormatDateYYYY(dateString) {
   const date = new Date(dateString);
 

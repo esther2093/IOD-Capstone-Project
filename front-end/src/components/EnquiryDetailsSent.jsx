@@ -14,13 +14,15 @@ export default function EnquiryDetailsSent({ open, close, enquiry, trip }) {
   const { users } = useUserData();
   const [userFirstNames, setUserFirstNames] = useState([]);
 
+  //creating array with all user first names to access
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
   }, [users]);
 
+  //stops rendering if there is no trip and enquiry 
   if (!trip || !enquiry) {
-    return null; // or render a loading indicator
+    return null; 
   }
 
   return (
@@ -47,6 +49,9 @@ export default function EnquiryDetailsSent({ open, close, enquiry, trip }) {
           </Typography>
           <Typography variant="body2">Departure Date: {formatDate(trip.departureDate)}</Typography>
           <Typography variant="body2">Arrival Date: {formatDate(trip.arrivalDate)}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: "0.2em" }}> 
+                      Starting price: ${trip.startingPrice}</Typography>
+
           <Box sx={{ display: "flex", mt: "0.3em" }}>
             <SizeInfoList />
             <Typography variant="body2" sx={{ ml: "0.5em", mt: "0.2em" }}>

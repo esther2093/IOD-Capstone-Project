@@ -13,7 +13,6 @@ import useTripData from "../hooks/useTripData";
 import useEnquiryData from "../hooks/useEnquiryData";
 import formatDate from "./FormatDate";
 import { Icon } from "@iconify/react";
-import { Button } from "@mui/material";
 import EnquiryDetailsReceived from "./EnquiryDetailsReceived";
 
 export default function TripsTab3() {
@@ -72,7 +71,6 @@ export default function TripsTab3() {
 
   const rows = receivedEnquiriesList.map((enquiry) => {
     const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
-    // console.log("trip", trip);
 
     let statusIcon;
     if (enquiry.accepted === null) {
@@ -133,7 +131,7 @@ export default function TripsTab3() {
 
       <Box sx={{ flexGrow: 1, p: "0.5em" }}>
         {receivedEnquiriesList.length > 0 ? (
-          <div>
+          <Box>
             <TableContainer sx={{ minHeight: 200 }}>
               <Table stickyHeader aria-label="sticky table">
                 <TableHead>
@@ -161,13 +159,13 @@ export default function TripsTab3() {
             <TablePagination
               rowsPerPageOptions={[5, 10, 15]}
               component="div"
-              count={receivedEnquiriesList.length}
+              count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
-          </div>
+          </Box>
         ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
             You haven't received any enquiries on your trips.

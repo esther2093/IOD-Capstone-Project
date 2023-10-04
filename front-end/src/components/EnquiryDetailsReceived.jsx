@@ -11,36 +11,36 @@ import formatDate from "./FormatDate";
 import { Box } from "@mui/material";
 import SizeInfoList from "./sizeInfoList";
 
-export default function EnquiryDetailsReceived({ open, close, enquiry, trip, setUpdateList, currentUser}) {
+export default function EnquiryDetailsReceived({ open, close, enquiry, trip, currentUser}) {
 
-  const sendApprovalMessage = async () => {
-    console.log("tdd:", trip.departureDate)
-    try {
-      await axios.post("http://localhost:8000/api/messages/create", {
-        senderId: currentUser.id, 
-        receiverId: enquiry.userId, 
-        content: "Your trip enquiry has been approved for " + trip.cityFrom + " to " + trip.cityTo + " on " + formatDate(trip.departureDate) + " - " + formatDate(trip.arrivalDate),
-      });
-    } catch (error) {
-      console.error("Error sending approval message:", error);
-    }
-  };
-
+//handle to accept or reject enquiries recieved by user 
   const handleAccept = async (status) => {
     try {
-      const response = await axios.put(`http://localhost:8000/api/enquiries/${enquiry.id}`, {
+      //when status is accepted, sends a message to the otherUserId to start a chat 
+      if (status) {
+        await axios.post("/api/messages/create", {
+          senderId: currentUser.id,
+          receiverId: enquiry.userId,
+          content: "Your trip enquiry has been approved for " + trip.cityFrom + " to " + trip.cityTo + " on " + formatDate(trip.departureDate) + " - " + formatDate(trip.arrivalDate),
+        });
+      }
+      
+      //update status of the enquiry to database
+      const response = await axios.put(`/api/enquiries/${enquiry.id}`, {
         accepted: status,
       });
-      console.log("Enquiry updated to approved:", response.data.data);
+  
+      console.log("Enquiry updated:", response.data.data);
+      //update the status to re-render parent  
       enquiry.accepted = status;
-      setUpdateList(enquiry);
-      sendApprovalMessage();
+      //close dialog 
       close();
     } catch (error) {
       console.error("Error updating enquiry:", error);
     }
   };
   
+  //stops rendering if there is no trip and enquiry 
   if (!trip || !enquiry) {
     return null;
   }
@@ -128,6 +128,9 @@ export default function EnquiryDetailsReceived({ open, close, enquiry, trip, set
           </Typography>
           <Typography variant="body2">Departure Date: {formatDate(trip.departureDate)}</Typography>
           <Typography variant="body2">Arrival Date: {formatDate(trip.arrivalDate)}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: "0.2em" }}> 
+                      Starting price: ${trip.startingPrice}</Typography>
+
           <Box sx={{ display: "flex", mt: "0.3em" }}>
             <SizeInfoList />
             <Typography variant="body2" sx={{ ml: "0.5em", mt: "0.2em" }}>

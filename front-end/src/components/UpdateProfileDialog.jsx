@@ -49,7 +49,7 @@ export default function UpdateProfileDialog() {
     try {
       const data = new FormData(e.currentTarget);
 
-      const response = await axios.put(`http://localhost:8000/api/users/${currentUser.id}`, Object.fromEntries(data.entries()));
+      const response = await axios.put(`/api/users/${currentUser.id}`, Object.fromEntries(data.entries()));
       const userUpdate = response.data.data;
   
       if (userUpdate) {

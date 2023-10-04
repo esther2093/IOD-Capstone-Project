@@ -2,9 +2,13 @@
 
 /* Homepage NavBar */
 
-.navbar.transparent {
+.navbar-transparent {
   background: transparent !important;
   box-shadow: none !important;
+}
+
+.navbar-slide-down {
+  animation: slideDown 0.5s ease-in-out;
 }
 
 @keyframes slideDown {
@@ -17,10 +21,6 @@
   }
 }
 
-.navbar-slide-down {
-  animation: slideDown 0.5s ease-in-out;
-}
-
 .user-icon {
   margin-right: 1em;
 }
@@ -30,13 +30,6 @@
 #banner-top {
   margin-top: -4em;
 }
-
-/* .banner-content {
-  width: 100%;
-  background-image: url("./src/assets/bannerImage.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-} */
 
 .banner-section-box {
   padding: 5em 3em 5em 3em;
@@ -128,6 +121,11 @@
 
 .services-parcel-pic {
   width: 90%
+}
+
+.services-instructions {
+  margin-top: 0em;
+  font-size: 0.9em
 }
 
 /* ---- END HOMEPAGE ---- */

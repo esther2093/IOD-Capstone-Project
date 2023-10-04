@@ -7,13 +7,11 @@ function useMessageData() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // fetch all messages
-        const messagesResponse = await fetch("http://localhost:8000/api/messages");
+        const messagesResponse = await fetch("/api/messages");
         const messagesResult = await messagesResponse.json();
-        console.log(messagesResult)
 
         if (messagesResult.data) {
-            setMessages(messagesResult.data);
+            setMessages([...messagesResult.data]);
 
         } else {
           setError(new Error("No messages found"));

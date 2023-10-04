@@ -67,7 +67,6 @@ export default function TripsTab2() {
   };
 
   const handleEditEnquiry = (editedEnquiry) => {
-    // console.log(editedEnquiry);
     setUserEnquiriesList(userEnquiriesList.map((enquiry) => (enquiry.id === editedEnquiry.id ? editedEnquiry : enquiry)));
   };
 
@@ -102,7 +101,6 @@ export default function TripsTab2() {
 
   const rows = userEnquiriesList.map((enquiry) => {
     const trip = allTrips.find((trip) => trip.id === enquiry.tripId);
-   
 
     let statusIcon;
     if (enquiry.accepted === null) {
@@ -164,6 +162,7 @@ export default function TripsTab2() {
 
       <Box sx={{ flexGrow: 1, p: "0.5em" }}>
         {rows.length > 0 ? (
+          <Box>
           <TableContainer sx={{ minHeight: 200 }}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
@@ -188,6 +187,16 @@ export default function TripsTab2() {
               </TableBody>
             </Table>
           </TableContainer>
+           <TablePagination
+           rowsPerPageOptions={[5, 10, 15]}
+           component="div"
+           count={rows.length}
+           rowsPerPage={rowsPerPage}
+           page={page}
+           onPageChange={handleChangePage}
+           onRowsPerPageChange={handleChangeRowsPerPage}
+         />
+         </Box>
         ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
             You haven't enquired on any trips yet.
@@ -195,17 +204,6 @@ export default function TripsTab2() {
         )}
       </Box>
 
-      {rows.length > 0 && (
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 15]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      )}
       <EditEnquiryDialog open={editDialogOpen} close={handleEditDialogClose} enquiry={selectedEnquiry} trip={selectedTrip} setUpdateList={handleEditEnquiry} />
       <DeleteEnquiryDialog open={deleteDialogOpen} close={handleDeleteDialogClose} enquiry={selectedEnquiry} trip={selectedTrip} setUpdateList={handleDeleteEnquiry} />
       <EnquiryDetailsSent open={seeMoreDialogOpen} close={handleSeeMoreDialogClose} enquiry={selectedEnquiry} trip={selectedTrip} />

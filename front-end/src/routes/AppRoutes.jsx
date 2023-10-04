@@ -10,8 +10,6 @@ import MyAccountPage from "../pages/MyAccountPage";
 import TripDetails from "../components/TripDetails";
 import TripsList from "../components/TripsList";
 
-
-
 function AppRoutes(props) {
   return (
     <Routes>
@@ -19,14 +17,35 @@ function AppRoutes(props) {
       <Route path="/login" element={<LoginPage {...props} />} />
       <Route path="/signup" element={<SignUpPage {...props} />} />
       <Route path="/forgot" element={<ForgotPasswordPage {...props} />} />
-     
-      <Route path="/trips" element={<TripsPage />}>
-          <Route index element={<TripsList />} />
-          <Route path=":id" element={<TripDetails />} />
+
+      <Route
+        path="/trips"
+        element={
+          <ProtectedRoute>
+            <TripsPage {...props} />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<TripsList />} />
+        <Route path=":id" element={<TripDetails />} />
       </Route>
-      
-      <Route path="/drive" element={<DrivePage {...props} />} />
-      <Route path="/myaccount" element={<MyAccountPage {...props} />} />
+
+      <Route
+        path="/drive"
+        element={
+          <ProtectedRoute>
+            <DrivePage {...props} />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/myaccount"
+        element={
+          <ProtectedRoute>
+            <MyAccountPage {...props} />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }

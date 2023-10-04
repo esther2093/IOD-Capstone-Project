@@ -4,22 +4,23 @@ import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import useTripData from "../hooks/useTripData";
 import Box from "@mui/system/Box";
-import { Button, TextField, styled } from "@mui/material";
+import { TextField, styled } from "@mui/material";
 import useUserData from "../hooks/useUserData";
 import TripDetails from "./TripDetails";
 import bannerBg from "../assets/bannerImage.jpg";
-import formatDate from "./FormatDate";
+import FormatDate from "./FormatDate";
+import Skeleton from "@mui/material/Skeleton";
 
 const Img = styled("img")({
-  margin: 'auto',
-  display: 'block',
+  margin: "auto",
+  display: "block",
   maxWidth: "90%",
   maxHeight: "90%",
   padding: "0.25em",
 });
 
 export default function TripsList() {
-  const { allTrips } = useTripData();
+  const { allTrips, loading } = useTripData();
   const { users } = useUserData();
 
   const [filteredTrips, setFilteredTrips] = useState(allTrips);
@@ -30,18 +31,18 @@ export default function TripsList() {
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-  
+
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
   }, [users]);
 
-  const handleSearch = () => {
+  useEffect(() => {
     const formattedSearchTerm = searchTerm.toLowerCase();
 
     const filtered = allTrips.filter((trip) => {
       return (
-        formatDate(trip.departureDate).includes(searchTerm) ||
-        formatDate(trip.departureDate).includes(searchTerm) ||
+        FormatDate(trip.departureDate).includes(formattedSearchTerm) ||
+        FormatDate(trip.departureDate).includes(formattedSearchTerm) ||
         trip.cityFrom.toLowerCase().includes(formattedSearchTerm) ||
         trip.cityTo.toLowerCase().includes(formattedSearchTerm) ||
         trip.availableSpace.toLowerCase().includes(formattedSearchTerm) ||
@@ -51,11 +52,7 @@ export default function TripsList() {
 
     filtered.sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate));
     setFilteredTrips(filtered);
-  };
-
-  useEffect(() => {
-    handleSearch();
-  }, [allTrips]);
+  }, [allTrips, searchTerm]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -78,9 +75,9 @@ export default function TripsList() {
         </Box>
       </Box>
 
-      <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center",}} className="trips-main-container">
+      <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", alignItems: "center" }} className="trips-main-container">
         <Grid container spacing={0} className="trips-top-box">
-          <Grid item xs={12} sm={12} md={7} className="trips-title-box" >
+          <Grid item xs={12} sm={12} md={8} className="trips-title-box">
             <Typography
               variant="h4"
               className="trips-title"
@@ -106,65 +103,73 @@ export default function TripsList() {
             </Typography>
           </Grid>
 
-          <Grid item xs={12} sm={12} md={5} sx={{ padding: "1.5em" }} >
-            <Box sx={{display: "flex"}} >
+          <Grid item xs={12} sm={12} md={4} sx={{ padding: "1.5em" }}>
+            <Box sx={{ display: "flex" }}>
               <TextField
-                sx={{
-                  width: "80%",
-                }}
+                fullWidth
                 label="🔍 SEARCH HERE "
-                placeholder="Search by city, date or description"
+                placeholder="Search by city, date, or description"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Button
-                onClick={handleSearch}
-                variant="filled"
-                sx={{
-                  ml: "1em"
-                }}
-              >
-                SEARCH
-              </Button>
             </Box>
           </Grid>
         </Grid>
 
-        <Grid container spacing={0} sx={{ backgroundColor: "white", padding: "1em" }}>
-          {filteredTrips.map((trip) => (
-            <Grid item key={trip.id} xs={12} sm={6} md={4} xl={4} sx={{ padding: "1em" }}>
-              <Card>
-                <Grid container spacing={0} sx={{marginTop: '0.5em'}}>
-                  <Grid item xs={4}  sx={{padding: "0.5em", margin: "auto"}}>
-                    <Img alt="no-profile-picture" src={"http://localhost:8000/" + userProfilePicture[trip.userId - 1]} />
+        <Grid container spacing={0} sx={{ backgroundColor: "white", padding: "1em", minHeight:"430px" }}>
+          {loading ? (
+            Array.from({ length: 6 }, (_, index) => (
+              <Grid item key={index} xs={12} sm={6} md={4} xl={4} sx={{ p: "0.5em" }}>
+                <Card>
+                  <Grid container spacing={0} sx={{ marginTop: "0.5em" }}>
+                    <Grid item xs={4}>
+                      <Skeleton variant="rectangular" width={"auto"} height={90} sx={{ m: "0.5em" }} />
+                    </Grid>
+          
+                    <Grid item xs={8}>
+                      <Skeleton variant="rectangular" width={"auto"} height={90} sx={{ m: "0.5em" }} />
+                    </Grid>
+                  </Grid>
+          
+                  <Box display="flex" sx={{ justifyContent: "right" }}>
+                    <Skeleton variant="rounded" width={50} height={20} sx={{ m: "0.5em" }} />
+                  </Box>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            filteredTrips.map((trip) => (
+              <Grid item key={trip.id} xs={12} sm={6} md={4} xl={4} sx={{ padding: "1em" }}>
+                <Card>
+                  <Grid container spacing={0} sx={{ marginTop: "0.5em" }}>
+                    <Grid item xs={4} sx={{ padding: "0.5em", margin: "auto" }}>
+                      <Img alt="no-profile-picture" src={userProfilePicture[trip.userId - 1]} />
+                    </Grid>
+
+                    <Grid item xs={8} sx={{ padding: "0.5em" }}>
+                      <Typography variant="body2"> From: {trip.cityFrom}</Typography>
+                      <Typography variant="body2"> To: {trip.cityTo}</Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mt: "0.2em" }}>
+                        Departing: {FormatDate(trip.departureDate)}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: "0.2em" }}>
+                        Arriving: {FormatDate(trip.arrivalDate)}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: "0.2em" }}> 
+                      Starting price: ${trip.startingPrice}</Typography>
+                      <Typography variant="body2" sx={{ fontSize: "0.8em" }}>
+                        Parceler: {userFirstNames[trip.userId - 1]}
+                      </Typography>
+                    </Grid>
                   </Grid>
 
-                  <Grid item xs={8} sx={{padding: "0.5em"}}>
-                    
-                    <Typography variant="body2"> From: {trip.cityFrom}</Typography>
-                    <Typography  variant="body2">
-                      {" "}
-                      To: {trip.cityTo}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{mt: "0.2em"}}>
-                      Departing: {formatDate(trip.departureDate)}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary" sx={{mb: "0.2em"}}>
-                      Arriving: {formatDate(trip.arrivalDate)}
-                    </Typography>
-                    <Typography  variant="body2" sx={{ fontSize:"0.8em"}}>
-                      Parceler: {userFirstNames[trip.userId - 1]}
-                    </Typography>
-                  </Grid>
-                </Grid>
-
-                <Box display="flex" sx={{margin: "0 0.5em 0.5em 0.5em"}}>
+                  <Box display="flex" sx={{ margin: "0 0.5em 0.5em 0.5em" }}>
                     <TripDetails tripId={trip.id} />
                   </Box>
-
-              </Card>
-            </Grid>
-          ))}
+                </Card>
+              </Grid>
+            ))
+          )}
         </Grid>
       </Box>
     </Box>

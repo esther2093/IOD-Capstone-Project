@@ -17,7 +17,7 @@ export default function About() {
               </Typography>
               <Typography variant="subtitle1" className="section-subtitle" >
                 We offer an easy way to get in contact with people who are on
-                their way somewhere and you can ask them to deliver a package
+                their way to a destination and you can ask them to deliver a package
                 for you!
               </Typography>
             </Box>
@@ -35,8 +35,8 @@ export default function About() {
                   <Box className="icon-block-description">
                     <Typography variant="h6">SIMPLE</Typography>
                     <Typography variant="body2">
-                      Simple setup of posting your travels to be a driver or for
-                      the sender to see available routes
+                      Simple and easy to use set-up of posting your travels to be a pareceler or for
+                      other parcelers to to see available routes and request a delivery
                     </Typography>
                   </Box>
                 </Paper>
@@ -48,8 +48,8 @@ export default function About() {
                   <Box className="icon-block-description">
                     <Typography variant="h6">CONVENIENT</Typography>
                     <Typography variant="body2">
-                      Choose the time and date that best suits you and contact
-                      the driver directly once you are matched
+                      Choose the destionation and date that best suits you and contact
+                      the parceler directly once your request is approved
                     </Typography>
                   </Box>
                 </Paper>
@@ -61,9 +61,8 @@ export default function About() {
                   <Box className="icon-block-description">
                     <Typography variant="h6">AFFORDABLE</Typography>
                     <Typography variant="body2">
-                      Costs vary based on kms and size of items being delivered
-                      and will be more cost-efficient due to the driver going
-                      that way anyways
+                      Costs are set by parcelers so may vary but you can negotiate the price of the delivery directly with the parceler 
+                      
                     </Typography>
                   </Box>
                 </Paper>
@@ -76,8 +75,11 @@ export default function About() {
                     icon="mingcute:phone-fill"
                   />
                   <Box className="icon-block-description">
-                    <Typography variant="h6">CONTACT US</Typography>
-                    <Typography variant="body2">Contact us if there are any issues</Typography>
+                    <Typography variant="h6">TRUST</Typography>
+                    <Typography variant="body2">
+                      As a company we believe in affordable and accessible deliveries so we are always monitoring to ensure prices are fair and appropriate,
+                      if there are any problems just follow the link below
+                    </Typography>
                   </Box>
                 </Paper>
               </Grid>

@@ -10,10 +10,14 @@ export default function ChatMessages({ value, index, currentUser, users, userMes
   const [messageText, setMessageText] = useState("");
   const messageContainerRef = useRef(null);
 
+  //setting the keys of userMessageGroups as the userId for other person on chat 
   const otherUserId = Object.keys(userMessageGroups)[value];
+  //finding the user with the same id as the previously defined otherUserId
   const otherUser = users.find((user) => user.id === parseInt(otherUserId, 10));
+  //creating a messagetab for each otherUserId
   const messagesForTab = userMessageGroups[otherUserId];
 
+  //handle for submitting new message
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -21,11 +25,14 @@ export default function ChatMessages({ value, index, currentUser, users, userMes
     data.append("receiverId", otherUserId);
 
     try {
-      const response = await axios.post("http://localhost:8000/api/messages/create", Object.fromEntries(data.entries()));
+      //posting to database
+      const response = await axios.post("/api/messages/create", Object.fromEntries(data.entries()));
       let newMessage = response.data.data;
 
       if (newMessage) {
+        //updating the message list to re-render parent
         setUpdateList(newMessage);
+        //clearing message textfield 
         setMessageText("");
       } else {
         console.error("Failed to send message");
@@ -35,6 +42,7 @@ export default function ChatMessages({ value, index, currentUser, users, userMes
     }
   };
 
+  //making the chat always scroll to the bottom of the box whenever there is a change to userMessageGroups 
   useEffect(() => {
     if (messageContainerRef.current) {
       messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;

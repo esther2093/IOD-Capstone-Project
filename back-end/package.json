@@ -4,13 +4,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "local": "set NODE_ENV=local&& node server.js",
+    "distant": "set NODE_ENV=distant&& node server.js",
+    "start": "nodemon server.js",
+    "start-local": "concurrently \"cd ../front-end && npm run dev\" \"npm run local\""
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
     "bcryptjs": "^2.4.3",
+    "concurrently": "^8.2.1",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",

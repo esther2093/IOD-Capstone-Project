@@ -14,6 +14,7 @@ import formatDate from "./FormatDate";
 import { Icon } from "@iconify/react";
 import EditTripDialog from "./EditTripDialog";
 import DeleteTripDialog from "./DeleteTripDialog";
+import SeeMoreTripDialog from "./SeeMoreTripDialog";
 
 export default function TripsTab1() {
   const { currentUser } = useUserContext();
@@ -24,6 +25,7 @@ export default function TripsTab1() {
 
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [seeMoreDialogOpen, setSeeMoreDialogOpen] = useState(false);
 
   const [selectedTrip, setSelectedTrip] = useState(null);
   const [userTripsList, setUserTripsList] = useState([]);
@@ -49,7 +51,6 @@ export default function TripsTab1() {
   };
 
   const handleEditTrip = (editedTrip) => {
-    // console.log(editedTrip);
     setUserTripsList(userTripsList.map((trip) => (trip.id === editedTrip.id ? editedTrip : trip)));
   };
 
@@ -66,10 +67,22 @@ export default function TripsTab1() {
     setPage(0);
   };
 
+  const handleSeeMoreDialogOpen = (trip) => {
+    setSelectedTrip(trip);
+    setSeeMoreDialogOpen(true);
+  };
+
+  const handleSeeMoreDialogClose = () => {
+    setSelectedTrip(null);
+    setSeeMoreDialogOpen(false);
+  };
+
   const columns = [
-    { id: "trip", label: "Trip", minWidth: 150 },
+    { id: "trip", label: "Trip", minWidth: 130 },
     { id: "dates", label: "Dates", minWidth: 150 },
-    { id: "comments", label: "Comments", minWidth: 250 },
+    { id: "price", label: "Price", minWidth: 50 },
+    { id: "comments", label: "Comments", minWidth: 40 },    
+    { id: "seeMore", label: "", minWidth: 80 },
     { id: "editTrip", label: "", minWidth: 30 },
     { id: "deleteTrip", label: "", minWidth: 20 },
   ];
@@ -78,12 +91,12 @@ export default function TripsTab1() {
     const userTrips = allTrips.filter((trip) => trip.userId === currentUser.id);
     setUserTripsList(userTrips);
   }, [allTrips, currentUser]);
-  // console.log("User Trip List data: ", userTripsList)
 
   const rows = userTripsList.map((trip) => ({
     trip: ` ${trip.cityFrom} - ${trip.cityTo}`,
     dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
-    availableSpace: trip.availableSpace,
+    price: `$ ${trip.startingPrice}`,
+    seeMore: <button onClick={() => handleSeeMoreDialogOpen(trip)}>See More</button>,
     editTrip: <Icon icon="material-symbols:edit-outline" onClick={() => handleEditDialogOpen(trip)} />,
     deleteTrip: <Icon color="#c1121f" icon="ph:x-fill" onClick={() => handleDeleteDialogOpen(trip)} />,
     comments: (
@@ -94,9 +107,10 @@ export default function TripsTab1() {
           overflow: "hidden",
           whiteSpace: "nowrap",
           textOverflow: "ellipsis",
+          textAlign:"center"
         }}
       >
-        {trip.comments}
+        {trip.comments ? "Y" : "N"}
       </Typography>
     ),
   }));
@@ -114,36 +128,48 @@ export default function TripsTab1() {
 
       <Box sx={{ flexGrow: 1, p: "0.5em" }}>
         {rows.length > 0 ? (
-          <TableContainer sx={{ minHeight: 200 }}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell key={column.id} align="left" style={{ minWidth: column.minWidth }}>
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
-                  <TableRow key={index}>
+          <Box>
+            <TableContainer sx={{ minHeight: 200 }}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
                     {columns.map((column) => (
-                      <TableCell key={column.id} align="left">
-                        {row[column.id]}
+                      <TableCell key={column.id} align="left" style={{ minWidth: column.minWidth }}>
+                        {column.label}
                       </TableCell>
                     ))}
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                    <TableRow key={index}>
+                      {columns.map((column) => (
+                        <TableCell key={column.id} align="left">
+                          {row[column.id]}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            <TablePagination
+              rowsPerPageOptions={[5, 10, 15]}
+              component="div"
+              count={rows.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Box>
         ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
             You haven't posted any trips - if you would like to please navigate to the DRIVE form at the top.
           </Typography>
         )}
       </Box>
+      <SeeMoreTripDialog open={seeMoreDialogOpen} close={handleSeeMoreDialogClose} trip={selectedTrip} />
       <EditTripDialog open={editDialogOpen} close={handleEditDialogClose} trip={selectedTrip} setUpdateList={handleEditTrip} />
       <DeleteTripDialog open={deleteDialogOpen} close={handleDeleteDialogClose} trip={selectedTrip} setUpdateList={handleDeleteTrip} />
     </Box>

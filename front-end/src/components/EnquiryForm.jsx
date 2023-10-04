@@ -10,17 +10,20 @@ export default function EnquiryForm({tripId}) {
   const [submitResult, setSubmitResult] = useState("");
   const [formVisible, setFormVisible] = useState(true);
 
+  //handle submit of new enquiry 
   const handleSubmitEnquiry = async (event) => {
     event.preventDefault();
     setError("");
     setSubmitResult("");
   
     try {
+      //creating new enquiry data
       const data = new FormData(event.currentTarget);
       data.append("userId", currentUser.id);
       data.append("tripId", tripId);
-  
-      const response = await axios.post("http://localhost:8000/api/enquiries/register", Object.fromEntries(data.entries()));
+      
+      //post new enquriy to database
+      const response = await axios.post("/api/enquiries/register", Object.fromEntries(data.entries()));
   
       let result = response.data.result;
       const enquiry = response.data.data;
@@ -28,10 +31,10 @@ export default function EnquiryForm({tripId}) {
       if (enquiry) {
         setSubmitResult(result);
         setError("");
+        //hides the form after sucessful submit 
         setFormVisible(false);
       }
     } catch (error) {
-      console.error(error);
       setError(error.response ? error.response.data.result : "An error occurred");
     }
   };
@@ -45,7 +48,7 @@ export default function EnquiryForm({tripId}) {
               ENQUIRE
             </Typography>
             <Typography variant="h4" className="section-title" sx={{ textAlign: "left", fontSize: "1em", fontWeight: 800 }}>
-              Let the parceler know what you want to send:
+              Make a request: 
             </Typography>
             <TextField required name="comments" label="Comments" id="comments" fullWidth multiline rows={4} margin="normal" variant="outlined" />
             <Button
@@ -55,7 +58,7 @@ export default function EnquiryForm({tripId}) {
                 marginTop: "0.5em",
               }}
             >
-              PARCEL IT
+              PARCELME
             </Button>
           </Grid>
         </Box>

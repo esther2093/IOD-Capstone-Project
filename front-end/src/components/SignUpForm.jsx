@@ -41,7 +41,7 @@ export default function SignUpForm() {
     let data = new FormData(event.currentTarget);
 
     axios
-      .post("http://localhost:8000/api/users/register", Object.fromEntries(data.entries()))
+      .post("/api/users/register", Object.fromEntries(data.entries()))
       .then((response) => {
         let user = response.data.data;
         //console.log(user);

@@ -13,6 +13,7 @@ export default function DeleteTripDialog({ open, close, trip, setUpdateList }) {
   const [submitResult, setSubmitResult] = useState("");
   const [error, setError] = useState("");
 
+  //clearing results and errors when dialog is closed 
   useEffect(() => {
     if (!open) {
       setSubmitResult("");
@@ -20,40 +21,32 @@ export default function DeleteTripDialog({ open, close, trip, setUpdateList }) {
     }
   }, [open]);
 
+  //deleting a trip and any associated enquiries that use it as a foreign key 
   const handleDelete = async () => {
     try {
+      //finding the enquiries that use the specific trip.id 
       const filteredEnquiries = enquiries.filter((enquiry) => enquiry.tripId === trip.id);
+      //extracting enquiry.id from filtered enquiries 
       const enquiryIds = filteredEnquiries.map((enquiry) => enquiry.id);
 
+      //iterating and deleting the enquiries with the filtered ids 
       for (const enquiryId of enquiryIds) {
-        await axios.delete(`http://localhost:8000/api/enquiries/${enquiryId}`);
+        await axios.delete(`/api/enquiries/${enquiryId}`);
       }
-      // Now delete the trip
-      const response = await axios.delete(`http://localhost:8000/api/trips/${trip.id}`);
-      
+
+      //deleting trip from database
+      const response = await axios.delete(`/api/trips/${trip.id}`);
       setError("");
-      setSubmitResult(response.data.result);
+      setSubmitResult("Your trip has been sucessfully deleted");
+      //updating list to re-render parent  
       setUpdateList(trip);
+      //close dialog 
       close();
     } catch (error) {
-      if (error.response) {
-        // Axios error with response, handle it
-        console.error("An error occurred while deleting the trip:", error.response.data.result);
-        setError("An error occurred while deleting your trip");
-      } else if (error.message) {
-        // Other error with a message, handle it
-        console.error("An error occurred:", error.message);
-        setError("An error occurred while processing your request");
-      } else {
-        // Unexpected error, handle it
-        console.error("An unexpected error occurred:", error);
-        setError("An unexpected error occurred");
-      }
+      setError("An error occurred while trying to delete your trip");
     }
   };
   
-  
-
   return (
     <Dialog open={open} close={close}>
       <DialogTitle>

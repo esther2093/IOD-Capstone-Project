@@ -43,11 +43,12 @@ const registerTrip = async (req, res) => {
         departureDate,
         arrivalDate,
         availableSpace,
+        startingPrice,
         comments,
       } = req.body;
   
       if (
-        !(userId, cityFrom && stateFrom && cityTo && stateTo && departureDate && arrivalDate && availableSpace)) {
+        !(userId, cityFrom && stateFrom && cityTo && stateTo && departureDate && arrivalDate && availableSpace && startingPrice)) {
         res.status(400).json({ result: "Please fill in all the *required fields" });
       } else if (
         (suburbFrom && !/^[A-Za-z\s]+$/.test(suburbFrom)) ||
@@ -59,12 +60,14 @@ const registerTrip = async (req, res) => {
         res.status(400).json({ result: "Not a valid state " });
       } else if (!/^\d{2}-\d{2}-\d{4}$/.test(departureDate) || !/^\d{2}-\d{2}-\d{4}$/.test(arrivalDate)) {
         res.status(400).json({ result: "Date must be in DD-MM-YYYY format" });
-      } else if (convertedDepD <= currentDate) {
+      } else if (convertedDepD < currentDate) {
         res.status(400).json({ result: "Departure date is in the past, I would also like to go to the past" });
-      } else if (convertedArrD <= currentDate) {
+      } else if (convertedArrD < currentDate) {
         res.status(400).json({ result: "Arrival date is in the past, unfortunately, this is not possible unless you time travel" });
-      } else if (convertedDepD >= convertedArrD) {
+      } else if (convertedDepD > convertedArrD) {
         res.status(400).json({ result: "Departure date must be before the arrival date - you can't go backwards in time"});
+      } else if (isNaN(Number(startingPrice))) {
+        res.status(400).json({ result: "Starting price must be a valid number" })      
       } else {
         const tripMetadata = await Models.Trip.create({
           userId,
@@ -77,6 +80,7 @@ const registerTrip = async (req, res) => {
           departureDate: convertedDepD,
           arrivalDate: convertedArrD,
           availableSpace,
+          startingPrice,
           comments: capitalizeFirstLetter(comments),
         });
         const trip = tripMetadata.get({ plain: true });

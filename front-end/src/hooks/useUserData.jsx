@@ -9,9 +9,8 @@ export default function useUserData(id) {
     const fetchData = async () => {
       try {
         // Fetch all users
-        const usersResponse = await fetch("http://localhost:8000/api/users");
+        const usersResponse = await fetch("/api/users");
         const usersResult = await usersResponse.json();
-        console.log(usersResult);
 
         if (usersResult.data) {
           setUsers([...usersResult.data]);
@@ -21,9 +20,8 @@ export default function useUserData(id) {
 
         // Fetch user by id
         if (id) {
-          const userResponse = await fetch(`http://localhost:8000/api/users/${id}`);
+          const userResponse = await fetch(`/api/users/${id}`);
           const userResult = await userResponse.json();
-          console.log(userResult);
 
           if (userResult.data) {
             setUserData({ ...userResult.data });

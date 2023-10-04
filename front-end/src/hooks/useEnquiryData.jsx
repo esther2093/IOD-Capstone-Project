@@ -7,13 +7,11 @@ function useEnquiryData() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // fetch all enquiries
-        const enquiriesResponse = await fetch("http://localhost:8000/api/enquiries");
+        const enquiriesResponse = await fetch("/api/enquiries");
         const enquiriesResult = await enquiriesResponse.json();
-        console.log(enquiriesResult)
 
         if (enquiriesResult.data) {
-            setEnquiries(enquiriesResult.data);
+            setEnquiries([...enquiriesResult.data]);
 
         } else {
           setError(new Error("No enquiries found"));

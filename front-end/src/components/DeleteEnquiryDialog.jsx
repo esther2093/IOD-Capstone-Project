@@ -11,21 +11,25 @@ export default function DeleteEnquiryDialog({ open, close, enquiry, setUpdateLis
   const [submitResult, setSubmitResult] = useState("");
   const [error, setError] = useState("");
 
+  //clearing fields when dialog is closed 
   useEffect(() => {
     if (!open) {
       setSubmitResult("");
     }
   }, [open]);
 
+  //handles the deletion of an equiry 
   const handleDelete = async () => {
     try {
-      const response = await axios.delete(`http://localhost:8000/api/enquiries/${enquiry.id}`);
+      //deleting from database
+      const response = await axios.delete(`/api/enquiries/${enquiry.id}`);
       setError("");
-      setSubmitResult(response.data.result);
+      setSubmitResult("Your enquiry has been deleted successfully");
+      //updating enquries list to re-render parent  
       setUpdateList(enquiry);
+      //close the dialog 
       close();
     } catch (error) {
-      console.error("An error occurred while deleting the enquiry:", error.response.data.result);
       setError("An error occurred while deleting your enquiry");
     }
   };

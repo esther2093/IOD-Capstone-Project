@@ -22,12 +22,14 @@ export default function TripsTab4() {
   const { messages } = useMessageData();
 
   const [value, setValue] = useState(0);
+  const [userMessageGroups, setUserMessageGroups] = useState({});
+  const [messageTabLabels, setMessageTabLabels] = useState([]);
+
   const handleTabChange = (e, newValue) => {
     setValue(newValue);
   };
 
-  const [userMessageGroups, setUserMessageGroups] = useState({});
-  const [messageTabLabels, setMessageTabLabels] = useState([]);
+
 
   useEffect(() => {
     const userMessages = messages.filter((message) => message.senderId === currentUser.id || message.receiverId === currentUser.id);
@@ -64,7 +66,7 @@ export default function TripsTab4() {
   });
 
   const handleNewMessage = (newMessage) => {
-    //convert strings to numbers MOST IMPORTANT 
+    //convert strings to numbers
     const numberMessage = {
       id: newMessage.id,
       senderId: parseInt(newMessage.senderId),

@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@mui/material/Button";
-import { Box, Typography, Divider, ButtonGroup } from "@mui/material";
+import { Box, Typography, ButtonGroup } from "@mui/material";
 import bannerBg from "../assets/bannerImage.jpg";
 
 

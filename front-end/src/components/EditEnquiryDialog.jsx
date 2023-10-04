@@ -10,6 +10,7 @@ import { Box, TextField } from "@mui/material";
 
 
 export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList }) {
+  //define initial state for the edited enquiry  
   const [editedEnquiry, setEditedEnquiry] = useState({
     id: "",
         userId: "",
@@ -23,10 +24,12 @@ export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList 
   const [submitResult, setSubmitResult] = useState("");
   const [error, setError] = useState("");
 
+  //function to capitalise the first letter of each string 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
+  //populates editedEnquiry when an enquiry is provided 
   useEffect(() => {
     if (enquiry) {
       const originalEnquiry = {
@@ -42,12 +45,14 @@ export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList 
       }
   }, [enquiry]);
 
+  //reset form submit status when dialog is closed 
   useEffect(() => {
     if (!open) {
       setSubmitResult("");
     }
   }, [open]);
 
+  //handle to track form input changes and update editedEnquiry 
   const handleEditForm = (e) => {
     const { name, value } = e.target;
     setEditedEnquiry((originalEnquiry) => ({
@@ -56,15 +61,20 @@ export default function EditEnquiryDialog({ open, close, enquiry, setUpdateList 
     }));
   };
 
+  //handles to submit the edited enquiry
   const handleSubmit = async (e) => {
     e.preventDefault();
+    //if enquiry is edited makes accepted property to null 
     editedEnquiry.accepted = null;
 
     try {
-      const response = await axios.put(`http://localhost:8000/api/enquiries/${enquiry.id}`, editedEnquiry)
+      //post edited enquiry to database
+      const response = await axios.put(`/api/enquiries/${enquiry.id}`, editedEnquiry)
       setError("");
       setSubmitResult(response.data.result);
+      //update the enquiries list to re-render parent
       setUpdateList(editedEnquiry);
+      //close dialog 
       close();
     } catch (error) {
         console.error("An error occurred while updating the enquiry:", error.response.data.result);

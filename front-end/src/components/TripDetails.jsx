@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import useTripData from "../hooks/useTripData";
-import { Typography, Button, Card, CardContent, Box, Grid, styled, Avatar, ButtonBase, Paper, TextField } from "@mui/material";
+import { Typography, Button, Box, Grid, Avatar } from "@mui/material";
 import useUserData from "../hooks/useUserData";
-import { Link } from "react-router-dom";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
-import CloseIcon from "@mui/icons-material/Close";
 import EnquiryForm from "./EnquiryForm";
 import formatDate from "./FormatDate";
 import SizeInfoList from "./sizeInfoList";
@@ -16,7 +13,6 @@ import SizeInfoList from "./sizeInfoList";
 export default function TripDetails({ tripId }) {
   const { trip } = useTripData(tripId);
   const { users } = useUserData();
-  console.log(trip);
 
   const [userFirstNames, setUserFirstNames] = useState([]);
   const [userProfilePicture, setUserProfilePictures] = useState([]);
@@ -26,13 +22,11 @@ export default function TripDetails({ tripId }) {
   useEffect(() => {
     const firstNamesArray = users.map((user) => user.firstName);
     setUserFirstNames(firstNamesArray);
-    //console.log("First Names:", firstNamesArray);
   }, [users]);
 
   useEffect(() => {
     const profilePictureArray = users.map((user) => user.profilePicture);
     setUserProfilePictures(profilePictureArray);
-    //console.log("Profile Picture:", profilePictureArray);
   }, [users]);
 
   const handleClickOpen = () => {
@@ -44,11 +38,15 @@ export default function TripDetails({ tripId }) {
   };
 
   const handleShowEnquireForm = () => {
-    setShowEnquireForm((prevShowEnquireForm) => !prevShowEnquireForm); // Toggle the visibility of the form
+    setShowEnquireForm((prevShowEnquireForm) => !prevShowEnquireForm);
   };
 
   if (!trip) {
-    return <div>Loading...</div>;
+    return (
+      <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "right" }}>
+        <Typography sx={{ textAlign: "right" }}>Loading...</Typography>
+      </Box>
+    );
   }
 
   return (
@@ -83,7 +81,7 @@ export default function TripDetails({ tripId }) {
                     backgroundColor: "white",
                   }}
                 >
-                  <img src={"http://localhost:8000/" + userProfilePicture[trip.userId - 1]} width="100%" alt={"NO PROFILE PICTURE"} />
+                  <img src={userProfilePicture[trip.userId - 1]} width="100%" alt={"NO PROFILE PICTURE"} />
                 </Avatar>
                 <Typography variant="body2" sx={{ textAlign: "center" }}>
                   Parceler: {userFirstNames[trip.userId - 1]}
@@ -96,6 +94,9 @@ export default function TripDetails({ tripId }) {
                 </Typography>
                 <Typography variant="body2">
                   Date: {formatDate(trip.departureDate)} - {formatDate(trip.arrivalDate)}
+                </Typography>
+                <Typography variant="body2" sx={{py: "0.2em"}}>
+                  Starting price from: ${trip.startingPrice}
                 </Typography>
                 <Box sx={{ display: "flex",  mt: "0.3em"}}>
                   <SizeInfoList />
@@ -116,7 +117,7 @@ export default function TripDetails({ tripId }) {
                     mb: "0.5em"
                   }}
                 >
-                  PARCELME
+                  REQUEST
                 </Button>
               </Grid>
 

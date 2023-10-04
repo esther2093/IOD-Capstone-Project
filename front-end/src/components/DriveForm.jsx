@@ -12,7 +12,7 @@ import driveformpic from "../assets/driveformpic.jpeg";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
-import { FormControl } from "@mui/material";
+import { FormControl, FormHelperText, InputAdornment, OutlinedInput } from "@mui/material";
 import bannerBg from "../assets/bannerImage.jpg";
 import SizeInfoList from "./sizeInfoList";
 
@@ -25,10 +25,14 @@ export default function DriveForm() {
   const [submitResult, setSubmitResult] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
 
+
+  //updating input field state 
   const handleChange = (e) => {
     setAvailableSpace(e.target.value);
   };
 
+
+  //handles the submission of a new trip 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitResult("");
@@ -37,13 +41,15 @@ export default function DriveForm() {
     data.append("userId", currentUser.id);
   
     try {
-      const response = await axios.post("http://localhost:8000/api/trips/register", Object.fromEntries(data.entries()));
+      //posting to database
+      const response = await axios.post("/api/trips/register", Object.fromEntries(data.entries()));
       const result = response.data.result;
       const trip = response.data.data;
   
       if (trip) {
         setError("");
         setSubmitResult(result);
+        //reset the form fields 
         e.target.reset();
       }
     } catch (error) {
@@ -120,56 +126,66 @@ export default function DriveForm() {
               <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
                 <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Where from?</Typography>              
                 </Grid>
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField fullWidth id="suburbFrom" label="Suburb" name="suburbFrom" autoComplete="suburb" />
               </Grid>
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField required fullWidth id="cityFrom" label="City" name="cityFrom" autoComplete="city" />
               </Grid>
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField required fullWidth id="stateFrom" label="State" name="stateFrom" autoComplete="state" />
               </Grid>
-              <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
+              <Grid item xs={12} sx={{ textAlign: "left", ml: "1em", mt: "0.2em" }}>
                 <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Where to?</Typography>              
                 </Grid>
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField fullWidth id="suburbTo" label="Suburb" name="suburbTo" autoComplete="suburb" />
               </Grid>
 
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField required fullWidth id="cityTo" label="City" name="cityTo" autoComplete="city" />
               </Grid>
-              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField required fullWidth id="stateTo" label="State" name="stateTo" autoComplete="state" />
               </Grid>
-              <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
+              <Grid item xs={12} sx={{ textAlign: "left", ml: "1em", mt: "0.2em" }}>
                 <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Dates </Typography>              
                 </Grid>
-              <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField required fullWidth name="departureDate" label="DD-MM-YYYY" id="departureDate" format="DD-MM-YYYY" helperText="Departure" />
               </Grid>
-              <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField required fullWidth name="arrivalDate" label="DD-MM-YYYY" id="arrivalDate" format="DD-MM-YYYY" helperText="Arrival" />
               </Grid>
 
-              <Grid item xs={11} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sm={12} md={5.5} sx={{ p: "0.25em", mt: "0.2em" }}>
+              <FormControl fullWidth required>
+              
+              <InputLabel htmlFor="availableSpace" sx={{fontSize: "0.75em"}}>From</InputLabel>
+                <OutlinedInput fullWidth name="startingPrice" label="from" id="startingPrice" startAdornment={<InputAdornment position="start">$</InputAdornment>}/>
+                <FormHelperText>Starting price</FormHelperText>
+             </FormControl>
+              </Grid>
+
+              <Grid item xs={11} md={5.5} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <FormControl fullWidth required >
-                  <InputLabel htmlFor="availableSpace">Avaliable Space</InputLabel>
-                  <Select required id="availableSpace" label="Available Space" name="availableSpace" value={availableSpace} onChange={handleChange}>
+                  <InputLabel htmlFor="availableSpace">Up to</InputLabel>
+                  <Select required id="availableSpace" label="Up to" name="availableSpace" value={availableSpace} onChange={handleChange}>
                     {spaceSizes.map((spaceSize) => (
                       <MenuItem key={spaceSize} value={spaceSize}>
                         {spaceSize}
                       </MenuItem>
                     ))}
                   </Select>
+                  <FormHelperText>Available space</FormHelperText>
                 </FormControl>
               </Grid>
 
-              <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356" }}>
+              <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356", mt:"-0.1em" }}>
                <SizeInfoList />
               </Grid>
 
-              <Grid item xs={12} sx={{ p: "0.25em" }}>
+              <Grid item xs={12} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField fullWidth multiline maxRows={4} name="comments" label="Any additional comments" id="comments" autoComplete="comments" />
               </Grid>
 

@@ -57,6 +57,15 @@ export const mainTheme = createTheme({
       },
     },
 
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          height: "3.15em",
+          paddingTop: "0.1em"
+        }
+      }
+    },
+
     MuiTouchRipple: {
       styleOverrides: {
         root: {
@@ -84,6 +93,7 @@ export const mainTheme = createTheme({
       styleOverrides: {
         root: {
           fontSize: "0.8em",
+          marginTop: "-0.1em"
         },
       },
     },

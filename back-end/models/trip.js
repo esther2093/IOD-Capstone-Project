@@ -40,6 +40,9 @@ Trip.init({
         availableSpace: {
             type: DataTypes.STRING, allowNull: false, required: true
         },
+        startingPrice: {
+            type: DataTypes.INTEGER, allowNull: false, required: true
+        },
         comments: {
             type: DataTypes.STRING, allowNull: true, required: false
         }

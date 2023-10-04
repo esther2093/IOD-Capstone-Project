@@ -32,9 +32,14 @@ const settings = [
 ];
 
 export default function NavBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { currentUser } = useUserContext();
 
+  const [isSticky, setIsSticky] = useState(false);
+  const [isTransparent, setIsTransparent] = useState(true);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  //handles to control open and close of nav and menu 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
@@ -48,40 +53,40 @@ export default function NavBar() {
     setAnchorElUser(null);
   };
 
-  const { currentUser, handleUpdateUser } = useUserContext();
-  const [loggedIn, setLoggedIn] = React.useState(currentUser.firstName);
-
-  const handleLogout = () => {
-    handleUpdateUser({});
-    setLoggedIn(false);
-  };
-  
-  const [isSticky, setIsSticky] = React.useState(false);
-  const [isTransparent, setIsTransparent] = React.useState(true);
-
+  //handle to update sticky and transparency of navbar 
   const handleScroll = () => {
     const scrollY = window.scrollY;
+    //setting navbar sticky before 400px 
     setIsSticky(scrollY >= 400);
+    //setting navbar to transparent after 400px
     setIsTransparent(scrollY <= 400);
   };
 
-  React.useEffect(() => {
+  //attach an event listener for scrolling 
+useEffect(() => {
+  //add event listener whenever page is scrolled 
     window.addEventListener("scroll", handleScroll);
+    //remove event listener when no longer scrolling 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  const navClass = isSticky
-    ? `navbar sticky navbar-slide-down` 
-    : isTransparent
-    ? "navbar transparent" 
-    : "navbar";
+//sets the navClass depending on the variables  
+  const className = isSticky //check if isSticky is true 
+    ? "navbar navbar-slide-down" //if isSticky is true is assigned this value 
+    : isTransparent //check if isTransparent is true  
+    ? "navbar-transparent" //if isSticky is true and isTransparent is falsey then assigned this value 
+    : "navbar"; //if both false then assigned this value 
 
-  React.useEffect(() => {
-    if (isSticky) {
+//runs when isSticky state changes 
+useEffect(() => {
+    if (isSticky) { //check if isSticky true 
+      //assigning .navbar with the className "navbar"
       const navbar = document.querySelector(".navbar");
+      //setting the animation properties 
       navbar.style.transition = "transform 0.5s ease-in-out";
+      // resetting the vertical positon to the top
       navbar.style.transform = "translateY(0)";
     }
   }, [isSticky]);
@@ -90,7 +95,7 @@ export default function NavBar() {
     <AppBar
       position={isSticky ? "fixed" : "static"}
       color="secondary"
-      className={navClass}
+      className={className}
       sx={{width: "100%"}}
     >
       <Container maxWidth="false" >

@@ -45,7 +45,7 @@ export default function ProfilePictureDialog() {
     formData.append("file", image.data);
 
     try {
-      const response = await axios.post(`http://localhost:8000/api/users/${currentUser.id}/image`, formData);
+      const response = await axios.post(`/api/users/${currentUser.id}/image`, formData);
       setSubmitResult(response.data.result);
       handleUpdateUser({ ...currentUser, ...response.data.data });
       setError("");

@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
@@ -24,14 +22,10 @@ import bannerBg from "../assets/bannerImage.jpg";
 
 export default function LoginForm() {
   const { currentUser, handleUpdateUser } = useUserContext();
-  // console.log(currentUser);
 
-  const [loggedIn, setLoggedIn] = React.useState(currentUser.email);
-  const [errorMsg, setErrorMsg] = React.useState("");
-  const [loginAttempts, setLoginAttempts] = React.useState(0);
+  const [loggedIn, setLoggedIn] = useState(currentUser.email);
+  const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [lockoutTimer, setLockoutTimer] = useState(null);
-  const [lockedOut, setLockedOut] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => {
@@ -39,41 +33,39 @@ export default function LoginForm() {
   };
 
   const navigate = useNavigate();
-  
 
   const handleLoginSuccess = (loggedInUser) => {
-    setErrorMsg("");
+    setError("");
     handleUpdateUser(loggedInUser);
     setLoggedIn(true);
 
     setTimeout(() => {
       navigate("/myaccount");
-    }, 4000);
+    }, 3000);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setErrorMsg("");
-  
+    setError("");
+
     const data = new FormData(event.currentTarget);
-  
+
     let userEmail = data.get("email");
     let userPassword = data.get("password");
-  
+
     try {
-      let response = await axios.post("http://localhost:8000/api/users/login", {
+      let response = await axios.post("/api/users/login", {
         email: userEmail,
         password: userPassword,
       });
-  
+
       if (response.data.result === "User successfully logged in") {
         handleLoginSuccess(response.data.data);
-      } 
+      }
     } catch (error) {
-      setErrorMsg(error.response.data.result);
+      setError(error.response.data.result);
     }
   };
-  
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -98,7 +90,11 @@ export default function LoginForm() {
 
       <Grid container component="main" sx={{ padding: "1em" }}>
         <CssBaseline />
-        <Grid item xs={12} sm={6} md={7}
+        <Grid
+          item
+          xs={12}
+          sm={6}
+          md={7}
           sx={{
             backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
             backgroundRepeat: "no-repeat",
@@ -185,24 +181,14 @@ export default function LoginForm() {
                   LOG OUT
                 </Button>
               </Box>
-            ) : null}
-
-            {lockedOut ? (
-              <Box sx={{ textAlign: "center", padding: "4em" }}>
-                <Typography variant="body2" color="error">
-                  {errorMsg}
-                </Typography>
-              </Box>
-            ) : null}
-
-            {!loggedIn && loginAttempts < 5 ? (
+            ) : (
               <Box>
                 <Box sx={{ textAlign: "center" }}>
                   <Typography variant="body2" sx={{ fontWeight: 300 }}>
                     Login with your details below
                   </Typography>
                   <Typography variant="body2" color="error" sx={{ pt: "1em" }}>
-                    {errorMsg}
+                    {error}
                   </Typography>
                 </Box>
 
@@ -210,10 +196,10 @@ export default function LoginForm() {
                   component="form"
                   onSubmit={handleSubmit}
                   sx={{
-                    my: "2.95em",
+                    my: "2.8em",
                   }}
                 >
-                  <TextField margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
+                  <TextField sx={{pb: "0.5em"}}margin="normal" required fullWidth id="email" label="Email Address" name="email" autoComplete="email" autoFocus />
                   <FormControl fullWidth>
                     <InputLabel htmlFor="password" required>
                       Password
@@ -241,33 +227,31 @@ export default function LoginForm() {
                       sx={{
                         mt: 3,
                         mb: 2,
-                        width: "50%"
+                        width: "50%",
                       }}
                     >
                       LOG IN
                     </Button>
                   </Grid>
                 </Box>
-              </Box>
-            ) : null}
 
-            {!loggedIn ? (
-              <Grid container sx={{ m: "0.5em", display: "flex", justifyContent: "center", textAlign: "center" }}>
-                <Grid item xs={6}>
-                  <Link href="/forgot" variant="body2">
-                    Forgot Password?
-                  </Link>
+                <Grid container sx={{ m: "0.5em", display: "flex", justifyContent: "center", textAlign: "center" }}>
+                  <Grid item xs={6}>
+                    <Link href="/forgot" variant="body2">
+                      Forgot Password?
+                    </Link>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography variant="body2" sx={{}}>
+                      New to ParcelMe?
+                    </Typography>
+                    <Link href="/signup" variant="body2">
+                      <Typography variant="body2">Join HERE!</Typography>
+                    </Link>
+                  </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                  <Typography variant="body2" sx={{}}>
-                    New to ParcelMe?
-                  </Typography>
-                  <Link href="/signup" variant="body2">
-                    <Typography variant="body2">Join HERE!</Typography>
-                  </Link>
-                </Grid>
-              </Grid>
-            ) : null}
+              </Box>
+            )}
           </Box>
         </Grid>
       </Grid>

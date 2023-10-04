@@ -5,7 +5,6 @@ const UserContext = React.createContext();
 
 export const UserProvider = (props) => {
   const [cookies, setCookie, removeCookie] = useCookies(["user"]);
-  // console.log(cookies);
 
   const [currentUser, setCurrentUser] = useState(cookies.user ? cookies.user : {});
 
@@ -16,7 +15,6 @@ export const UserProvider = (props) => {
       removeCookie("user");
     }
     setCurrentUser(user);
-    console.log(user)
   };
 
   return <UserContext.Provider value={{ currentUser, handleUpdateUser }}>{props.children}</UserContext.Provider>;

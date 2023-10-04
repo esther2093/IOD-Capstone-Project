@@ -1,3 +1,5 @@
+
+//function to format date to match database date requirement YYYY-MM-DD
 export default function FormatDateBackend(date) {
     const newDate = new Date(date);
 
@@ -9,6 +11,7 @@ export default function FormatDateBackend(date) {
     return formattedDate;
   }
 
+  //function to reverse format date from database date to front-end DD-MM-YYYY
   export function FormatDateBackendReverse(dateString) {
     const dateObj = new Date(dateString);
     const day = String(dateObj.getUTCDate()).padStart(2, '0');

@@ -1,5 +1,5 @@
 
-//function to add extra 0 in front of phoneNumber as database loses it 
+//function to add extra 0 and format to xxxx-xxx-xxx in front of phoneNumber as database loses it 
 export default function FormatPNumber(phoneNumber) {
     phoneNumber = phoneNumber.toString();
   

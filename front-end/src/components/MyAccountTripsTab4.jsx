@@ -9,7 +9,7 @@ import useUserData from "../hooks/useUserData";
 import { Avatar } from "@mui/material";
 import ChatMessages from "./ChatMessages";
 
-//function to create accessibility props for tabs from Mui component
+// Mui component function for tabs 
 function a11yProps(index) {
   return {
     id: `vertical-tab-${index}`,
@@ -25,59 +25,64 @@ export default function TripsTab4() {
   const [value, setValue] = useState(0);
   const [userMessageGroups, setUserMessageGroups] = useState({});
   const [messageTabLabels, setMessageTabLabels] = useState([]);
+  const [userDetails, setUserDetails] = useState({}); // New state for user details
 
-  //handle tab changing
+  // Handle tab changing
   const handleTabChange = (e, newValue) => {
     setValue(newValue);
   };
 
-  //populates userMessageGroups and messageTabLabels
+  // Populate userMessageGroups and messageTabLabels
   useEffect(() => {
-    //filter messages that include the currentUser either receiver or sender
+    // Filter messages that include the currentUser either receiver or sender
     const userMessages = messages.filter((message) => message.senderId === currentUser.id || message.receiverId === currentUser.id);
-    //initialise empty object to group messages
+    // Initialize an empty object to group messages
     const groups = {};
 
-    //groups messages based on the other user's id
+    // Groups messages based on the other user's id
     userMessages.forEach((message) => {
       const otherUserId = message.senderId === currentUser.id ? message.receiverId : message.senderId;
 
-      //if group doesn't exist for other user id then create a new array
+      // If group doesn't exist for other user id then create a new array
       if (!groups[otherUserId]) {
         groups[otherUserId] = [];
       }
       groups[otherUserId].push(message);
     });
 
-    //groups set
+    // Groups set
     setUserMessageGroups(groups);
-    //messagetablabels are set with the key of groups which is the otherUserId
+    // Message tab labels are set with the key of groups which is the otherUserId
     setMessageTabLabels(Object.keys(groups));
+  }, [currentUser.id, messages]);
 
-    //initialise an object to store other user's details
-    const otherUserDetails = {};
+  // Fetch user details sequentially for each user
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const userDetails = {};
 
-    //filter using otherUserId to get their details
-    messageTabLabels.forEach((otherUserId) => {
-      //first get other user by searching for them by id
-      const otherUser = users.find((user) => user.id === otherUserId);
-
-      //setting otherUser details
-      if (otherUser) {
-        otherUserDetails[otherUserId] = {
-          firstName: otherUser.firstName,
-          lastName: otherUser.lastName,
-          profilePicture: otherUser.profilePicture,
-        };
-      } else {
-        otherUserDetails[otherUserId] = null;
+      for (const otherUserId of messageTabLabels) {
+        const otherUser = users.find((user) => user.id === parseInt(otherUserId, 10));
+        if (otherUser) {
+          userDetails[otherUserId] = {
+            firstName: otherUser.firstName,
+            lastName: otherUser.lastName,
+            profilePicture: otherUser.profilePicture,
+          };
+        } else {
+          userDetails[otherUserId] = null;
+        }
       }
-    });
-  }, [currentUser.id, messages, messageTabLabels, users]);
 
-  //handle to update appropriate group with new message
+      setUserDetails(userDetails);
+    };
+
+    fetchUserDetails();
+  }, [messageTabLabels, users]);
+
+  // Handle to update the appropriate group with a new message
   const handleNewMessage = (newMessage) => {
-    //convert ids from strings to numbers
+    // Convert ids from strings to numbers
     const numberMessage = {
       id: newMessage.id,
       senderId: parseInt(newMessage.senderId),
@@ -86,18 +91,18 @@ export default function TripsTab4() {
     };
 
     setUserMessageGroups((prevGroups) => {
-      //create copy of previous groups
+      // Create a copy of previous groups
       const updatedGroups = { ...prevGroups };
 
-      //find the id of the other user in the group
+      // Find the id of the other user in the group
       const otherUserId = numberMessage.senderId === currentUser.id ? numberMessage.receiverId : numberMessage.senderId;
-      //if group doesn't exist for other user id then create a new array
+      // If the group doesn't exist for the other user id then create a new array
       if (!updatedGroups[otherUserId]) {
         updatedGroups[otherUserId] = [];
       }
-      //push the new message into the group with the otherUserId
+      // Push the new message into the group with the otherUserId
       updatedGroups[otherUserId].push(numberMessage);
-      //updated state returned
+      // Updated state returned
       return updatedGroups;
     });
   };
@@ -123,9 +128,9 @@ export default function TripsTab4() {
                   key={index}
                   label={
                     <Box sx={{ display: "flex", alignItems: "left", padding: "0.5em", mr: "1em" }}>
-                      <Avatar src={"http://localhost:8000/" + otherUser.profilePicture} sx={{ width: 20, height: 20 }} />
+                      <Avatar src={userDetails[otherUserId]?.profilePicture} sx={{ width: 20, height: 20 }} />
                       <Typography variant="body2" sx={{ width: "100%", ml: "0.5em" }}>
-                        {otherUser.firstName}
+                        {userDetails[otherUserId]?.firstName}
                       </Typography>
                     </Box>
                   }
@@ -136,7 +141,7 @@ export default function TripsTab4() {
           </Tabs>
         ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-            You do not have any active chats at the moment.
+            You don't have any active chats at the moment
           </Typography>
         )}
         {messageTabLabels.length > 0 &&

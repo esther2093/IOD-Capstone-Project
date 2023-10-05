@@ -10,7 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { useUserContext } from "../context/UserContext";
 import useTripData from "../hooks/useTripData";
-import formatDate from "./FormatDate";
+import FormatDate from "./FormatDate";
 import { Icon } from "@iconify/react";
 import EditTripDialog from "./EditTripDialog";
 import DeleteTripDialog from "./DeleteTripDialog";
@@ -80,7 +80,7 @@ export default function TripsTab1() {
 
   //defining colums for table
   const columns = [
-    { id: "trip", label: "Trip", minWidth: 130 },
+    { id: "trip", label: "Trip", minWidth: 150 },
     { id: "dates", label: "Dates", minWidth: 150 },
     { id: "price", label: "Price", minWidth: 50 },
     { id: "comments", label: "Comments", minWidth: 40 },
@@ -99,7 +99,7 @@ export default function TripsTab1() {
   //defining row content for table
   const rows = userTripsList.map((trip) => ({
     trip: ` ${trip.cityFrom} - ${trip.cityTo}`,
-    dates: `${formatDate(trip.departureDate)} - ${formatDate(trip.arrivalDate)}`,
+    dates: `${FormatDate(trip.departureDate)} - ${FormatDate(trip.arrivalDate)}`,
     price: `$ ${trip.startingPrice}`,
     seeMore: <button onClick={() => handleSeeMoreDialogOpen(trip)}>See More</button>,
     editTrip: <Icon icon="material-symbols:edit-outline" onClick={() => handleEditDialogOpen(trip)} />,
@@ -112,7 +112,7 @@ export default function TripsTab1() {
           overflow: "hidden",
           whiteSpace: "nowrap",
           textOverflow: "ellipsis",
-          textAlign: "center",
+          ml: "2em"
         }}
       >
         {trip.comments ? "Y" : "N"}
@@ -170,7 +170,7 @@ export default function TripsTab1() {
           </Box>
         ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-            You haven't posted any trips - if you would like to please navigate to the DRIVE form at the top.
+            You haven't posted any trips - if you would like to post a trip for others to see please navigate to the DRIVE form at the top and post it up!
           </Typography>
         )}
       </Box>

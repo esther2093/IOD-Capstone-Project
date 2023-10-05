@@ -6,11 +6,12 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import axios from "axios";
-import { Box, InputAdornment, InputLabel, OutlinedInput, TextField } from "@mui/material";
-import formatDateBackend from "./FormatDateBackend";
+import { Box, FormControl, FormHelperText, InputAdornment, InputLabel, MenuItem, OutlinedInput, Select, TextField } from "@mui/material";
+import FormatDateBackend, { FormatDateBackendReverse } from "./FormatDateBackend";
+import SizeInfoList from "./sizeInfoList";
 
 export default function EditTripDialog({ open, close, trip, setUpdateList }) {
-  //define intial state of edited trip 
+  //define intial state of edited trip
   const [editedTrip, setEditedTrip] = useState({
     id: "",
     suburbFrom: "",
@@ -28,12 +29,14 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
   const [submitResult, setSubmitResult] = useState("");
   const [error, setError] = useState("");
 
-  //function to capitalise the first letter of each string 
+  let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
+
+  //function to capitalise the first letter of each string
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
 
-    //populates editedTrip when an trip is provided 
+  //populates editedTrip when an trip is provided
   useEffect(() => {
     if (trip) {
       const originalTrip = {
@@ -46,23 +49,23 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
         stateTo: capitalizeFirstLetter(trip.stateTo),
         startingPrice: trip.startingPrice,
         availableSpace: capitalizeFirstLetter(trip.availableSpace),
-        departureDate: formatDateBackend(trip.departureDate),
-        arrivalDate: formatDateBackend(trip.arrivalDate),
+        departureDate: FormatDateBackend(trip.departureDate),
+        arrivalDate: FormatDateBackend(trip.arrivalDate),
         comments: capitalizeFirstLetter(trip.comments),
       };
       setEditedTrip(originalTrip);
     }
   }, [trip]);
 
-
-  //resets form submit status when dialog closed 
+  //resets form submit status when dialog closed
   useEffect(() => {
     if (!open) {
       setSubmitResult("");
+      setError("");
     }
   }, [open]);
 
-  //handle to track form input changes and update editedTrip 
+  //handle to track form input changes and update editedTrip
   const handleEditForm = (e) => {
     const { name, value } = e.target;
     setEditedTrip((originalTrip) => ({
@@ -71,7 +74,7 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
     }));
   };
 
-    //handles to submit the edited trip
+  //handles to submit the edited trip
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -80,13 +83,11 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
       const response = await axios.put(`/api/trips/${trip.id}`, editedTrip);
       setError("");
       setSubmitResult(response.data.result);
-      //updates userTripList to re-render parent 
+      //updates userTripList
       setUpdateList(editedTrip);
-      //close dialog 
       close();
     } catch (error) {
-      console.error("An error occurred while updating the trip:", error.response.data.result);
-      setError("An error occurred while updating your trip");
+      setError(error.response.data.result);
     }
   };
 
@@ -125,10 +126,37 @@ export default function EditTripDialog({ open, close, trip, setUpdateList }) {
             <TextField sx={{ m: "0.5em" }} required fullWidth name="departureDate" label="Departure Date" value={editedTrip.departureDate} onChange={handleEditForm} />
             <TextField sx={{ m: "0.5em" }} required fullWidth name="arrivalDate" label="Arrival Date" value={editedTrip.arrivalDate} onChange={handleEditForm} />
           </Box>
-          <OutlinedInput sx={{ m: "0.5em" }} required fullWidth name="startingPrice" label="Starting Price" value={editedTrip.startingPrice} onChange={handleEditForm} startAdornment={<InputAdornment position="start">$</InputAdornment>}/>
-          <InputLabel htmlFor="availableSpace" sx={{fontSize: "0.75em"}}>From</InputLabel>
-
-          <TextField sx={{ m: "0.5em" }} required fullWidth name="availableSpace" label="Available Space" value={editedTrip.availableSpace} onChange={handleEditForm} />
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <FormControl required sx={{mr: "1em", width: "40%"}}>
+              <InputLabel htmlFor="startingPrice" sx={{ mt: "0.5em", ml: "0.5em" }}>
+                Starting price
+              </InputLabel>
+              <OutlinedInput
+                sx={{ m: "0.5em" }}
+                required
+                fullWidth
+                name="startingPrice"
+                label="Starting Price"
+                value={editedTrip.startingPrice}
+                onChange={handleEditForm}
+                startAdornment={<InputAdornment position="start">$</InputAdornment>}
+              />
+            </FormControl>
+            <FormControl sx={{ m: "0.5em", mr: "1em", width: "45%" }} required>
+              <InputLabel htmlFor="availableSpace">Available Space</InputLabel>
+              <Select required id="availableSpace" label="Available Space" name="availableSpace" value={editedTrip.availableSpace} onChange={handleEditForm}>
+                {spaceSizes.map((spaceSize) => (
+                  <MenuItem key={spaceSize} value={spaceSize}>
+                    {spaceSize}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <Box sx={{color: "#D2B356"}}>
+              {" "}
+              <SizeInfoList />
+            </Box>
+          </Box>
           <TextField sx={{ m: "0.5em" }} multiline maxRows={10} fullWidth name="comments" label="Comments" value={editedTrip.comments} onChange={handleEditForm} />
           <Box sx={{ pt: "1em", textAlign: "center" }}>
             <Button type="submit" variant="filled">

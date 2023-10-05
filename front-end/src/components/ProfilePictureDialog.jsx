@@ -125,7 +125,7 @@ export default function ProfilePictureDialog() {
                 margin: "auto",
               }}
             >
-              <img src={"http://localhost:8000/" + currentUser.profilePicture} width="50%" alt={"NO PROFILE PICTURE"} />
+              <img src={currentUser.profilePicture} width="50%" alt={"NO PROFILE PICTURE"} />
             </Avatar>
             <Box
               component="form"

@@ -16,8 +16,6 @@ import { FormControl, FormHelperText, InputAdornment, OutlinedInput } from "@mui
 import bannerBg from "../assets/bannerImage.jpg";
 import SizeInfoList from "./sizeInfoList";
 
-let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
-
 export default function DriveForm() {
   const { currentUser } = useUserContext();
 
@@ -25,40 +23,40 @@ export default function DriveForm() {
   const [submitResult, setSubmitResult] = useState("");
   const [availableSpace, setAvailableSpace] = useState([]);
 
+  //defining the sizes for dropdown textfield
+  let spaceSizes = ["Small", "Medium", "Large", "Extra Large"];
 
-  //updating input field state 
+  //updating input field state
   const handleChange = (e) => {
     setAvailableSpace(e.target.value);
   };
 
-
-  //handles the submission of a new trip 
+  //handles the submission of a new trip
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitResult("");
-  
-    //getting input data from form 
+
+    //getting input data from form
     const data = new FormData(e.currentTarget);
     data.append("userId", currentUser.id);
-  
+
     try {
       //posting to database
       const response = await axios.post("/api/trips/register", Object.fromEntries(data.entries()));
       const result = response.data.result;
       const trip = response.data.data;
-  
+
       if (trip) {
         setError("");
         setSubmitResult(result);
-        //reset the form fields 
+        //reset the form fields
         e.target.reset();
       }
     } catch (error) {
-      console.error(error);
       setError(error.response.data.result);
     }
   };
-  
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Box className="banner-content" id="second-banner-top" sx={{ width: "100%", backgroundSize: "cover", backgroundRepeat: "no-repeat", backgroundImage: `url(${bannerBg})` }}>
@@ -115,18 +113,18 @@ export default function DriveForm() {
 
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: "0.5em", mb: "2em" }}>
             <Box sx={{ pb: "1em" }}>
-                <Typography variant="body2" color="red">
-                  {error}
-                </Typography>
-                <Typography variant="body2" color="green">
-                  {submitResult}
-                </Typography>
+              <Typography variant="body2" color="red">
+                {error}
+              </Typography>
+              <Typography variant="body2" color="green">
+                {submitResult}
+              </Typography>
             </Box>
 
             <Grid container spacing={0}>
               <Grid item xs={12} sx={{ textAlign: "left", ml: "1em" }}>
-                <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Where from?</Typography>              
-                </Grid>
+                <Typography sx={{ fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)" }}>Where from?</Typography>
+              </Grid>
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField fullWidth id="suburbFrom" label="Suburb" name="suburbFrom" autoComplete="suburb" />
               </Grid>
@@ -137,8 +135,8 @@ export default function DriveForm() {
                 <TextField required fullWidth id="stateFrom" label="State" name="stateFrom" autoComplete="state" />
               </Grid>
               <Grid item xs={12} sx={{ textAlign: "left", ml: "1em", mt: "0.2em" }}>
-                <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Where to?</Typography>              
-                </Grid>
+                <Typography sx={{ fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)" }}>Where to?</Typography>
+              </Grid>
               <Grid item xs={12} sm={12} md={4} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField fullWidth id="suburbTo" label="Suburb" name="suburbTo" autoComplete="suburb" />
               </Grid>
@@ -150,8 +148,8 @@ export default function DriveForm() {
                 <TextField required fullWidth id="stateTo" label="State" name="stateTo" autoComplete="state" />
               </Grid>
               <Grid item xs={12} sx={{ textAlign: "left", ml: "1em", mt: "0.2em" }}>
-                <Typography sx={{fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)"}}>Dates </Typography>              
-                </Grid>
+                <Typography sx={{ fontSize: "0.75em", color: "rgba(0, 0, 0, 0.6)" }}>Dates </Typography>
+              </Grid>
               <Grid item xs={12} sm={12} md={6} sx={{ p: "0.25em", mt: "0.2em" }}>
                 <TextField required fullWidth name="departureDate" label="DD-MM-YYYY" id="departureDate" format="DD-MM-YYYY" helperText="Departure" />
               </Grid>
@@ -160,16 +158,17 @@ export default function DriveForm() {
               </Grid>
 
               <Grid item xs={12} sm={12} md={5.5} sx={{ p: "0.25em", mt: "0.2em" }}>
-              <FormControl fullWidth required>
-              
-              <InputLabel htmlFor="availableSpace" sx={{fontSize: "0.75em"}}>From</InputLabel>
-                <OutlinedInput fullWidth name="startingPrice" label="from" id="startingPrice" startAdornment={<InputAdornment position="start">$</InputAdornment>}/>
-                <FormHelperText>Starting price</FormHelperText>
-             </FormControl>
+                <FormControl fullWidth required>
+                  <InputLabel htmlFor="availableSpace" sx={{ fontSize: "0.75em" }}>
+                    From
+                  </InputLabel>
+                  <OutlinedInput fullWidth name="startingPrice" label="from" id="startingPrice" startAdornment={<InputAdornment position="start">$</InputAdornment>} />
+                  <FormHelperText>Starting price</FormHelperText>
+                </FormControl>
               </Grid>
 
               <Grid item xs={11} md={5.5} sx={{ p: "0.25em", mt: "0.2em" }}>
-                <FormControl fullWidth required >
+                <FormControl fullWidth required>
                   <InputLabel htmlFor="availableSpace">Up to</InputLabel>
                   <Select required id="availableSpace" label="Up to" name="availableSpace" value={availableSpace} onChange={handleChange}>
                     {spaceSizes.map((spaceSize) => (
@@ -182,8 +181,8 @@ export default function DriveForm() {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356", mt:"-0.1em" }}>
-               <SizeInfoList />
+              <Grid item xs={1} sx={{ py: "1.2em", color: "#D2B356", mt: "-0.1em" }}>
+                <SizeInfoList />
               </Grid>
 
               <Grid item xs={12} sx={{ p: "0.25em", mt: "0.2em" }}>

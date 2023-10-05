@@ -64,11 +64,8 @@ const loginUser = async (req, res) => {
 
 const registerUser = async (req, res) => {
   let dateOfBirth = req.body.dateOfBirth;
-  console.log(dateOfBirth);
   let reverseDate = dateOfBirth.split("-").reverse().join("-");
-  console.log(reverseDate);
   let datedDOB = new Date(reverseDate);
-  console.log(datedDOB);
   const age =
     new Date().getFullYear() -
     datedDOB.getFullYear() -
@@ -99,6 +96,8 @@ const registerUser = async (req, res) => {
       res.status(400).json({ result: "Phone number must contain numbers only" });
     } else if (!phoneNumber.startsWith("04")) {
       res.status(400).json({ result: "Phone number must start with '04'" });
+    } else if (phoneNumber.length !== 10) {
+      res.status(400).json({ result: "Phone number must be exactly 10 digits" });
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       res.status(400).json({ result: "Invalid email address" });
     } else {
@@ -159,6 +158,7 @@ const createUser = (data, res) => {
 };
 
 const updateUser = async (req, res) => {
+
   try {
     const { firstName, lastName, email, phoneNumber, dateOfBirth } = req.body;
 
@@ -169,11 +169,13 @@ const updateUser = async (req, res) => {
     } else if (!/^[A-Za-z\s\-]+$/i.test(lastName)) {
       res.status(400).json({ result: "Invalid last name" });
     } else if (phoneNumber.length > 10) {
-      res.status(400).json({ result: "You must input a valid phone number" });
+      res.status(400).json({ result: "Invalid phone number" });
     } else if (!/^[0-9]+$/.test(phoneNumber)) {
-      res.status(400).json({ result: "Phone number must contain numbers only" });
+      res.status(400).json({ result: "Phone number must only contain numbers" });
     } else if (!phoneNumber.startsWith("04")) {
       res.status(400).json({ result: "Phone number must start with '04'" });
+    } else if (phoneNumber.length !== 10) {
+      res.status(400).json({ result: "Phone number must be exactly 10 digits" });
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       res.status(400).json({ result: "Invalid email address" });
     } else {

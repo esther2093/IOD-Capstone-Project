@@ -66,7 +66,7 @@ export default function ChatMessages({ value, index, currentUser, users, userMes
               >
                 <Box sx={{ padding: "0.1em 0.5em 0.1em 0em" }}>
                   <Avatar
-                    src={message.senderId === currentUser.id ? "http://localhost:8000/" + currentUser.profilePicture : otherUser ? "http://localhost:8000/" + (otherUser.profilePicture || "") : ""}
+                    src={message.senderId === currentUser.id ? currentUser.profilePicture : otherUser ? (otherUser.profilePicture || "") : ""}
                     sx={{ width: 25, height: 25 }}
                   />
                 </Box>

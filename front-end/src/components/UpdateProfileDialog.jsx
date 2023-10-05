@@ -14,13 +14,14 @@ export default function UpdateProfileDialog() {
   const [openDialog, setOpenDialog] = useState(false);
   const [submitResult, setSubmitResult] = useState("");
   const [error, setError] = useState("");
+
     //define intial state of edited user 
   const [updateUser, setUpdateUser] = useState({
     firstName: currentUser.firstName,
     lastName: currentUser.lastName,
     email: currentUser.email,
     dateOfBirth: FormatDateBackend(currentUser.dateOfBirth),
-    phoneNumber: '0' + currentUser.phoneNumber,
+    phoneNumber: currentUser.phoneNumber,
   });
 
 //handle to open and close dialog 
@@ -126,7 +127,7 @@ export default function UpdateProfileDialog() {
             <TextField required sx={{ m: "0.5em" }} fullWidth id="firstName" label="First Name" name="firstName" value={updateUser.firstName} onChange={handleDetailChange} />
             <TextField required sx={{ m: "0.5em" }} fullWidth id="lastName" label="Last Name" name="lastName" value={updateUser.lastName} onChange={handleDetailChange} />
             <TextField required sx={{ m: "0.5em" }} fullWidth id="email" label="Email Address" name="email" value={updateUser.email} onChange={handleDetailChange} />
-            <TextField sx={{ m: "0.5em" }} fullWidth id="dateOfBirth" label="DOB" name="dateOfBirth" value={updateUser.dateOfBirth} onChange={handleDetailChange} />
+            <TextField required sx={{ m: "0.5em" }} fullWidth id="dateOfBirth" label="DOB" name="dateOfBirth" value={updateUser.dateOfBirth} onChange={handleDetailChange} />
             <TextField required sx={{ m: "0.5em" }} fullWidth id="phoneNumber" label="Phone Number" name="phoneNumber" value={updateUser.phoneNumber} onChange={handleDetailChange} />
 
             <Box

@@ -51,7 +51,7 @@ export default function MyAccount() {
                     m: "auto",
                   }}
                 >
-                  <img src={"http://localhost:8000/" + currentUser.profilePicture} width="100%" alt={"NO PROFILE PICTURE"} />
+                  <img src={currentUser.profilePicture} width="100%" alt={"NO PROFILE PICTURE"} />
                 </Avatar>
 
                 <Box>
@@ -68,16 +68,16 @@ export default function MyAccount() {
                 </Typography>
 
                 <Box sx={{ px: "1em", py: "1em" }}>
-                  <Typography variant="body1" sx={{ fontSize: "1em", pb: "0.5em" }}>
+                  <Typography variant="body1" sx={{ fontSize: "0.9em", pb: "0.5em" }}>
                     Name: {currentUser.firstName} {currentUser.lastName}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "1em", pb: "0.5em"  }}>
+                  <Typography variant="body1" sx={{ fontSize: "0.9em", pb: "0.5em"  }}>
                     Date of Birth: {FormatDate(currentUser.dateOfBirth)}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "1em", pb: "0.5em"  }}>
+                  <Typography variant="body1" sx={{ fontSize: "0.9em", pb: "0.5em"  }}>
                     Email: {currentUser.email}
                   </Typography>
-                  <Typography variant="body1" sx={{ fontSize: "1em", pb: "0.5em"  }}>
+                  <Typography variant="body1" sx={{ fontSize: "0.9em", pb: "0.5em"  }}>
                     Phone number: {FormatPNumber(currentUser.phoneNumber)}
                   </Typography>
                 </Box>

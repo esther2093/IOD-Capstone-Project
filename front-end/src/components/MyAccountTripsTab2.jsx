@@ -86,9 +86,9 @@ export default function TripsTab2() {
 
   //defining colums for table
   const columns = [
-    { id: "trip", label: "Trip", minWidth: 140 },
+    { id: "trip", label: "Trip", minWidth: 150 },
     { id: "dates", label: "Dates", minWidth: 150 },
-    { id: "enquiry", label: "Enquiry", minWidth: 250 },
+    { id: "enquiry", label: "Enquiry", minWidth: 100 },
     { id: "enquiryDate", label: "Date Enquired", minWidth: 70 },
     { id: "seeMore", label: "", minWidth: 80 },
     { id: "editEnquiry", label: "", minWidth: 20 },
@@ -139,7 +139,7 @@ export default function TripsTab2() {
         <Typography
           sx={{
             fontSize: "0.875rem",
-            maxWidth: 300,
+            maxWidth: 100,
             overflow: "hidden",
             whiteSpace: "nowrap",
             textOverflow: "ellipsis",
@@ -206,7 +206,7 @@ export default function TripsTab2() {
           </Box>
         ) : (
           <Typography variant="body1" sx={{ padding: "0.5em 1em 2em 0.5em" }}>
-            You haven't enquired on any trips yet.
+            You haven't enquired on any trips
           </Typography>
         )}
       </Box>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -11,36 +11,44 @@ import formatDate from "./FormatDate";
 import { Box } from "@mui/material";
 import SizeInfoList from "./sizeInfoList";
 
-export default function EnquiryDetailsReceived({ open, close, enquiry, trip, currentUser}) {
-
-//handle to accept or reject enquiries recieved by user 
+export default function EnquiryDetailsReceived({ open, close, enquiry, trip, currentUser }) {
+  //handle to accept or reject enquiries recieved by user
   const handleAccept = async (status) => {
     try {
-      //when status is accepted, sends a message to the otherUserId to start a chat 
+      //when status is accepted, sends a message to the otherUserId to start a chat
       if (status) {
         await axios.post("/api/messages/create", {
           senderId: currentUser.id,
           receiverId: enquiry.userId,
-          content: "Your trip enquiry has been approved for " + trip.cityFrom + " to " + trip.cityTo + " on " + formatDate(trip.departureDate) + " - " + formatDate(trip.arrivalDate),
+          content:
+            "Your trip enquiry has been approved for " +
+            trip.cityFrom +
+            " to " +
+            trip.cityTo +
+            " on " +
+            formatDate(trip.departureDate) +
+            " - " +
+            formatDate(trip.arrivalDate) +
+            ". You can now discuss further details about the trip and enquiry.",
         });
       }
-      
+
       //update status of the enquiry to database
       const response = await axios.put(`/api/enquiries/${enquiry.id}`, {
         accepted: status,
       });
-  
+
       console.log("Enquiry updated:", response.data.data);
-      //update the status to re-render parent  
+      //update the status to re-render parent
       enquiry.accepted = status;
-      //close dialog 
+      //close dialog
       close();
     } catch (error) {
       console.error("Error updating enquiry:", error);
     }
   };
-  
-  //stops rendering if there is no trip and enquiry 
+
+  //stops rendering if there is no trip and enquiry
   if (!trip || !enquiry) {
     return null;
   }
@@ -60,48 +68,55 @@ export default function EnquiryDetailsReceived({ open, close, enquiry, trip, cur
           <Typography variant="body1" sx={{ fontWeight: "500", textDecoration: "underline" }}>
             Status:
           </Typography>
-          <Box sx={{ display: "flex", justifyContent: "space-around", alignItems:"center"}}>
+          <Box sx={{ display: "flex", justifyContent: "space-around", alignItems: "center" }}>
             {enquiry ? (
               enquiry.accepted === null ? (
-                <Box sx={{ display: "flex", p: "0.5em 9em 0.5em 0.5em", alignItems:"center" }}>
+                <Box sx={{ display: "flex", p: "0.5em 9em 0.5em 0.5em", alignItems: "center" }}>
                   <Icon icon="eos-icons:three-dots-loading" width="35" />
                   <Typography variant="body1" sx={{ pl: "0.5em" }}>
                     Pending
                   </Typography>
                 </Box>
               ) : enquiry.accepted === true ? (
-                <Box sx={{ display: "flex", p: "0.5em 9em 0.5em 0.5em", alignItems:"center" }}>
+                <Box sx={{ display: "flex", p: "0.5em 9em 0.5em 0.5em", alignItems: "center" }}>
                   <Icon icon="subway:tick" color="green" width="20" />
-                  <Typography variant="body1" sx={{ pl: "0.5em" }}>Accepted</Typography>
+                  <Typography variant="body1" sx={{ pl: "0.5em" }}>
+                    Accepted
+                  </Typography>
                 </Box>
               ) : (
-                <Box sx={{ display: "flex", p: "0.5em 9em 0.5em 0.5em", alignItems:"center" }}>
+                <Box sx={{ display: "flex", p: "0.5em 9em 0.5em 0.5em", alignItems: "center" }}>
                   <Icon icon="foundation:x" color="red" width="20" />
-                  <Typography variant="body1" sx={{ pl: "0.5em" }}>Declined</Typography>
+                  <Typography variant="body1" sx={{ pl: "0.5em" }}>
+                    Declined
+                  </Typography>
                 </Box>
               )
             ) : (
               ""
             )}
             <Button
-            variant="filled"
+              variant="filled"
               onClick={() => handleAccept(true)}
-          
               sx={{
                 "&:hover": {
                   backgroundColor: "green",
-                  color: "white"
+                  color: "white",
                 },
               }}
             >
               Accept
             </Button>
-            <Button variant="filled" onClick={() => handleAccept(false)} sx={{
+            <Button
+              variant="filled"
+              onClick={() => handleAccept(false)}
+              sx={{
                 "&:hover": {
                   backgroundColor: "red",
-                  color: "white"
+                  color: "white",
                 },
-              }}>
+              }}
+            >
               Decline
             </Button>
           </Box>
@@ -128,8 +143,9 @@ export default function EnquiryDetailsReceived({ open, close, enquiry, trip, cur
           </Typography>
           <Typography variant="body2">Departure Date: {formatDate(trip.departureDate)}</Typography>
           <Typography variant="body2">Arrival Date: {formatDate(trip.arrivalDate)}</Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: "0.2em" }}> 
-                      Starting price: ${trip.startingPrice}</Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: "0.2em" }}>
+            Starting price: ${trip.startingPrice}
+          </Typography>
 
           <Box sx={{ display: "flex", mt: "0.3em" }}>
             <SizeInfoList />

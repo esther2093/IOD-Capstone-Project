@@ -19,6 +19,13 @@ Instructions to get this application working:
 
 To run this application locally: 
 
+1. Setup MySQL databse first
+```
+create local instance localhost:3306 
+create schema called capstoneProject
+```
+
+2. Set up code  
 ```
 git clone https://github.com/esther2093/IOD-Capstone-Project
 cd front-end 
@@ -33,12 +40,17 @@ app.use(express.static(path.join(__dirname, '../front-end/dist')))
 path.join(__dirname, "../front-end/dist/index.html")
 
 npm run distant //will run local distant and front-end build together
+open http://localhost:8000 in your browser 
 ```
 
 #### Deployed through AWS 
-This application has already been deployed on to AWS and can be accessed below: 
-The back-end is on the AWS RDS - parcelmedatabaseaws.cyb2gf8xvhsu.ap-southeast-2.rds.amazonaws.com
-The back-end is on the AWS EC2 - http://ec2-3-27-154-151.ap-southeast-2.compute.amazonaws.com
+This application has already been deployed on to AWS and can be accessed below:  
+
+The database is on the AWS RDS - parcelmedatabaseaws.cyb2gf8xvhsu.ap-southeast-2.rds.amazonaws.com  
+
+The UI is on the AWS EC2 - http://ec2-3-27-154-151.ap-southeast-2.compute.amazonaws.com  
+
+You can create your own AWS RDS and EC2 to deploy 
 
 ## Contributers 
 My IOD teachers - Jo, Gareth and Chris helped to troubleshoot, fix errors and give me direction with the application

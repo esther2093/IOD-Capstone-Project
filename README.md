@@ -9,7 +9,8 @@ React was used as the front-end library with Javascript as it allowed me to brea
 
 MySQL was used as the back-end database as it gives a more structured framework for my data. This makes it easier to see the data in tables and shows the relationships more easily between tables. It has also been used and tested over the years so is reliable and stable.
 
-In the future I would like to implement a bidding system where the sender can post a parcel they want to send and user drivers can bid on the parcel and whoever bids the lowest gets the delivery. I also would like to open it up to overseas travels however this would be quite difficult due to aviation laws regarding taking packages into countries you didn't pack. 
+In the near future I would like to implement sendGrid to be able to send emails such as resetting password emails. 
+In the long term I would like to implement a bidding system where the sender can post a parcel they want to send and user drivers can bid on the parcel and whoever bids the lowest gets the delivery. I also would like to open it up to overseas travels however this would be quite difficult due to aviation laws regarding taking packages into countries you didn't pack. 
 
 ## Instructions 
 Instructions to get this application working: 
@@ -34,9 +35,9 @@ npm run distant //will run local distant and front-end build together
 ```
 
 #### Deployed through AWS 
-This application has already been deployed on to AWS and can be accessed here
-Link: http://ec2-3-27-154-151.ap-southeast-2.compute.amazonaws.com
-
+This application has already been deployed on to AWS and can be accessed below: 
+The back-end is on the AWS RDS - parcelmedatabaseaws.cyb2gf8xvhsu.ap-southeast-2.rds.amazonaws.com
+The back-end is on the AWS EC2 - http://ec2-3-27-154-151.ap-southeast-2.compute.amazonaws.com
 
 ## Contributers 
 My IOD teachers - Jo, Gareth and Chris helped to troubleshoot, fix errors and give me direction with the application

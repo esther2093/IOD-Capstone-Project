@@ -1,5 +1,3 @@
-## IOD-Capstone-Project
-
 # ParcelMe Documentation 
 
 This is the code for the application ParcelMe that connects parcel senders with travellers going the same way.
@@ -41,5 +39,5 @@ Link: http://ec2-3-27-154-151.ap-southeast-2.compute.amazonaws.com
 
 
 ## Contributers 
-My IOD teachers - Jo, Gareth and Chris helped fix bugs and give us direction 
+My IOD teachers - Jo, Gareth and Chris helped to troubleshoot, fix errors and give me direction with the application
 

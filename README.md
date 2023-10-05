@@ -45,9 +45,7 @@ open http://localhost:8000 in your browser
 
 #### Deployed through AWS 
 This application has already been deployed on to AWS and can be accessed below: <br> 
-
 The database is on the AWS RDS - parcelmedatabaseaws.cyb2gf8xvhsu.ap-southeast-2.rds.amazonaws.com  <br>
-
 The UI is on the AWS EC2 - http://ec2-3-27-154-151.ap-southeast-2.compute.amazonaws.com<br>  
 
 You can create your own AWS RDS and EC2 to deploy 

@@ -23,14 +23,15 @@ To run this application locally:
 git clone https://github.com/esther2093/IOD-Capstone-Project
 cd front-end 
 npm install
-npm build //build front-end to use concurrently with back-end
+npm run build //build front-end to use concurrently with back-end
 
 cd .. 
 cd back-end 
 npm install
-in server.js change line 32 and 36 as below //.. needed to access files
+in server.js change line 32 and 36 as below //.. needed to access files locally
 app.use(express.static(path.join(__dirname, '../front-end/dist'))) 
 path.join(__dirname, "../front-end/dist/index.html")
+
 npm run distant //will run local distant and front-end build together
 ```
 

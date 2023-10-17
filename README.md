@@ -5,7 +5,7 @@ This is the code for the application ParcelMe that connects parcel senders with 
 ## Description 
 ParcelMe is an application that connects people who want to send a parcel with other people who are going to the same destination. Users have the option to either post a trip they are making and await enquiries from people or users can enquiry on posted trips. It is a alternate way to providing courier service for people who are fed up with the current Australian courier system that has continually failed us. 
 
-React was used as the front-end library with Javascript as it allowed me to break down the architecture of the user interface into smaller, resusable components. This made it much easier to write and read the code. Also  virtual DOM allows for more smooth server-side rendering which results in a smoother UI experience. It also has access to MUI which is interactive so requires minimal adjustments for different media screens.
+React was used as the front-end library with Javascript as it allowed me to break down the architecture of the user interface into smaller, resusable components. This made it much easier to write and read the code. Also  virtual DOM allows for more smooth server-side rendering which results in a smoother UI experience. It also has access to MUI which is interactive so requires minimal adjustments for different media screen sizes.
 
 MySQL was used as the back-end database as it gives a more structured framework for my data. This makes it easier to see the data in tables and shows the relationships more easily between tables. It has also been used and tested over the years so is reliable and stable.
 

@@ -93,7 +93,7 @@ export const mainTheme = createTheme({
       styleOverrides: {
         root: {
           fontSize: "0.8em",
-          marginTop: "-0.1em"
+          marginTop: "-0.15em"
         },
       },
     },

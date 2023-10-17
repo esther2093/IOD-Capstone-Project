@@ -80,8 +80,8 @@ const registerUser = async (req, res) => {
       res.status(400).json({ result: "Password must be at least 6 characters long" });
     } else if (password === email) {
       res.status(400).json({ result: "Password cannot be the same as your email address" });
-      // } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(password)) {
-      //   res.status(400).json({ result: "Password must include a capital letter and a number." });
+      } else if (!/^(?=.*[A-Z])(?=.*\d).+/.test(password)) {
+        res.status(400).json({ result: "Password must include a capital letter and a number." });
     } else if (!/^[A-Za-z\s\-]+$/i.test(firstName)) {
       res.status(400).json({ result: "Invalid first name" });
     } else if (!/^[A-Za-z\s\-]+$/i.test(lastName)) {
